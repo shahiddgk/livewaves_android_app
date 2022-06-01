@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.Events.CreateEventFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/img_event"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:contentDescription="@string/todo"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cover_place_holder"
+                android:transitionName="@string/event_image" />
+
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginTop="@dimen/margin_20"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+
+                <ImageView
+                    android:id="@+id/img_edit_event_cover"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/black" />
+            </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+                app:tint="@color/black" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_event"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/img_event"
+                android:layout_marginTop="@dimen/margin_negative_20"
+                app:cardCornerRadius="@dimen/margin_20">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:boxStrokeColor="@color/light_grey">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tli_title"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_10"
+                        android:elevation="0dp"
+                        app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                        app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                        app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                        app:boxCornerRadiusTopStart="@dimen/radius_16"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_baseline_title_24"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:hint="@string/event_title_text"
+                            android:padding="@dimen/padding_16"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                         android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tli_start_date"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_marginEnd="@dimen/margin_8"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:elevation="0dp"
+                            android:focusable="true"
+                            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                            app:boxCornerRadiusTopStart="@dimen/radius_16"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_start_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_outline_date_range_24"
+                                android:drawablePadding="@dimen/margin_10"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/start_date"
+                                android:inputType="datetime"
+                                android:padding="@dimen/padding_16"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tli_start_time"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_16"
+                            android:layout_weight="0.3"
+                            android:clickable="true"
+                            android:elevation="0dp"
+                            android:focusable="true"
+                            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                            app:boxCornerRadiusTopStart="@dimen/radius_16"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_start_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_baseline_time"
+                                android:drawablePadding="@dimen/margin_10"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/time"
+                                android:inputType="datetime"
+                                android:padding="@dimen/padding_16"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tli_end_date"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_marginEnd="@dimen/margin_8"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:elevation="0dp"
+                            android:focusable="true"
+                            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                            app:boxCornerRadiusTopStart="@dimen/radius_16"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_end_date"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_outline_date_range_24"
+                                android:drawablePadding="@dimen/margin_10"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/end_date"
+                                android:inputType="datetime"
+                                android:padding="@dimen/padding_16"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tli_end_time"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_16"
+                            android:layout_weight="0.3"
+                            android:clickable="true"
+                            android:elevation="0dp"
+                            android:focusable="true"
+                            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                            app:boxCornerRadiusTopStart="@dimen/radius_16"
+                            app:errorEnabled="true">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/et_end_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_baseline_time"
+                                android:drawablePadding="@dimen/margin_10"
+                                android:focusableInTouchMode="false"
+                                android:hint="@string/time"
+                                android:inputType="datetime"
+                                android:padding="@dimen/padding_16"
+                                android:textCursorDrawable="@null" />
+                        </com.google.android.material.textfield.TextInputLayout>
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tli_category"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:elevation="0dp"
+                        android:focusableInTouchMode="false"
+                        app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                        app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                        app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                        app:boxCornerRadiusTopStart="@dimen/radius_16"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_category_select"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_outline_category_24"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/category_selection"
+                            android:padding="@dimen/padding_16"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_address"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:elevation="0dp"
+                        app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                        app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                        app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                        app:boxCornerRadiusTopStart="@dimen/radius_16"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_outline_location"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/address"
+                            android:padding="@dimen/padding_16"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_20"
+                        app:cardCornerRadius="10dp">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tl_event_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:tabBackground="@drawable/selected_background_color"
+                            app:tabIndicator="@null"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextColor="@color/black">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/in_person" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/livestream" />
+
+                        </com.google.android.material.tabs.TabLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_20"
+                        app:cardCornerRadius="@dimen/margin_10">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tl_free_paid"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:errorEnabled="true"
+                            app:tabBackground="@drawable/selected_background_color"
+                            app:tabIndicator="@null"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextColor="@color/black">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/free" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/paid" />
+
+                        </com.google.android.material.tabs.TabLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!--                    //ammount-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tli_amount"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:elevation="0dp"
+                        app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                        app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                        app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                        app:boxCornerRadiusTopStart="@dimen/radius_16"
+                        app:errorEnabled="true">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_amount"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_outline_attach_money_24"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:hint="@string/enter_amount"
+                            android:inputType="number"
+                            android:padding="@dimen/padding_16"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_20"
+                        app:cardCornerRadius="10dp">
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tl_limited_unlimited"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:tabBackground="@drawable/selected_background_color"
+                            app:tabIndicator="@null"
+                            app:tabSelectedTextColor="@color/white"
+                            app:tabTextColor="@color/black">
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/unlimited" />
+
+                            <com.google.android.material.tabs.TabItem
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:text="@string/limited" />
+
+                        </com.google.android.material.tabs.TabLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!--                    tickets-->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tli_number_of_tickets"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:elevation="0dp"
+                        app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                        app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                        app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                        app:boxCornerRadiusTopStart="@dimen/radius_16"
+                        app:errorEnabled="true">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_number_of_tickets"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableStart="@drawable/ic_outline_sticky_note_2_24"
+                            android:drawablePadding="@dimen/margin_10"
+                            android:hint="@string/enter_number_of_tickets"
+                            android:inputType="number"
+                            android:padding="@dimen/padding_16"
+                            android:textCursorDrawable="@null" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_create_event"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_16"
+                        android:backgroundTint="@color/pizza"
+                        android:outlineProvider="background"
+                        android:padding="@dimen/padding_16"
+                        android:text="@string/create_event"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:cornerRadius="@dimen/radius_12"
+                        app:elevation="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </RelativeLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

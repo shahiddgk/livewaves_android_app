@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/playlist_base_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/margin_10">
+
+    <TextView
+        android:id="@+id/playlistTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ic_song_count"
+        android:text="R &amp; B"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
+
+    <ImageView
+        android:id="@+id/ic_song_count"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/playlistCount"
+        android:src="@drawable/playlist" />
+
+    <TextView
+        android:id="@+id/playlistCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:text="6"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
+</RelativeLayout>

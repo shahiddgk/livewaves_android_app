@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../Library/Android/sdk/platforms/android-30/data/res/layout/select_dialog_item.xml" value="0.27395833333333336" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-ldpi/ic_next_filled.xml" value="0.22552083333333334" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-ldpi/ic_pause_filled.xml" value="0.20277777777777778" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-xxxhdpi/badge_background.xml" value="0.27760416666666665" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-xxxhdpi/bg_premium_starter.xml" value="0.27760416666666665" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-xxxhdpi/ic_baseline_more_vert_24.xml" value="0.27760416666666665" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-xxxhdpi/ic_baseline_music_note_24.xml" value="0.27760416666666665" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/drawable-xxxhdpi/input_border.xml" value="0.27760416666666665" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_analytics.xml" value="0.209375" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_edit_profile.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_event_detail.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_events.xml" value="0.209375" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_follow.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_forgot_password.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_friend_request.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_getting_started.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_group_info.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_hashtag.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_home.xml" value="0.24954710144927536" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_inbox.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_other_person_and_time_specific_events_activity.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_paid_event_and_paid_post.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_post_detail.xml" value="0.28532608695652173" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_publisher.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_search.xml" value="0.25" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_splash.xml" value="0.18115942028985507" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_subscriber.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_user_profile.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/activity_wallet.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/add_to_playlist_dialog.xml" value="0.41983695652173914" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/added_to_playlist_with_price_dailog.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/content_wavesplayer.xml" value="0.9" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/controls_wavesplayer.xml" value="0.20471014492753623" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/create_playlist_dailog.xml" value="0.41983695652173914" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_dashboard.xml" value="0.25833333333333336" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_edit_profile.xml" value="0.2188449848024316" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_forgot_password.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_home.xml" value="0.18" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_list_subscription.xml" value="0.41983695652173914" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_publisher.xml" value="0.18115942028985507" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_subscriber.xml" value="0.12182971014492754" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_wavesplayer_store.xml" value="0.18704710144927536" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_webview.xml" value="0.1816123188405797" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/fragment_your_likes.xml" value="0.18704710144927536" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_create_subscription.xml" value="0.41983695652173914" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_playlist.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_wavesplayer_likes.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_wavesplayer_playlist.xml" value="0.33" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_wavesplayer_store.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/item_wavesplayer_subscription.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/premium_dailog.xml" value="0.26145833333333335" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/premium_settings_dailog.xml" value="0.2164855072463768" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/tag_item.xml" value="0.4320652173913043" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/track_options_dialog.xml" value="0.41983695652173914" />
+        <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/track_unlike_options_dialog.xml" value="0.41983695652173914" />
+        <entry key="app/src/main/res/drawable-xxhdpi/green_round_bg.xml" value="0.24479166666666666" />
+        <entry key="app/src/main/res/drawable/ic_attach_money_black_24dp.xml" value="0.29010416666666666" />
+        <entry key="app/src/main/res/drawable/ic_baseline_playlist_add_24.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_direct.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_hashtag.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_id_card_edit.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_image_picker.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_more.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_pending.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/ic_unlock.xml" value="0.17864583333333334" />
+        <entry key="app/src/main/res/drawable/yellow_round_bg.xml" value="0.24479166666666666" />
+        <entry key="app/src/main/res/layout/activity_forgot_password.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.1765625" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/layout/activity_publisher.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/activity_subscriber.xml" value="0.17083333333333334" />
+        <entry key="app/src/main/res/layout/add_to_playlist_dialog.xml" value="0.1743659420289855" />
+        <entry key="app/src/main/res/layout/content_wavesplayer.xml" value="0.1765625" />
+        <entry key="app/src/main/res/layout/controls_wavesplayer.xml" value="0.1765625" />
+        <entry key="app/src/main/res/layout/create_playlist_dailog.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/create_subscription_dialog.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/layout/fragment_alert.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.22592592592592592" />
+        <entry key="app/src/main/res/layout/fragment_create_stream.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/layout/fragment_edit_profile.xml" value="0.25181159420289856" />
+        <entry key="app/src/main/res/layout/fragment_events.xml" value="0.24427083333333333" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_list_subscription.xml" value="0.184375" />
+        <entry key="app/src/main/res/layout/fragment_my_list_subscription.xml" value="0.22395833333333334" />
+        <entry key="app/src/main/res/layout/fragment_news_feed.xml" value="0.25181159420289856" />
+        <entry key="app/src/main/res/layout/fragment_playlist_detail.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.24818840579710144" />
+        <entry key="app/src/main/res/layout/fragment_settings.xml" value="0.21481481481481482" />
+        <entry key="app/src/main/res/layout/fragment_user_profile.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_wavesplayer_store.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/fragment_webview.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/fragment_your_likes.xml" value="0.24818840579710144" />
+        <entry key="app/src/main/res/layout/fragment_your_playlist.xml" value="0.17135416666666667" />
+        <entry key="app/src/main/res/layout/fragment_your_store.xml" value="0.1875" />
+        <entry key="app/src/main/res/layout/fragment_your_subscription.xml" value="0.17708333333333334" />
+        <entry key="app/src/main/res/layout/item_create_subscription.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/item_playlist.xml" value="0.22864583333333333" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_artist_subscription.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_followings.xml" value="0.27395833333333336" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_likes.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_my_subscription.xml" value="0.18385416666666668" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_playlist.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_purchased_subscription.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_store.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_wavesplayer_subscription.xml" value="0.20052083333333334" />
+        <entry key="app/src/main/res/layout/payment_ui.xml" value="0.25181159420289856" />
+        <entry key="app/src/main/res/layout/playlist_options_dialog.xml" value="0.22083333333333333" />
+        <entry key="app/src/main/res/layout/track_options_dialog.xml" value="0.14958111962925086" />
+        <entry key="app/src/main/res/layout/upload_song_dialog.xml" value="0.335" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/event_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/followers_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/group_info.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/inbox_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/options_menu.xml" value="0.335" />
+        <entry key="app/src/main/res/menu/search_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/stream_list_menu.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/xml/network_security_config.xml" value="0.25181159420289856" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

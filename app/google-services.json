@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "621289684979",
+    "firebase_url": "https://live-waves.firebaseio.com",
+    "project_id": "live-waves",
+    "storage_bucket": "live-waves.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621289684979:android:9239ed9a33ef3596759c86",
+        "android_client_info": {
+          "package_name": "com.app.livewave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621289684979-fr9fb5m4rf7sgickqbtglcads8qe58j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.livewave",
+            "certificate_hash": "ab18ab70ca4c9549027f834afa1a4783a3c2d176"
+          }
+        },
+        {
+          "client_id": "621289684979-ophcrs94e65mhrhmdiv3m6ocg6ijjmib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2idpNU59VP0vQbAHKysmoswvVUZMioJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621289684979-ophcrs94e65mhrhmdiv3m6ocg6ijjmib.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "621289684979-vgvr17mi2slgn2i438n0c2qbdjvvptlv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.horizam.livewave"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621289684979:android:970463954b7bb04f759c86",
+        "android_client_info": {
+          "package_name": "com.example.livewave"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "621289684979-hs0e7bvjsun8hv38vjd3bok3crqepakf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.livewave",
+            "certificate_hash": "ab18ab70ca4c9549027f834afa1a4783a3c2d176"
+          }
+        },
+        {
+          "client_id": "621289684979-ophcrs94e65mhrhmdiv3m6ocg6ijjmib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2idpNU59VP0vQbAHKysmoswvVUZMioJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "621289684979-ophcrs94e65mhrhmdiv3m6ocg6ijjmib.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "621289684979-vgvr17mi2slgn2i438n0c2qbdjvvptlv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.horizam.livewave"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

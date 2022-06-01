@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="#fff"
+    android:orientation="horizontal">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post"
+        android:padding="@dimen/padding_12"
+        android:textColor="@color/medium_grey"
+        android:id="@+id/txt_sub_category"/>
+    <!--    <TextView-->
+    <!--        android:id="@+id/custom_dialog_text"-->
+    <!--        android:layout_marginStart="@dimen/margin_20"-->
+    <!--        android:layout_weight="1"-->
+    <!--        android:textSize="@dimen/sp_20"-->
+    <!--        android:text="@string/artist"-->
+    <!--        android:textColor="@color/medium_grey"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"/>-->
+    <!--    <CheckBox-->
+    <!--        android:id="@+id/custom_dialog_check_box"-->
+    <!--        android:checked="false"-->
+    <!--        android:buttonTint="#EDBB1F"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"/>-->
+
+</LinearLayout>

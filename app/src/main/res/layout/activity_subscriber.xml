@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.SubscriberActivity">
+
+    <LinearLayout
+        android:id="@+id/surface_view_render"
+        android:gravity="center"
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/first_stream_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/first_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:id="@+id/ll_dual">
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/second_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <!--        <SurfaceView-->
+        <!--            android:id="@+id/surfaceView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_weight=".5"/>-->
+
+        <!--        <com.red5pro.streaming.view.R5VideoView-->
+        <!--            android:id="@+id/guestVideoView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight=".5"-->
+        <!--            android:visibility="gone"/>-->
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_paused"
+        android:visibility="gone"
+        android:background="@color/black_overlay">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_paused"
+            android:text="Host has paused the stream!"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_disconnect"
+        android:visibility="gone"
+        android:background="@color/black_overlay">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Stream is disconnected due to some technical reasons!"
+            android:textAlignment="center"
+            android:id="@+id/txt"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"/>
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reconnect"
+            android:id="@+id/btn_reconnect"
+            android:visibility="gone"
+            app:cornerRadius="@dimen/radius_8"
+            android:padding="@dimen/padding_16"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin_16"
+            android:layout_below="@+id/txt"/>
+    </RelativeLayout>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="vertical">-->
+<!--        <org.webrtc.SurfaceViewRenderer-->
+<!--            android:id="@+id/sub_view_renderer"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="top" />-->
+<!--        <com.red5pro.streaming.view.R5VideoView-->
+<!--            android:id="@+id/subscribeView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:keepScreenOn="true"-->
+<!--            android:layout_weight=".5"/>-->
+<!--        <com.red5pro.streaming.view.R5VideoView-->
+<!--            android:id="@+id/secondSubView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:keepScreenOn="true"-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_weight=".5"/>-->
+<!--    </LinearLayout>-->
+<!--    <com.red5pro.streaming.view.R5VideoView-->
+<!--        android:id="@+id/subscribeView"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+<!--    -->
+
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/customView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content">-->
+<!--        <com.red5pro.streaming.view.R5VideoView-->
+<!--            android:id="@+id/secondSubView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent" />-->
+<!--    </RelativeLayout>-->
+    <TextView
+        android:id="@+id/tv_watchers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_16"
+        app:drawableTint="@color/buttercup"
+        android:textColor="@color/buttercup"
+        android:drawablePadding="5dp"
+        android:textSize="20sp"
+        android:gravity="center"
+        android:text="0"
+        app:drawableStartCompat="@drawable/ic_baseline_remove_red_eye_24" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_watchers"
+        android:layout_alignParentEnd="true"
+        app:cardElevation="5dp"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_16"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/radius_8">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_16"
+            android:paddingTop="@dimen/padding_8"
+            android:paddingEnd="@dimen/padding_16"
+            android:paddingBottom="@dimen/padding_8"
+            android:text="@string/join"
+            android:textColor="@color/buttercup"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+    <ImageView
+        android:id="@+id/img_tip"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/card_join"
+        android:layout_marginEnd="@dimen/margin_18"
+        android:src="@drawable/tip" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/img_full_screen"-->
+<!--        android:layout_width="30dp"-->
+<!--        android:layout_height="30dp"-->
+<!--        android:layout_marginTop="@dimen/margin_20"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_below="@+id/img_tip"-->
+<!--        android:layout_marginEnd="@dimen/margin_18"-->
+<!--        android:src="@drawable/ic_fullscreen" />-->
+
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+        app:tint="@color/buttercup" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_back"
+        android:layout_marginStart="@dimen/margin_16"
+        app:cardBackgroundColor="@android:color/holo_red_dark"
+        app:cardCornerRadius="@dimen/radius_12">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_16"
+            android:paddingTop="@dimen/padding_8"
+            android:paddingEnd="@dimen/padding_16"
+            android:paddingBottom="@dimen/padding_8"
+            android:text="@string/Live"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/tv_title"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_back"
+        android:layout_toRightOf="@+id/card_live"
+        android:maxWidth="250dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:text="Title"
+        android:textSize="23sp"
+        android:textStyle="bold" />
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/heart_view"/>
+
+    <LinearLayout
+        android:layout_marginTop="@dimen/dimen_150"
+        android:layout_below="@+id/tv_title"
+        android:id="@+id/r2_android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:layout_marginBottom="@dimen/margin_50"
+        android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="420dp"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/rv_chat"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="300dp"-->
+<!--            android:layout_marginStart="@dimen/margin_16"-->
+<!--            android:layout_marginEnd="@dimen/margin_16" />-->
+
+        <LinearLayout
+            android:id="@+id/ll_chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:boxStrokeColor="@color/black"
+                app:boxBackgroundColor="@color/white"
+                android:elevation="0dp"
+                app:hintEnabled="false"
+                android:layout_margin="@dimen/margin_8"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:id="@+id/et_comment"
+                    android:padding="@dimen/padding_8"
+                    android:inputType="text"
+                    android:textCursorDrawable="@null"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/img_send"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_send_24"
+                android:layout_marginEnd="@dimen/margin_8"
+                app:tint="@color/buttercup" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:id="@+id/img_like"
+                android:src="@drawable/ic_heart"
+                android:layout_marginEnd="@dimen/margin_8"
+                app:tint="@color/buttercup" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+<!--    <ImageView-->
+<!--        android:id="@+id/img_play"-->
+<!--        android:layout_width="80dp"-->
+<!--        android:layout_height="80dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:padding="@dimen/padding_12"-->
+<!--        android:src="@drawable/exo_controls_play"-->
+<!--        app:tint="@color/thunder" />-->
+</RelativeLayout>

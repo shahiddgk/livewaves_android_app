@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentlayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/margin_5"
+    android:layout_marginTop="@dimen/margin_5"
+    android:layout_marginRight="@dimen/margin_5"
+    android:padding="@dimen/margin_10">
+
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="@dimen/margin_5"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:gravity="left"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_5"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:layout_toLeftOf="@+id/delete"
+        android:src="@drawable/ic_edit"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/delete"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="@dimen/margin_5"
+        android:layout_marginTop="@dimen/margin_5"
+        android:layout_marginEnd="@dimen/margin_5"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:checked="true"
+        android:textOff="OFF"
+        android:textOn="ON" />
+
+
+    <TextView
+        android:id="@+id/subscription_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:gravity="bottom|left"
+        android:text="1 Month"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/date_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subscription_title"
+        android:layout_alignParentLeft="true"
+        android:gravity="bottom|left"
+        android:text="Date"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date_tv"
+        android:layout_alignParentLeft="true"
+        android:gravity="bottom|left"
+        android:text="Oct 27, 04:19 pm"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
+
+    <LinearLayout
+        android:id="@+id/ll_flags"
+        android:layout_below="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/subscription_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toLeftOf="@+id/price"
+            android:background="@drawable/yellow_round_bg"
+            android:padding="3dp"
+            android:text="1 Month"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/flag_ticket_access"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_3"
+                android:layout_marginTop="@dimen/margin_3"
+                android:layout_marginEnd="@dimen/margin_3"
+                android:layout_marginBottom="@dimen/margin_3"
+                android:layout_toLeftOf="@+id/flag_events"
+                android:background="@drawable/black_round_bg"
+                android:padding="3dp"
+                android:text="Tickets"
+                android:textColor="@color/white"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/flag_stream_access"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toLeftOf="@+id/flag_events"
+            android:background="@drawable/black_round_bg"
+            android:padding="3dp"
+            android:text="Stream"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/flag_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toLeftOf="@+id/subscription_duration"
+            android:background="@drawable/black_round_bg"
+            android:padding="3dp"
+            android:text="Posts"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/flag_events"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toLeftOf="@+id/flag_post"
+            android:background="@drawable/black_round_bg"
+            android:padding="3dp"
+            android:text="Events"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/flag_tracks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toLeftOf="@+id/flag_events"
+            android:background="@drawable/black_round_bg"
+            android:padding="3dp"
+            android:text="Tracks"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_3"
+            android:background="@drawable/blue_round_bg"
+            android:gravity="bottom|left"
+            android:padding="3dp"
+            android:text="$ 700"
+            android:textColor="@color/white"
+            android:textSize="8sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/ll_flags"
+        android:background="#c0c0c0" />
+
+</RelativeLayout>

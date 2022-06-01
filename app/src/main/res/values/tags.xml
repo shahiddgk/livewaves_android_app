@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tag_dashboard">Dashboard</string>
+    <string name="tag_my_store">My Store</string>
+    <string name="tag_User_store">User Store</string>
+    <string name="tag_Artist_store">Artist Store</string>
+    <string name="tag_wp_store">Echo Player Store</string>
+    <string name="tag_user_wp_store">Echo user Player Store</string>
+    <string name="tag_subscription">Subscription</string>
+    <string name="tag_events_list">Events</string>
+    <string name="tag_events_detail">Event Detail</string>
+    <string name="tag_event_create">Create Event</string>
+    <string name="tag_subscription_create">Create Subscription</string>
+    <string name="tag_inbox">Chats</string>
+    <string name="tag_purchased_subscriptions">My Subscriptions</string>
+    <string name="tag_artist_subscriptions">Artist Subscriptions</string>
+    <string name="tag_chat">Chats</string>
+    <string name="tag_user_profile">Profile</string>
+    <string name="tag_search">Search</string>
+    <string name="tag_edit_profile">Edit Profile</string>
+    <string name="tag_follow">Followings</string>
+    <string name="tag_group_info">Group Info</string>
+    <string name="tag_hashtag">Hashtag</string>
+    <string name="tag_post_detail">Post Detail</string>
+    <string name="tag_friend_request">Follow Request</string>
+    <string name="tag_wallet">Wallet</string>
+    <string name="tag_analytics">Analytics</string>
+    <string name="tag_gettting_started">Getting Started</string>
+    <string name="tag_create_stream">Create Stream</string>
+    <string name="tag_publisher">Stream Publisher</string>
+    <string name="tag_guest_publisher">Guest Publisher</string>
+    <string name="tag_subscriber">Subscriber</string>
+<!--    <string name="tag_webview">Webview</string>-->
+    <string name="tag_event_list">Events List</string>
+    <string name="tag_other_person_and_time_specific_events">Specific Events</string>
+    <string name="tag_now_playing">Now Playing</string>
+    <string name="tag_paid_event_paid_post">Paid Events &amp; Paid Posts</string>
+    <string name="tag_your_playlist">My Playlist</string>
+    <string name="tag_waves_Features">Waves Reels</string>
+    <string name="tag_artist_playlist">Artist Playlist</string>
+    <string name="tag_artist_tracklist">Artist Tracklist</string>
+    <string name="tag_playlist_detail">Playlist Detail</string>
+    <string name="tag_your_followings">People You Follow</string>
+    <string name="tag_your_trendings">Trending</string>
+</resources>

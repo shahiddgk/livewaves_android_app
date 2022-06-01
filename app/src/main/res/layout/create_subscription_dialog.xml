@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.florent37.shapeofview.shapes.RoundRectView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:shape_roundRect_topLeftRadius="30dp"
+    app:shape_roundRect_topRightRadius="30dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_upload_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_30"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:text="Create Subscription"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_20" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="@dimen/dimen_150"
+            android:layout_height="0.5dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/title_upload_song"
+            android:background="@color/grey_900" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/view"
+            android:fillViewport="true">
+
+            <RelativeLayout
+                android:id="@+id/subscription_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/view">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_subscription_title"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_subscription_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+
+                        android:drawableStart="@drawable/ic_baseline_title_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="Enter Subscription Title"
+                        android:inputType="text"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_subscription_duration"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/til_subscription_title"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/subscription_duration"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="none"
+                        android:drawableStart="@drawable/ic_baseline_time"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="Duration"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        />
+
+
+                    <!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:id="@+id/et_subscription_duration"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="match_parent"-->
+<!--                        android:drawableStart="@drawable/ic_baseline_time"-->
+<!--                        android:drawablePadding="@dimen/margin_10"-->
+<!--                        android:hint="Duration"-->
+<!--                        android:inputType="textMultiLine"-->
+<!--                        android:maxHeight="@dimen/dimen_200"-->
+<!--                        android:minHeight="@dimen/margin_50"-->
+<!--                        android:padding="@dimen/padding_16"-->
+<!--                        android:textCursorDrawable="@null" />-->
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_subscription_amount"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/til_subscription_duration"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    android:focusableInTouchMode="false"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_subscription_amount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_attach_money_black_24dp"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:focusableInTouchMode="true"
+                        android:hint="Amount"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <CheckBox
+                    android:id="@+id/flag_posts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/til_subscription_amount"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:text="Allow Posts" />
+
+                <CheckBox
+                    android:id="@+id/flag_events"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/til_subscription_amount"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:text="Allow Events" />
+
+                <CheckBox
+                    android:id="@+id/flag_in_person_tickets"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_events"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:text="Allow In-Person Tickets" />
+
+                <CheckBox
+                    android:id="@+id/flag_tracks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_events"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:text="Allow Tracks" />
+
+                <CheckBox
+                    android:id="@+id/flag_paid_live_streams"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_in_person_tickets"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:text="Allow Paid Live Streams" />
+
+<!--                <CheckBox-->
+<!--                    android:id="@+id/flag_live_stream_event_tickets"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_below="@+id/flag_paid_live_streams"-->
+<!--                    android:layout_marginHorizontal="@dimen/margin_16"-->
+<!--                    android:text="Allow Live Stream Event Tickets" />-->
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_create"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/flag_paid_live_streams"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:backgroundTint="@color/pizza"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/padding_16"
+                    android:text="Create"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:cornerRadius="@dimen/radius_12"
+                    app:elevation="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/btn_create"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:backgroundTint="@color/black"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/padding_16"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:cornerRadius="@dimen/radius_12"
+                    app:elevation="5dp" />
+            </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+</com.github.florent37.shapeofview.shapes.RoundRectView>

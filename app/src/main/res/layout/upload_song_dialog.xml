@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.florent37.shapeofview.shapes.RoundRectView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:shape_roundRect_topLeftRadius="30dp"
+    app:shape_roundRect_topRightRadius="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_upload_song"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_30"
+            android:layout_marginTop="@dimen/margin_30"
+            android:layout_marginRight="@dimen/margin_30"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:text="@string/add_song_details"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_20" />
+
+        <View
+            android:layout_width="@dimen/dimen_150"
+            android:layout_height="0.5dp"
+            android:layout_gravity="center"
+            android:background="@color/grey_900" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/til_song_audio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:background="@drawable/input_border">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_audio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_upload_song"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_baseline_music_note_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:focusable="false"
+                        android:hint="@string/song_audio"
+                        android:inputType="text"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_upload_song"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:backgroundTint="@color/pizza"
+                        android:outlineProvider="background"
+                        android:paddingLeft="@dimen/padding_16"
+                        android:paddingRight="@dimen/padding_16"
+                        android:text="@string/choose"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:cornerRadius="@dimen/radius_8"
+                        app:elevation="5dp" />
+                </RelativeLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_song_title"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_baseline_title_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="@string/song_title"
+                        android:inputType="text"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_artist_name"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_artist_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_baseline_title_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="@string/artist_name"
+                        android:inputType="text"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_song_description"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_pencil"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="@string/song_description"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_category"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    android:focusableInTouchMode="false"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_category_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/ic_outline_category_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/category_selection"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:background="@drawable/subcription_border"
+                    app:cardCornerRadius="@dimen/margin_10">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tl_free_paid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"
+                        app:tabBackground="@drawable/selected_background_color"
+                        app:tabIndicator="@null"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="@color/black">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/free" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/paid" />
+
+                    </com.google.android.material.tabs.TabLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/til_song_amount"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:elevation="0dp"
+                    android:visibility="gone"
+                    app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                    app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                    app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                    app:boxCornerRadiusTopStart="@dimen/radius_16"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:drawableStart="@drawable/ic_outline_attach_money_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:hint="@string/song_amount"
+                        android:inputType="textMultiLine"
+                        android:maxHeight="@dimen/dimen_200"
+                        android:minHeight="@dimen/margin_50"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/til_song_thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginBottom="@dimen/margin_20"
+                    android:background="@drawable/input_border">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_song_thumbnail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btn_upload_thumbnail"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_baseline_attach_file_24"
+                        android:drawablePadding="@dimen/margin_10"
+                        android:focusable="false"
+                        android:hint="@string/song_thumbnail"
+                        android:inputType="text"
+                        android:padding="@dimen/padding_16"
+                        android:textCursorDrawable="@null" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_upload_thumbnail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/margin_16"
+                        android:backgroundTint="@color/pizza"
+                        android:outlineProvider="background"
+                        android:paddingLeft="@dimen/padding_16"
+                        android:paddingRight="@dimen/padding_16"
+                        android:text="@string/choose"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        app:cornerRadius="@dimen/radius_8"
+                        app:elevation="5dp" />
+                </RelativeLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_20"
+                    android:background="@drawable/subcription_border"
+                    app:cardCornerRadius="@dimen/margin_10">
+
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tl_public_private"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"
+                        app:tabBackground="@drawable/selected_background_color"
+                        app:tabIndicator="@null"
+                        app:tabSelectedTextColor="@color/white"
+                        app:tabTextColor="@color/black">
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/privacy_private" />
+
+                        <com.google.android.material.tabs.TabItem
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="@string/privacy_public" />
+
+                    </com.google.android.material.tabs.TabLayout>
+                </com.google.android.material.card.MaterialCardView>
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:backgroundTint="@color/pizza"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/padding_16"
+                    android:text="@string/save_details"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:cornerRadius="@dimen/radius_12"
+                    app:elevation="5dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:backgroundTint="@color/black"
+                    android:outlineProvider="background"
+                    android:padding="@dimen/padding_16"
+                    android:text="@string/cancel"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    app:cornerRadius="@dimen/radius_12"
+                    app:elevation="5dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</com.github.florent37.shapeofview.shapes.RoundRectView>

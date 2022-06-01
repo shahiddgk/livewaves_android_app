@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_100"
+    android:background="@color/white"
+    android:padding="@dimen/padding_10">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/img_cardView"
+        android:layout_width="@dimen/margin_80"
+        android:layout_height="@dimen/margin_80"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/margin_5"
+
+        android:layout_marginStart="4dp"
+        app:cardCornerRadius="6dp">
+
+        <FrameLayout
+            android:id="@+id/image_song_frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_song"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/mercury"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_place_holder" />
+
+            <ImageButton
+                android:id="@+id/buttonPlayPause"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:background="@color/transparent"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_play_filled" />
+        </FrameLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:layout_toLeftOf="@+id/settings_icon"
+        android:layout_toRightOf="@+id/img_cardView">
+
+        <TextView
+            android:id="@+id/songTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tum Tum - Asim Azhar | Shamoon"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/artistName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/songTitle"
+            android:layout_marginLeft="5dp"
+            android:text="Asim Azhar" />
+
+        <TextView
+            android:id="@+id/uploadedBy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/artistName"
+            android:layout_marginLeft="5dp"
+            android:text="Uploaded By" />
+
+        <TextView
+            android:id="@+id/songLikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uploadedBy"
+            android:layout_marginLeft="5dp"
+            android:drawableLeft="@drawable/ic_baseline_star_24"
+            android:visibility="gone"
+            android:text="490k-500k" />
+
+        <TextView
+            android:id="@+id/freeorpaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uploadedBy"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/songLikes"
+            android:text="Free" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/settings_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_baseline_more_vert_24" />
+</RelativeLayout>

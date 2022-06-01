@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.cardview.widget.CardView
+        android:layout_marginTop="0.5dp"
+        android:layout_marginHorizontal="@dimen/margin_5"
+        app:cardCornerRadius="@dimen/margin_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="3dp"
+        android:elevation="@dimen/margin_10">
+
+    <LinearLayout
+
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/layout_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/margin_10"
+            android:paddingVertical="@dimen/margin_10">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_user_img_comment_bar"
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:src="@drawable/profile_place_holder" />
+
+            <TextView
+                android:minLines="2"
+                android:id="@+id/tv_commenter_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_toEndOf="@+id/civ_user_img_comment_bar"
+                android:singleLine="true"
+                android:text="Commenter name"
+                android:textColor="@color/thunder"
+                android:textSize="@dimen/sp_20" />
+
+            <TextView
+                android:layout_marginTop="@dimen/margin_1"
+                android:layout_below="@+id/tv_commenter_name"
+                android:id="@+id/tv_commenter_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minLines="10"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_toEndOf="@+id/civ_user_img_comment_bar"
+                android:singleLine="true"
+                android:text="Commenter comment"
+                android:textColor="@color/thunder"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

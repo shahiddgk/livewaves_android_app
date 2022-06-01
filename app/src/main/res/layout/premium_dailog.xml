@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipe_to_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/top_left_and_right_borders_round"
+    android:backgroundTint="@color/white"
+    android:padding="@dimen/margin_10"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageView
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_clear"
+        app:tint="@color/buttercup" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_cancel">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="@dimen/margin_10">
+
+            <RelativeLayout
+                android:id="@+id/premium_starter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_starter_fixed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_premium_starter"
+                        android:padding="@dimen/margin_10">
+
+                        <TextView
+                            android:id="@+id/timep_period"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center|left"
+                            android:text="Premium Starter"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/package_pricing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center|left"
+                            android:text="$5"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/package1_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/timep_period"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_8"
+                            android:layout_toLeftOf="@+id/package_pricing"
+                            android:gravity="center|start"
+                            android:justificationMode="inter_word"
+                            android:text="@string/dummy_text"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_12" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_subscribe_package1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package1_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/white"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/subscribe_now"
+                            android:textAllCaps="false"
+                            android:textColor="@color/premium_starter1"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_starter_collapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/premium_starter_fixed"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_5">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkedButton="@id/pkg1_visa">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg1_visa"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg1_visa_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg1_visa"
+                                    android:src="@drawable/ic_add_event" />
+
+                                <ImageView
+                                    android:id="@+id/pkg1_master_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/margin_5"
+                                    android:layout_toRightOf="@+id/pkg1_visa_img"
+                                    android:src="@drawable/ic_add_event" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg1_paypal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg1_paypal_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg1_paypal"
+                                    android:src="@drawable/ic_add_event" />
+
+                            </RelativeLayout>
+
+                        </RadioGroup>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:text="Payment Details"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_15"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_event" />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Card Number"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Expiry Date"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="CVV"
+                            android:padding="@dimen/padding_8" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package2_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/premium_starter1"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/start_subscription"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/premium_standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/premium_starter">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_standard_fixed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_premium_standard"
+                        android:padding="@dimen/margin_10">
+
+                        <TextView
+                            android:id="@+id/package2_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center|left"
+                            android:text="Premium Standard"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/package2_pricing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center|left"
+                            android:text="$10"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/package2_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package2_title"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_8"
+                            android:layout_toLeftOf="@+id/package2_pricing"
+                            android:gravity="center|start"
+                            android:justificationMode="inter_word"
+                            android:text="@string/dummy_text"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_12" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_subscribe_package2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package2_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/white"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/subscribe_now"
+                            android:textAllCaps="false"
+                            android:textColor="@color/premium_standard2"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_standard_collapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/premium_standard_fixed"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_5">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkedButton="@id/pkg2_visa">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg2_visa"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg2_visa_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg2_visa"
+                                    android:src="@drawable/ic_add_event" />
+
+                                <ImageView
+                                    android:id="@+id/pkg2_master_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/margin_5"
+                                    android:layout_toRightOf="@+id/pkg2_visa_img"
+                                    android:src="@drawable/ic_add_event" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg2_paypal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg2_paypal_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg2_paypal"
+                                    android:src="@drawable/ic_add_event" />
+
+                            </RelativeLayout>
+
+                        </RadioGroup>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:text="Payment Details"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_15"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_event" />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Card Number"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Expiry Date"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="CVV"
+                            android:padding="@dimen/padding_8" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package2_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/premium_standard2"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/start_subscription"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/premium_gold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/premium_standard">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_gold_fixed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_premium_gold"
+                        android:padding="@dimen/margin_10">
+
+                        <TextView
+                            android:id="@+id/package3_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:gravity="center|left"
+                            android:text="Premium Gold"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15" />
+
+                        <TextView
+                            android:id="@+id/package3_pricing"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:gravity="center|left"
+                            android:text="$15"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_15"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/package3_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package3_title"
+                            android:layout_alignParentLeft="true"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_margin="@dimen/margin_8"
+                            android:layout_toLeftOf="@+id/package3_pricing"
+                            android:gravity="center|start"
+                            android:justificationMode="inter_word"
+                            android:text="@string/dummy_text"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_12" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_subscribe_package3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package3_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/white"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/subscribe_now"
+                            android:textAllCaps="false"
+                            android:textColor="@color/premium_gold2"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/premium_gold_collapsed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/premium_gold_fixed"
+                    android:layout_marginLeft="@dimen/margin_10"
+                    android:layout_marginRight="@dimen/margin_10"
+                    android:background="@color/buttercup"
+                    android:elevation="@dimen/margin_5"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="@color/mercury"
+                    app:cardCornerRadius="6dp"
+                    app:cardUseCompatPadding="true"
+                    app:contentPadding="2dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="@dimen/margin_5">
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:checkedButton="@id/pkg3_visa">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg3_visa"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg3_visa_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg3_visa"
+                                    android:src="@drawable/ic_add_event" />
+
+                                <ImageView
+                                    android:id="@+id/pkg3_master_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginLeft="@dimen/margin_5"
+                                    android:layout_toRightOf="@+id/pkg3_visa_img"
+                                    android:src="@drawable/ic_add_event" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_5"
+                                android:background="@drawable/subcription_border"
+                                android:padding="@dimen/padding_4">
+
+                                <RadioButton
+                                    android:id="@+id/pkg3_paypal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                                <ImageView
+                                    android:id="@+id/pkg3_paypal_img"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_toRightOf="@+id/pkg3_paypal"
+                                    android:src="@drawable/ic_add_event" />
+
+                            </RelativeLayout>
+
+                        </RadioGroup>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:text="Payment Details"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/sp_15"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/ic_add_event" />
+                        </RelativeLayout>
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Card Number"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="Expiry Date"
+                            android:padding="@dimen/padding_8" />
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_5"
+                            android:background="@drawable/subcription_border"
+                            android:hint="CVV"
+                            android:padding="@dimen/padding_8" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/package2_description"
+                            android:layout_marginHorizontal="@dimen/margin_16"
+                            android:backgroundTint="@color/premium_gold2"
+                            android:outlineProvider="background"
+                            android:padding="@dimen/padding_8"
+                            android:text="@string/start_subscription"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            app:cornerRadius="@dimen/radius_8"
+                            app:elevation="5dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

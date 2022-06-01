@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.CreateNewSubscription">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_16"
+                android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+                app:tint="@color/black" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tli_title"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:layout_marginTop="@dimen/margin_50"
+            android:elevation="0dp"
+            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+            app:boxCornerRadiusTopStart="@dimen/radius_16"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_subscription_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_baseline_title_24"
+                android:drawablePadding="@dimen/margin_10"
+                android:hint="@string/subscription_title_text"
+                android:padding="@dimen/padding_16"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tli_duration_select"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:elevation="0dp"
+            android:focusableInTouchMode="false"
+            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+            app:boxCornerRadiusTopStart="@dimen/radius_16"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_duration_select"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_baseline_time"
+                android:drawablePadding="@dimen/margin_10"
+                android:focusableInTouchMode="false"
+                android:hint="@string/duration_selection"
+                android:padding="@dimen/padding_16"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tli_subscription_amount"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:elevation="0dp"
+            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+            app:boxCornerRadiusTopStart="@dimen/radius_16"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_subscription_amount_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_outline_attach_money_24"
+                android:drawablePadding="@dimen/margin_10"
+                android:hint="@string/enter_amount"
+                android:inputType="number"
+                android:padding="@dimen/padding_16"
+                android:textCursorDrawable="@null" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_Allow_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:buttonTint="@color/buttercup"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text="Allow post" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+
+            android:layout_marginTop="@dimen/margin_1"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:id="@+id/cb_Allow_event_stream_tickets"
+            app:buttonTint="@color/buttercup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Allow Live Stream Event Tickets" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_marginTop="@dimen/margin_1"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:id="@+id/cb_Allow_Tracks"
+            app:buttonTint="@color/buttercup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Allow Tracks (Music)" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_marginTop="@dimen/margin_1"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:id="@+id/cb_Allow_in_person_tickets"
+            app:buttonTint="@color/buttercup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Allow In-Person Tickets" />
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:layout_marginTop="@dimen/margin_1"
+            app:buttonTint="@color/buttercup"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:id="@+id/cb_Allow_paid_live_streams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Allow Paid Live Streams" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_create_subscription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_16"
+            android:backgroundTint="@color/pizza"
+            android:outlineProvider="background"
+            android:padding="@dimen/padding_16"
+            android:text="Create Subscription"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:cornerRadius="@dimen/radius_12"
+            app:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </LinearLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+</FrameLayout>

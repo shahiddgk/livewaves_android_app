@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_8"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_user_profile"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@color/grey" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="250dp"
+            android:text="Name"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginStart="@dimen/margin_16"
+            android:textColor="@color/buttercup"
+            android:visibility="visible" />
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_marginTop="@dimen/margin_8"
+        app:cardBackgroundColor="@color/grey"
+        app:cardCornerRadius="@dimen/radius_12">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_picture"
+                android:layout_width="@dimen/dimen_200"
+                android:layout_height="200dp"
+                android:scaleType="fitXY"
+                android:visibility="gone" />
+            <TextView
+                android:id="@+id/txt_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="250dp"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="12dp"
+                android:text="Hello"
+                android:textColor="@android:color/black"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:id="@+id/rl_audio_view"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_16"
+                android:paddingVertical="@dimen/padding_8"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_play_arrow"
+                    android:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/img_pause"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_pause"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatSeekBar
+                    android:id="@+id/seek_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_16" />
+
+                <TextView
+                    android:id="@+id/txt_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/seek_bar"
+                    android:layout_marginTop="@dimen/margin_16"
+                    android:text="0:09" />
+            </RelativeLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/txt_message_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3:37 PM"
+        android:layout_margin="@dimen/margin_8"
+        android:textColor="@color/black"
+        android:textSize="12sp" />
+    </LinearLayout>
+</LinearLayout>

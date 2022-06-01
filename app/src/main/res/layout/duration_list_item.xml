@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:paddingVertical="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_30"
+        android:background="@drawable/text_view_border"
+        android:text="Text"
+        android:textColor="@color/black"
+        android:textSize="@dimen/margin_20"
+        android:layout_marginVertical="@dimen/margin_200"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:id="@+id/duration_item_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

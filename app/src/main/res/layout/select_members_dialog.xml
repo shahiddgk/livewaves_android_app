@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.github.florent37.shapeofview.shapes.RoundRectView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="4dp"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:shape_roundRect_topLeftRadius="30dp"
+    app:shape_roundRect_topRightRadius="30dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_16">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_group"
+                android:layout_centerInParent="true"
+                android:textColor="@color/black"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:id="@+id/txt_done"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_16"
+                android:textSize="18sp"
+                android:textColor="@color/buttercup"/>
+        </RelativeLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_margin="@dimen/margin_16"
+            android:elevation="0dp"
+            app:hintEnabled="false"
+            app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+            app:boxCornerRadiusBottomStart="@dimen/radius_16"
+            app:boxCornerRadiusTopEnd="@dimen/radius_16"
+            app:boxCornerRadiusTopStart="@dimen/radius_16">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/group_name"
+                android:id="@+id/et_group_name"
+                android:padding="@dimen/padding_16"
+                android:inputType="text"
+                android:textCursorDrawable="@null"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:id="@+id/ll_search_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <SearchView
+                android:id="@+id/searchView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="2"
+                android:background="@color/white"
+                android:foregroundTint="@color/buttercup"
+                android:iconifiedByDefault="false"
+                android:queryHint="Search Here"
+                app:theme="@style/Widget.AppCompat.SearchView" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_followings"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/margin_8"
+            android:layout_height="wrap_content" />
+        <ProgressBar
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:id="@+id/progress_bar"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_8"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/buttercup"/>
+    </LinearLayout>
+</com.github.florent37.shapeofview.shapes.RoundRectView>

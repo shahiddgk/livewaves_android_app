@@ -1,0 +1,2 @@
+include ':app' , "::webrtc-android-framework"
+rootProject.name = "Livewaves"

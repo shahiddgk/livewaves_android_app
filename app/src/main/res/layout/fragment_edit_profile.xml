@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".fragments.settings.EditProfileFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_20">
+
+            <ImageView
+                android:id="@+id/img_cover"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/cover_place_holder" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/profile_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:translationZ="@dimen/margin_30"
+                android:layout_marginTop="120dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_profile"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/profile_place_holder" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:translationZ="50dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="2dp">
+
+                        <ImageView
+                            android:id="@+id/img_edit_profile"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            android:src="@drawable/ic_camera"
+                            app:tint="@color/black" />
+                    </com.google.android.material.card.MaterialCardView>
+                </RelativeLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.github.florent37.shapeofview.shapes.RoundRectView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-40dp"
+                android:layout_below="@+id/img_cover"
+                app:shape_roundRect_topLeftRadius="30dp"
+                app:shape_roundRect_topRightRadius="30dp">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:background="@color/white">
+                </RelativeLayout>
+            </com.github.florent37.shapeofview.shapes.RoundRectView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="150dp"
+                android:layout_marginEnd="@dimen/margin_16"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="2dp">
+
+                <ImageView
+                    android:id="@+id/img_edit_cover"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_camera"
+                    app:tint="@color/black" />
+            </com.google.android.material.card.MaterialCardView>
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+                app:tint="@color/buttercup" />
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_user_edit"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/name"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tli_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:hintEnabled="false"
+                app:boxBackgroundMode="outline"
+                app:boxBackgroundColor="@color/grey"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_id_card_edit"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:focusableInTouchMode="false"
+                    app:drawableTint="@color/medium_grey"
+                    android:textColor="@color/medium_grey"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_message_edit"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/email"
+                    android:padding="@dimen/padding_16"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_phone"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_telephone"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/phone"
+                    android:inputType="phone"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_address"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_message_edit"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/address"
+                    android:focusableInTouchMode="false"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_bio"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/margin_50"
+                    android:drawableStart="@drawable/ic_curriculum_vitae"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/bio"
+                    android:maxHeight="@dimen/dimen_200"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_paypal_email"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_paypal_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_message_edit"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:hint="@string/paypal"
+                    android:padding="@dimen/padding_16"
+                    android:inputType="textEmailAddress"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tli_category"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:elevation="0dp"
+                android:focusableInTouchMode="false"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_category_select"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_outline_category_24"
+                    android:drawablePadding="@dimen/margin_10"
+                    android:focusableInTouchMode="false"
+                    android:hint="@string/select_category"
+                    android:padding="@dimen/padding_16"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.card.MaterialCardView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:cardCornerRadius="@dimen/margin_16"-->
+<!--                android:layout_marginHorizontal="@dimen/margin_16"-->
+<!--                app:strokeWidth="1dp"-->
+<!--                app:strokeColor="@color/medium_grey">-->
+<!--                <RelativeLayout-->
+<!--                    android:id="@+id/rl_select_category"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:padding="@dimen/padding_16"-->
+<!--                    android:layout_height="wrap_content">-->
+
+<!--                    <TextView-->
+<!--                        android:id="@+id/txt_category"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:hint="Select Category"-->
+<!--                        android:textColorHint="@color/dark_grey"-->
+<!--                        android:textColor="@color/dark_grey"/>-->
+<!--                </RelativeLayout>-->
+<!--            </com.google.android.material.card.MaterialCardView>-->
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/switch_btn_private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginVertical="@dimen/margin_16"
+                android:text="@string/make_profile_private"
+                android:textColor="@color/black"
+                android:theme="@style/SCBSwitch"
+                app:switchPadding="100dp" />
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/til_private"-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginHorizontal="@dimen/margin_16"-->
+<!--                android:elevation="0dp"-->
+<!--                app:boxCornerRadiusBottomEnd="@dimen/radius_16"-->
+<!--                app:boxCornerRadiusBottomStart="@dimen/radius_16"-->
+<!--                app:boxCornerRadiusTopEnd="@dimen/radius_16"-->
+<!--                app:boxCornerRadiusTopStart="@dimen/radius_16"-->
+<!--                app:errorEnabled="true">-->
+
+<!--                <com.google.android.material.switchmaterial.SwitchMaterial-->
+<!--                    android:id="@+id/switch_btn_private"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="@string/make_profile_private"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:theme="@style/SCBSwitch"-->
+<!--                    app:switchPadding="100dp" />-->
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:backgroundTint="@color/pizza"
+                android:outlineProvider="background"
+                android:padding="@dimen/padding_16"
+                android:text="@string/save_profile"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/radius_12"
+                app:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_change_password"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:layout_marginBottom="@dimen/margin_16"
+                android:backgroundTint="@color/black"
+                android:outlineProvider="background"
+                android:padding="@dimen/padding_16"
+                android:text="@string/change_password"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/radius_12"
+                app:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</ScrollView>

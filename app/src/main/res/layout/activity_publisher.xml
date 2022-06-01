@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activities.PublisherActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5">
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/camera_view_renderer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:visibility="gone"
+            android:id="@+id/ll_guest">
+            <org.webrtc.SurfaceViewRenderer
+                android:id="@+id/guest_renderer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+
+<!--        <SurfaceView-->
+<!--            android:id="@+id/surfaceView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="0dp"-->
+<!--            android:layout_weight=".5"/>-->
+
+<!--        <com.red5pro.streaming.view.R5VideoView-->
+<!--            android:id="@+id/guestVideoView"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight=".5"-->
+<!--            android:visibility="gone"/>-->
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_paused"
+        android:visibility="gone"
+        android:background="@color/black_overlay">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_paused"
+            android:text="No Internet Connection"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/heart_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true" />
+
+    <LinearLayout
+        android:id="@+id/rl_chat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_marginEnd="@dimen/margin_16" />
+
+        <LinearLayout
+            android:id="@+id/ll_chat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_8"
+                android:layout_weight="1"
+                android:elevation="0dp"
+                app:boxBackgroundColor="@color/white"
+                app:boxCornerRadiusBottomEnd="@dimen/radius_16"
+                app:boxCornerRadiusBottomStart="@dimen/radius_16"
+                app:boxCornerRadiusTopEnd="@dimen/radius_16"
+                app:boxCornerRadiusTopStart="@dimen/radius_16"
+                app:boxStrokeColor="@color/white"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/comment"
+                    android:inputType="text"
+                    android:padding="@dimen/padding_8"
+                    android:textCursorDrawable="@null" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <ImageView
+                android:id="@+id/img_send"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_send_24"
+                app:tint="@color/buttercup" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:id="@+id/img_like"
+                android:src="@drawable/ic_heart"
+                android:layout_marginEnd="@dimen/margin_8"
+                app:tint="@color/buttercup" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_flip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:src="@drawable/ic_rotate_camera"
+        app:tint="@color/buttercup" />
+
+    <TextView
+        android:id="@+id/tv_watchers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_flip"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:drawablePadding="5dp"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/buttercup"
+        android:textSize="20sp"
+        app:drawableStartCompat="@drawable/ic_baseline_remove_red_eye_24"
+        app:drawableTint="@color/buttercup" />
+
+    <ImageView
+        android:id="@+id/inviteFollowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_watchers"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/margin_16"
+        android:clickable="false"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_person_add"
+        android:visibility="visible"
+        app:tint="@color/buttercup" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardKick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_watchers"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone"
+        android:layout_margin="@dimen/margin_16"
+        app:cardBackgroundColor="@android:color/holo_red_dark"
+        app:cardCornerRadius="@dimen/radius_12">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_16"
+            android:paddingTop="@dimen/padding_8"
+            android:paddingEnd="@dimen/padding_16"
+            android:paddingBottom="@dimen/padding_8"
+            android:text="@string/kick"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/img_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_vertical_margin"
+        android:src="@drawable/quantum_ic_arrow_back_grey600_24"
+        app:tint="@color/buttercup" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_live"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/img_back"
+        android:layout_marginStart="@dimen/margin_16"
+        app:cardBackgroundColor="@android:color/holo_red_dark"
+        app:cardCornerRadius="@dimen/radius_12">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_16"
+            android:paddingTop="@dimen/padding_8"
+            android:paddingEnd="@dimen/padding_16"
+            android:paddingBottom="@dimen/padding_8"
+            android:text="@string/Live"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/img_back"
+        android:layout_marginStart="@dimen/margin_8"
+        android:layout_toEndOf="@+id/card_live"
+        android:maxWidth="250dp"
+        android:text="Title"
+        android:textSize="23sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
