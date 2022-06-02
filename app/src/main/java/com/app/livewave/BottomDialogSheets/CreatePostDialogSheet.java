@@ -730,8 +730,7 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
                     for (int i = 0; i < count; i++) {
                         Uri imageUrl = data.getClipData().getItemAt(i).getUri();
                         imageList.add(imageUrl);
-                        System.out.println("images Path");
-                        System.out.println(uri.getPath());
+
                         newImageList.add(imageUrl);
                     }
                     adapter.setList(imageList);

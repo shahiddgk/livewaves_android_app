@@ -32,8 +32,8 @@ public class Constants {
     //staging url
 //     public static String BASE_URL = "https://livewavesapp.com/" ;
     // live url
-    public static String BASE_URL = "https://dev.livewaves.app/";//"https://livewaves.app/" ;
-    public static String BASE_APIS_URL = "https://dev.livewaves.app/api/";//"https://livewaves.app/api/";
+    public static String BASE_URL = "https://livewaves.app/";//"https://livewaves.app/" ;
+    public static String BASE_APIS_URL = "https://livewaves.app/api/";//"https://livewaves.app/api/";
     public static String API_VERSION = "v1/";
     public static final String USER_LOGIN = "login";
     public static final String USER_REGISTER = "register";
