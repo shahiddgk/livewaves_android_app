@@ -186,7 +186,7 @@ public class ShareBottomSheet extends BottomSheetDialogFragment{
                         card_for_tags.setVisibility(View.VISIBLE);
                         //add post
                         //filterData(text.substring(s2, e));
-                        filterTagData(text.substring(s2, e));
+                        filterTagData(text);
                         break;
                     } else {
                         card_for_tags.setVisibility(View.GONE);

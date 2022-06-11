@@ -313,9 +313,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                 .withReactions(new int[]{
                         R.drawable.ic_happy_reply,
                         R.drawable.ic_normal_reply,
-                        R.drawable.ic_dislike_reply,
-                        R.drawable.ic_wow_reply,
-                        R.drawable.ic_angry_reply,
+                        R.drawable.ic_sad_bold,
+                        R.drawable.ic_wow_bold,
+                        R.drawable.ic_anygry_bold
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 

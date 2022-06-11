@@ -982,7 +982,7 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
                         card_for_tags.setVisibility(View.VISIBLE);
                         //add post
                         //filterData(text.substring(s2, e));
-                        filterTagData(text.substring(s2, e));
+                        filterTagData(text);
                         break;
                     } else {
                         card_for_tags.setVisibility(View.GONE);
@@ -1005,12 +1005,14 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
     }
 
     private void filterTagData(String substring) {
+        System.out.println();
+        System.out.println("Complier is here for Tages Filter");
         progress_bar.setVisibility(View.VISIBLE);
         ApiManager.apiCall(ApiClient.getInstance().getInterface().getFollowers(substring), getContext(), new ApiResponseHandler<GenericDataModel<FollowModel>>() {
             @Override
             public void onSuccess(Response<ApiResponse<GenericDataModel<FollowModel>>> data) {
                 progress_bar.setVisibility(View.GONE);
-
+                System.out.println("Complier is here for Tages Filter Success");
                 followModelList.clear();
                 followModelList.addAll(data.body().getData().getData());
                 userTagAdapter.notifyDataSetChanged();

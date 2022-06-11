@@ -561,7 +561,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                         card_for_tags.setVisibility(View.VISIBLE);
                         //add post
                         //filterData(text.substring(s2, e));
-                        filterTagData(text.substring(s2, e));
+                        filterTagData(text);
                         break;
                     } else {
 
