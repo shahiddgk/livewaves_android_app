@@ -52,18 +52,22 @@ public class Track implements Serializable {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("total_play")
+    @Expose
+    private Integer totalPlay;
 
     private String name;
 
     private int playerState = 0;
 
-    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt) {
+    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt) {
         this.id = id;
         this.trackPath = trackPath;
         this.userId = userId;
         this.title = title;
         this.artist_name = artist_name;
         this.categoryId = categoryId;
+        this.totalPlay = totalPlay;
         this.attachment = attachment;
         this.status = status;
         this.paid = paid;
@@ -75,13 +79,14 @@ public class Track implements Serializable {
         this.updatedAt = updatedAt;
     }
 
-    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt, String name) {
+    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt, String name) {
         this.id = id;
         this.trackPath = trackPath;
         this.userId = userId;
         this.title = title;
         this.artist_name = artist_name;
         this.categoryId = categoryId;
+        this.totalPlay = totalPlay;
         this.attachment = attachment;
         this.status = status;
         this.paid = paid;
@@ -140,6 +145,14 @@ public class Track implements Serializable {
 
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public Integer getTotalPlay() {
+        return totalPlay == null ? 0 : totalPlay;
+    }
+
+    public void setTotalPlay(Integer totalPlay) {
+        this.totalPlay = totalPlay;
     }
 
     public String getAttachment() {

@@ -45,6 +45,7 @@ import com.app.livewave.models.ResponseModels.WavesModelResponse;
 import com.app.livewave.models.ResponseModels.WithdrawalModel;
 import com.app.livewave.models.SettingsApiModel;
 import com.app.livewave.models.StreamModel;
+import com.app.livewave.models.SuggestedPeopleModel;
 import com.app.livewave.utils.Constants;
 
 import java.util.HashMap;
@@ -261,6 +262,9 @@ public interface ApiInterface {
     @GET(Constants.TRENDING_HASHTAGS_API)
     Call<ApiResponse<List<HashtagsModel>>> getTrendingHashtags();
 
+    @GET(Constants.SUGGESTED_PEOPLE)
+    Call<ApiResponse<List<SuggestedPeopleModel>>> getSuggestPeople();
+
     @GET(Constants.ADD_POST+"/{id}")
     Call<ApiResponse<Object>> AddPostToTimeLine(@Path("id") int id);
 
@@ -326,6 +330,15 @@ public interface ApiInterface {
 
     @GET(Constants.TRENDING_TRACK)
     Call<ApiResponse<List<Track>>> getTrendingTracks(@Query("user_id") Integer user_id);
+
+    @GET(Constants.TRACK_COUNT_NUMBER)
+    Call<ApiResponse<Object>> addCountToTracks(@Path("id") Integer id,@Path("trackId") Integer trackId);
+
+    @GET(Constants.SHARE_POSTS_COUNT)
+    Call<ApiResponse<Object>> addCountToPostForShare(@Path("id") Integer id,@Path("sharingId") String sharingId);
+
+    @GET(Constants.REELS_COUNT_NUMBER)
+    Call<ApiResponse<Object>> addCountToWaves(@Path("id") Integer id,@Path("postId") Integer postId);
 
 //    @GET("tracks/getuserspublictracks/{userId}")
 //    Call<ApiResponse<List<Track>>> getUserTracks(@Path("id") String id);

@@ -166,12 +166,31 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
     public CreatePostDialogSheet() {
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Paper.book().write("action","nill");
+        Paper.book().write("type","nill");
+        imageList.clear();
+        newImageList.clear();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Paper.book().write("action","nill");
+        Paper.book().write("type","nill");
+        imageList.clear();
+        newImageList.clear();
+    }
+
     @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bottom_sheet_dialog, container, false);
         initViews(view);
+        getActionData();
         initCLickListeners();
         if (editingPost)
             setEditData();
@@ -180,6 +199,67 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
             switch_paid.setVisibility(View.GONE);
         }
         return view;
+    }
+
+    private void getActionData() {
+        String action = " ";
+        String type = " ";
+        String path = " ";
+        List<String> pathList = new ArrayList<String>();
+        imageList.clear();
+        newImageList.clear();
+        action = Paper.book().read("action");
+        type = Paper.book().read("type");
+        if (action == "android.intent.action.SEND" || action.equals("android.intent.action.SEND")) {
+
+            if (type.equals("image") || type == "image") {
+                path = Paper.book().read("Picture Path");
+                System.out.println("PICTURES PATH IN HOME FRAGEMENT IN CREATE POST FIELD");
+                System.out.println(path);
+                File file = new File(path);
+                uri = Uri.fromFile(file);
+                imageList.add(uri);
+                newImageList.add(uri);
+                adapter.setList(imageList);
+                rv_multiple_images.setVisibility(View.VISIBLE);
+                img_layout.setVisibility(View.VISIBLE);
+            } else if (type.equals("video") || type == "video") {
+                path = Paper.book().read("Video Path");
+
+                System.out.println(path);
+                File file = new File(path);
+                uri = Uri.fromFile(file);
+
+                duration = BaseUtils.getVideoDuration(getContext(), uri);
+                extention = getMimeType(getContext(), uri);
+                uploadAttachment = uri;
+                isPostImageSelected = true;
+                System.out.println("VIDEO PATH IN HOME FRAGEMENT IN CREATE POST FIELD");
+                System.out.println(uri.getPath());
+
+
+                imageList.add(uri);
+                newImageList.add(uri);
+                adapter.setList(imageList);
+                rv_multiple_images.setVisibility(View.VISIBLE);
+                img_layout.setVisibility(View.VISIBLE);
+            } else if (type.equals("images") || type == "images") {
+                pathList = Paper.book().read("Multiple Path");
+
+                for (int i=0;i<pathList.size();i++) {
+                    path = pathList.get(i);
+                    System.out.println("PICTURES PATH IN HOME FRAGEMENT IN CREATE POST FIELD");
+                    System.out.println(path);
+                    File file = new File(path);
+                    uri = Uri.fromFile(file);
+                    imageList.add(uri);
+                    newImageList.add(uri);
+                }
+                adapter.setList(imageList);
+                rv_multiple_images.setVisibility(View.VISIBLE);
+                img_layout.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -323,6 +403,8 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
         img_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Paper.book().write("action","nill");
+                Paper.book().write("type","nill");
                 dismiss();
             }
         });
@@ -457,6 +539,7 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
                 }
             }
         } else {
+
             for (int i = 0; i < imageList.size(); i++) {
                 File file = new File(BaseUtils.getPath(getContext(), imageList.get(i)));
                 String unique_name = UUID.randomUUID().toString();
@@ -691,7 +774,7 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
 //        startActivityForResult(intent, REQUEST_IMAGE);
 
         Intent intent = new Intent();
-        intent.setType("image/jpeg");
+        intent.setType("image/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Image(s)"), REQUEST_IMAGE);
@@ -730,7 +813,8 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
                     for (int i = 0; i < count; i++) {
                         Uri imageUrl = data.getClipData().getItemAt(i).getUri();
                         imageList.add(imageUrl);
-
+                        System.out.println("Image Path");
+                        System.out.println(imageUrl.getPath());
                         newImageList.add(imageUrl);
                     }
                     adapter.setList(imageList);
@@ -838,6 +922,8 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
                     @Override
                     public void onSuccess(Response<ApiResponse<String>> data) {
                         loadingDialog.dismiss();
+                        Paper.book().write("action","nill");
+                        Paper.book().write("type","nill");
                         deleteImageFromFirebase();
                     }
                 });

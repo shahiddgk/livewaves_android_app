@@ -24,8 +24,8 @@ android {
         applicationId "com.app.livewave"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 84
-        versionName "2.05"
+        versionCode 85
+        versionName "2.06"
         multiDexEnabled true
         ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -113,7 +113,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore'
     implementation 'com.google.firebase:firebase-messaging'
     implementation 'com.google.firebase:firebase-crashlytics'
-    implementation 'com.google.firebase:firebase-storage'
+    implementation 'com.google.firebase:firebase-storage:17.0.0'
     //ExoPlayer
     implementation "com.google.android.exoplayer:exoplayer:2.15.0"
     //Progress

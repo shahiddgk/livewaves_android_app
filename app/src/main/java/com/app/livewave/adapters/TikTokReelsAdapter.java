@@ -97,6 +97,8 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
         boolean isLogin;
         UserModel userModel;
         String likesCountNumber,commentsCountNumber,shareCountNumber;
+        Integer id;
+        int count;
 
         public myviewholder(@NonNull View itemView) {
             super(itemView);
@@ -116,10 +118,10 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
             ic_follow_account = itemView.findViewById(R.id.ic_follow_account);
             commentsCount = itemView.findViewById(R.id.tv_comment_count);
             likesCount = itemView.findViewById(R.id.tv_likes_count);
-           // shareCount = itemView.findViewById(R.id.tv_share_count);
+            shareCount = itemView.findViewById(R.id.tv_share_count);
             comments_layout = itemView.findViewById(R.id.comments_layout);
             likes_layout = itemView.findViewById(R.id.likes_layout);
-          //  share_layout = itemView.findViewById(R.id.share_layout);
+            share_layout = itemView.findViewById(R.id.share_layout);
         }
 
         void setContext(Context context) {
@@ -128,12 +130,13 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
 
         void setData(WavesModelResponse obj,boolean Login) {
             videoView.setVideoURI(Uri.parse(obj.getPath()));
+            id = Paper.book().read("CurrentUserId");
             isLogin = Login;
             //userID = Paper.book().read("CurrentUserId");
             System.out.println("CHECKING LOGIN");
             title.setText(obj.getName());
             description.setText(obj.getDescription());
-
+           // addItemCount(obj.getPost_id());
 
             videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
@@ -222,13 +225,13 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
                 likes_layout.setVisibility(View.VISIBLE);
             }
 
-//            if (obj.getTotal_shares() == 0 ) {
-//                share_layout.setVisibility(View.GONE);
-//            } else {
-//                shareCountNumber = String.valueOf(obj.getTotal_shares());
-//                shareCount.setText(shareCountNumber);
-//                share_layout.setVisibility(View.VISIBLE);
-//            }
+            if (obj.getTotal_shares() == 0 ) {
+                share_layout.setVisibility(View.GONE);
+            } else {
+                shareCountNumber = String.valueOf(obj.getTotal_shares());
+                shareCount.setText(shareCountNumber);
+                share_layout.setVisibility(View.VISIBLE);
+            }
 
                 if (obj.getMy_reaction() == "No" || obj.getMy_reaction().equals("No")) {
                     ic_like_bold.setVisibility(View.GONE);
@@ -364,16 +367,20 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
                 }
             }
             ic_share.setOnClickListener(v -> {
+                if (isLogin == false){
+
+                } else {
+                    addCount(obj.getSharingID(), obj.getTotal_shares());
+                }
+
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(Intent.EXTRA_SUBJECT, "Share Wave");
+                intent.putExtra(Intent.EXTRA_SUBJECT, "Share Post");
                 String app_url;
                 app_url = Constants.BASE_URL + "pl/post/" + obj.getSharingID();
-                System.out.println("SHARE POST URL");
-                System.out.println(app_url);
                 intent.putExtra(Intent.EXTRA_TEXT, app_url);
-                context.startActivity(Intent.createChooser(intent, "Share Wave"));
+                context.startActivity(Intent.createChooser(intent, "Share Post"));
 
             });
 
@@ -381,6 +388,22 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
                 @Override
                 public void onCompletion(MediaPlayer mediaPlayer) {
                     mediaPlayer.start();
+                }
+            });
+        }
+
+        private void addCount(String postId, int total_shares) {
+
+            ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToPostForShare(id,postId), context, new ApiResponseHandler<Object>() {
+                @Override
+                public void onSuccess(Response<ApiResponse<Object>> data) {
+                    System.out.println("Waves count added");
+                    System.out.println(data.body().getMessage());
+                    if (data.body().getMessage().equals("post count updated Successfully")) {
+                        shareCountNumber = String.valueOf(total_shares+1);
+                        shareCount.setText(shareCountNumber);
+                        share_layout.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

@@ -23,7 +23,7 @@ public class Constants {
 
 
     public static final String tokenId = "tokenId";
-    public static final String serverURL = "wss://stream-prod.livewaves.app/WebRTCAppEE/websocket";//"wss://www.streaming.globalfansy.fi:5443/WebRTCAppEE/websocket";
+    public static final String serverURL = "ws://18.189.167.57:5080//WebRTCAppEE/websocket";//"wss://www.streaming.globalfansy.fi:5443/WebRTCAppEE/websocket";
 
 
     //if app is in APP_NOT_IN_REVIEW show every thing normally if APP_NOT_IN_REVIEW hide everything that says payment
@@ -48,10 +48,13 @@ public class Constants {
     public static final String FOLLOWING_STREAMS_API = "streams/following";
     public static final String CATEGORIES_API = "categories";
     public static final String USER_REACTION = "post";
+    public static final String SHARE_POSTS_COUNT = "posts/{id}/shares/{sharingId}";
     public static final String NEWS_FEED = "newsfeed";
     public static final String WAVES_ITEMS_LIST = "waves";
     public static final String WAVES_ITEMS_LIST_WITH_ID = "waves/{id}";
     public static final String TRENDING_TRACK = "tracks/trending";
+    public static final String TRACK_COUNT_NUMBER = "tracks/{id}/viewers/{trackId}";
+    public static final String REELS_COUNT_NUMBER = "waves/{id}/viewers/{postId}";
     public static final String PAID_POSTS = "user/paidposts";
     public static final String PAID_EVENTS = "user/paidevents";
     public static final String NOTIFICATIONS = "notifications";
@@ -64,6 +67,7 @@ public class Constants {
     public static final String DELETE_PURCHASED_SUBSCRIPTION_API = "purchasedsubscription/delete";
     public static final String GET_PURCHASED_SUBSCRIPTION = "purchasedsubscriptionlisting";
     public static final String TRENDING_HASHTAGS_API = "hashtags/trending";
+    public static final String SUGGESTED_PEOPLE = "suggestedProfiles";
     public static final String CREATE_POST = "post";
     public static final String ADD_POST = "post/add";
     public static final String EDIT_POST_API = "post/edit";

@@ -33,6 +33,7 @@ import com.app.livewave.activities.RegisterActivity;
 import com.app.livewave.activities.TikTokReels;
 import com.app.livewave.adapters.HashtagTrendListAdapter;
 import com.app.livewave.adapters.PostAdapter;
+import com.app.livewave.adapters.SuggestedPeopleListAdapter;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.models.ParameterModels.HashtagsModel;
 import com.app.livewave.models.ParameterModels.OnTouch;
@@ -40,6 +41,7 @@ import com.app.livewave.models.ResponseModels.ApiResponse;
 import com.app.livewave.models.ResponseModels.GenericDataModel;
 import com.app.livewave.models.ResponseModels.PostModel;
 import com.app.livewave.models.ResponseModels.UserModel;
+import com.app.livewave.models.SuggestedPeopleModel;
 import com.app.livewave.retrofit.ApiClient;
 import com.app.livewave.utils.ApiManager;
 import com.app.livewave.utils.BaseUtils;
@@ -66,14 +68,16 @@ import static com.app.livewave.utils.Constants.NEWS_FEED;
 public class NewsFeedFragment extends Fragment implements AppBarLayout.OnOffsetChangedListener {
     private RecyclerView rv_news_feed;
     private PostAdapter adapter;
-    private RecyclerView rv_trends;
+    private RecyclerView rv_trends,rv_Suggested_People;
     private HashtagTrendListAdapter hashtagTrendListAdapter;
+    private SuggestedPeopleListAdapter suggestedPeopleListAdapter;
 
     private Toolbar toolbar;
     private ProgressBar progress_bar;
     private AppBarLayout app_bar;
     private List<PostModel> posts = new ArrayList<>();
     private List<HashtagsModel> hashtagsModelList = new ArrayList<>();
+    private List<SuggestedPeopleModel> suggestedPeopleModelList = new ArrayList<>();
     private int currentItems, totalItems, scrollOutItems;
     private int currentPageNumber = 1;
     //    private int totalPages = 0;
@@ -133,12 +137,20 @@ public class NewsFeedFragment extends Fragment implements AppBarLayout.OnOffsetC
         progress_bar = view.findViewById(R.id.progress_bar);
         dialog = BaseUtils.progressDialog(getContext());
         rv_trends = view.findViewById(R.id.rv_trends);
+        rv_Suggested_People = view.findViewById(R.id.rv_suggested_people);
         rv_trends.setHasFixedSize(false);
+        rv_Suggested_People.setHasFixedSize(false);
         LinearLayoutManager trendLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
         rv_trends.setLayoutManager(trendLinearLayoutManager);
+        LinearLayoutManager suggestLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        rv_Suggested_People.setLayoutManager(suggestLinearLayoutManager);
         hashtagTrendListAdapter = new HashtagTrendListAdapter(getContext(), hashtagsModelList, 0);
+        suggestedPeopleListAdapter = new SuggestedPeopleListAdapter(getContext(),suggestedPeopleModelList);
+
         rv_trends.setAdapter(hashtagTrendListAdapter);
         rv_trends.setNestedScrollingEnabled(false);
+        rv_Suggested_People.setAdapter(suggestedPeopleListAdapter);
+        rv_Suggested_People.setNestedScrollingEnabled(false);
         btPaid = view.findViewById(R.id.bt_Paid);
 //        btReels = view.findViewById(R.id.bt_Reels);
         bt_payment = view.findViewById(R.id.bt_payment);
@@ -157,6 +169,7 @@ public class NewsFeedFragment extends Fragment implements AppBarLayout.OnOffsetC
 
 
         loadTags();
+        loadSuggestedPeople();
         loadFeed();
         nested_scroll_view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
@@ -180,7 +193,9 @@ public class NewsFeedFragment extends Fragment implements AppBarLayout.OnOffsetC
             public void onRefresh() {
                 currentPageNumber = 1;
                 posts.clear();
+                suggestedPeopleModelList.clear();
                 loadFeed();
+                loadSuggestedPeople();
                 swipe_to_refresh.setRefreshing(false);
             }
         });
@@ -226,12 +241,30 @@ public class NewsFeedFragment extends Fragment implements AppBarLayout.OnOffsetC
         });
 
     }
+    private void loadSuggestedPeople() {
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().getSuggestPeople(), getContext(), new ApiResponseHandler<List<SuggestedPeopleModel>>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<List<SuggestedPeopleModel>>> data) {
+                if (data != null && data.body().getData().size() > 0) {
+                    setSuggestedPeopleData(data.body().getData());
+                }
+            }
+        });
+
+    }
 
     private void setTrendsData(List<HashtagsModel> data) {
         rv_trends.setVisibility(View.VISIBLE);
         hashtagsModelList.clear();
         hashtagsModelList.addAll(data);
         hashtagTrendListAdapter.notifyDataSetChanged();
+    }
+
+    private void setSuggestedPeopleData(List<SuggestedPeopleModel> data) {
+
+        suggestedPeopleModelList.clear();
+        suggestedPeopleModelList.addAll(data);
+        suggestedPeopleListAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -713,6 +713,9 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         });
 
         img_share.setOnClickListener(v -> {
+
+            addCount(postModel.getSharingID());
+
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Share Post");
@@ -814,6 +817,16 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 //            bundle.putString("intent_type", "6");
 //            ((HomeActivity) getActivity()).loadFragment(R.string.tag_webview, bundle);
         });
+
+
+//        if (postModel.getTotalShares() > 0) {
+//            txt_share.setVisibility(View.VISIBLE);
+//
+//            txt_share.setText(postModel.getTotalShares() + " shares..");
+//        } else {
+//            txt_share.setVisibility(View.GONE);
+//        }
+
         iv_shared_play_video.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
             intent.putExtra(URL, sharedPostModel.getAttachments().get(0).getPath());
@@ -890,6 +903,20 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment(String.valueOf(postModel.getId()),"0");
             FragmentManager fragmentManager = getChildFragmentManager();
             reactionDetailFragment.show(fragmentManager, "Reactions");
+        });
+    }
+
+    private void addCount(String trackId) {
+
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToPostForShare(userId,trackId), getContext(), new ApiResponseHandler<Object>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<Object>> data) {
+                System.out.println("Post Share count added");
+                System.out.println(data.body().getMessage());
+                if (data.body().getMessage().equals("post count updated Successfully")) {
+
+                }
+            }
         });
     }
 

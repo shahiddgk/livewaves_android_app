@@ -474,7 +474,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         txt_bio = view.findViewById(R.id.txt_bio);
 //        dialog = BaseUtils.progressDialog(getActivity());
         loadingDialog = BaseUtils.showProgressDialog(getActivity());
-
+        getActionData();
         loadProfile();
         loadPost();
         nested_scroll_view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
@@ -527,6 +527,21 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
                 swipe_to_refresh.setRefreshing(false);
             }
         });
+    }
+
+    private void getActionData() {
+        String action = " ";
+        String path = " ";
+       action = Paper.book().read("action");
+       if (action == "android.intent.action.SEND" || action.equals("android.intent.action.SEND")) {
+          path = Paper.book().read("Picture Path");
+          System.out.println("PICTURES PATH IN HOME FRAGEMENT");
+           System.out.println(path);
+           CreatePostDialogSheet createPostDialogSheet = new CreatePostDialogSheet(Constants.POST_EDIT_DIALOG, userModel.getId());
+           FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+           createPostDialogSheet.show(fragmentManager, POST_CREATE_DIALOG);
+       }
+
     }
 
     private void loadProfile() {

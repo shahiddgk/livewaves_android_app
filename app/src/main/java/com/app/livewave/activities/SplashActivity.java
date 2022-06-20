@@ -72,6 +72,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.paperdb.Paper;
 import retrofit2.Response;
 
@@ -194,6 +197,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkIntentData() {
+        Paper.book().write("action","nill");
+        Paper.book().write("type","nill");
         int flags = getIntent().getFlags();
         if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
 
@@ -211,6 +216,7 @@ public class SplashActivity extends AppCompatActivity {
                         sharedLink = getIntent().getData();
                         deepLink = true;
                     } else if (getIntent().getAction().equals("android.intent.action.SEND")) {
+
                         if (getIntent().getType().startsWith("image/")) {
                             String[] filePathColumn = {MediaStore.Images.Media.DATA};
                             Cursor cursor = getContentResolver().query(getIntent().getClipData().getItemAt(0).getUri()
@@ -218,13 +224,92 @@ public class SplashActivity extends AppCompatActivity {
                             cursor.moveToFirst();
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                             String picturePath = cursor.getString(columnIndex);
+                            Paper.book().write("action","android.intent.action.SEND");
+                            Paper.book().write("Picture Path",picturePath);
+                            Paper.book().write("type","image");
+                            cursor.close();
+//                            Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
+                            //TODO handle shared image
+//                            Toast.makeText(SplashActivity.this, picturePath, Toast.LENGTH_SHORT).show();
+                        } else if (getIntent().getType().startsWith("video/")) {
+                            String[] filePathColumn = {MediaStore.Video.Media.DATA};
+                            Cursor cursor = getContentResolver().query(getIntent().getClipData().getItemAt(0).getUri()
+                                    , filePathColumn, null, null, null);
+                            cursor.moveToFirst();
+                            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                            String picturePath = cursor.getString(columnIndex);
+
+                            Paper.book().write("action","android.intent.action.SEND");
+                            Paper.book().write("Video Path",picturePath);
+                            Paper.book().write("type","video");
                             cursor.close();
 //                            Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
                             //TODO handle shared image
 //                            Toast.makeText(SplashActivity.this, picturePath, Toast.LENGTH_SHORT).show();
                         }
+//                        else if (getIntent().getAction().equals("android.intent.action.SEND_MULTIPLE")){
+//
+//                            List<String> pathList = new ArrayList<String>();
+//                            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                            for (int i = 0 ; i<filePathColumn.length; i++) {
+//                                Cursor cursor = getContentResolver().query(getIntent().getClipData().getItemAt(i).getUri()
+//                                        , filePathColumn, null, null, null);
+//
+//                                int columnIndex = cursor.getColumnIndex(filePathColumn[i]);
+//                                String picturePath = cursor.getString(columnIndex);
+//                                pathList.add(picturePath);
+//                                System.out.println("Images SElECTION CHECKING AT STRAT");
+//                                System.out.println(picturePath);
+//                                cursor.close();
+//                            }
+//
+//                            Paper.book().write("action","android.intent.action.SEND");
+//                            Paper.book().write("Multiple Path",pathList);
+//                            Paper.book().write("type","image");
+//
+//                        }
+                    } else if (getIntent().getAction().equals("android.intent.action.SEND_MULTIPLE")) {
+
+                        List<String> pathList = new ArrayList<String>();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                    for (int i = 0 ; i<getIntent().getClipData().getItemCount(); i++) {
+                        Uri uri = getIntent().getClipData().getItemAt(i).getUri();
+                        String picturePath = uri.getPath();
+                        String newPath = picturePath.substring(12);
+                        pathList.add(newPath);
+                        System.out.println("Images SElECTION CHECKING AT STRAT");
+                        System.out.println(newPath);
+
+
                     }
-                } else {
+
+                    Paper.book().write("action","android.intent.action.SEND");
+                    Paper.book().write("Multiple Path",pathList);
+                    Paper.book().write("type","images");
+                    }
+                }
+//                else if (getIntent().getAction().equals("android.intent.action.SEND_MULTIPLE")){
+//
+//                    List<String> pathList = new ArrayList<String>();
+//                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+//                    for (int i = 0 ; i<filePathColumn.length; i++) {
+//                        Cursor cursor = getContentResolver().query(getIntent().getClipData().getItemAt(i).getUri()
+//                                , filePathColumn, null, null, null);
+//
+//                        int columnIndex = cursor.getColumnIndex(filePathColumn[i]);
+//                        String picturePath = cursor.getString(columnIndex);
+//                        pathList.add(picturePath);
+//                        System.out.println("Images SElECTION CHECKING AT STRAT");
+//                        System.out.println(picturePath);
+//                        cursor.close();
+//                    }
+//
+//                    Paper.book().write("action","android.intent.action.SEND");
+//                    Paper.book().write("Multiple Path",pathList);
+//                    Paper.book().write("type","image");
+//
+//                }
+                else {
                 }
 
             }

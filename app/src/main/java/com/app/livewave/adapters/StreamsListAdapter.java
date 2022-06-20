@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,7 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
     }
 
     private void handleClickOnJoin(StreamModel streamModel) {
+        final Handler handler = new Handler();
 //        dialog.show();
         ((HomeActivity)context).showProgressDialog();
         //if cheater of stream click on button
@@ -160,7 +162,13 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
             intent.putExtra("ID", streamModel.getId());
             intent.putExtra("TITLE", streamModel.getTitle());
             intent.putExtra("PLATFORM_ID", streamModel.getPlatformID());
-//            dialog.dismiss();
+            handler.postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ((HomeActivity)context).hideProgressDialog();
+                        }
+                    },500);
             ((HomeActivity)context).hideProgressDialog();
             context.startActivity(intent);
 //            Toast.makeText(context, "Resume Your Stream", Toast.LENGTH_SHORT).show();
@@ -171,7 +179,13 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
             intent.putExtra("id", "stream_id=" + streamModel.getId());
             intent.putExtra("type", "stream");
             intent.putExtra("intent_type", "6");
-            dialog.dismiss();
+            handler.postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ((HomeActivity)context).hideProgressDialog();
+                        }
+                    },500);
             context.startActivity(intent);
 
 //            Bundle bundle = new Bundle();
@@ -189,7 +203,13 @@ public class StreamsListAdapter extends RecyclerView.Adapter<StreamsListAdapter.
             intent.putExtra("PLATFORM_ID", streamModel.getPlatformID());
             intent.putExtra("STREAM_ID_TYPE", "stream_id");
             intent.putExtra("Subscriber", "Subscriber");
-            dialog.dismiss();
+            handler.postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            ((HomeActivity)context).hideProgressDialog();
+                        }
+                    },500);
             context.startActivity(intent);
             Toast.makeText(context, "Stream is already paid or free", Toast.LENGTH_SHORT).show();
 

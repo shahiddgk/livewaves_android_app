@@ -51,6 +51,9 @@ public class PostModel implements Serializable {
     @SerializedName("total_comments")
     @Expose
     private int totalComments;
+    @SerializedName("total_shares")
+    @Expose
+    private int totalShares;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -245,6 +248,15 @@ public class PostModel implements Serializable {
     public void setTotalComments(int totalComments) {
         this.totalComments = totalComments;
     }
+
+    public int getTotalShares() {
+        return totalShares;
+    }
+
+    public void setTotalShares(int totalShares) {
+        this.totalShares = totalShares;
+    }
+
 
     public String getCreatedAt() {
         return createdAt == null ? "" : createdAt;

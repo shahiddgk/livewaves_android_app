@@ -93,7 +93,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="17dp"
+                        android:textColor="@color/black"
+                        android:text="People You may know"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_suggested_people"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_news_feed"
@@ -123,7 +136,6 @@
                 android:layout_height="wrap_content"
                 android:overScrollMode="never"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

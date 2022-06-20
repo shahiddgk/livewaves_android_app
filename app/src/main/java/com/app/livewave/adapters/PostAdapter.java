@@ -31,6 +31,7 @@ import com.app.livewave.R;
 import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.activities.VideoPlayerActivity;
 import com.app.livewave.activities.WebviewActivity;
+import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
 import com.app.livewave.interfaces.onClickInterfaceForEditPost;
 import com.app.livewave.models.ParameterModels.OnTouch;
@@ -98,6 +99,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private onClickInterfaceForEditPost onClickInterfaceForEditPost;
     Player previousPlayer = null;
     int previousVisibleItem = -1;
+    int count;
 
     ImageSliderAdapter imageAdapter;
 
@@ -160,6 +162,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         } else {
             holder.txt_comments.setVisibility(View.GONE);
         }
+
         //        holder.txt_date.setText(DateUtils.getRelativeTimeSpanString(BaseUtils.getDate(postList.get(position).getCreatedAt())));
         holder.txt_date.setText(BaseUtils.convertFromUTCTime(postList.get(position).getCreatedAt()));
         if (postList.get(position).getUserId() != userModel.getId() && (userModel.getId() != userId || from.equals(NEWS_FEED)))
@@ -387,8 +390,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 //                break;
         }
         holder.iv_share.setOnClickListener(v -> {
+
+            addCount(postList.get(position).getSharingID(),holder.txt_share);
+
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
+            shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Share Post");
             String app_url;
             app_url = Constants.BASE_URL + "pl/post/" + postList.get(position).getSharingID();
@@ -396,6 +403,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             context.startActivity(Intent.createChooser(shareIntent, "Share Post"));
 
         });
+        count = postList.get(position).getTotalShares();
+        if (count > 0) {
+            holder.txt_share.setVisibility(View.VISIBLE);
+
+            holder.txt_share.setText(count + " shares..");
+        } else {
+            holder.txt_share.setVisibility(View.GONE);
+        }
+
         holder.img_profile.setOnClickListener(v -> {
             if (postList.get(position).getUserId() != userId)
                 ((HomeActivity)context).openUserProfile(postList.get(position).getUser().getId().toString());
@@ -508,6 +524,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         });
     }
 
+    private void addCount(String trackId, TextView txt_share) {
+
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToPostForShare(userId,trackId), context, new ApiResponseHandler<Object>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<Object>> data) {
+                System.out.println("Post Share count added");
+                System.out.println(data.body().getMessage());
+                if (data.body().getMessage().equals("post count updated Successfully")) {
+                    count = count + 1;
+                }
+            }
+        });
+    }
+
+
     private void RemoveItem(int position) {
         PostModel tempPostData = postList.get(position);
         postList.remove(position);
@@ -584,7 +615,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_name, txt_shared_name, txt_shared_profile_name, txt_shared_preview_title, txt_shared_preview_des, txt_shared_content, tv_shared_pay_to_unlock, txt_date, txt_comments, txt_reaction, txt_profile_name, tv_pay_to_unlock, txt_preview_title, txt_preview_des;
+        TextView txt_name, txt_shared_name, txt_shared_profile_name, txt_shared_preview_title, txt_shared_preview_des, txt_shared_content, tv_shared_pay_to_unlock, txt_date, txt_comments,txt_share, txt_reaction, txt_profile_name, tv_pay_to_unlock, txt_preview_title, txt_preview_des;
         CircleImageView img_profile, img_shared_profile;
         ImageView iv_paid, iv_play_video, img_shared_picture, img_shared_preview_image, iv_shared_play_video, img_reaction, iv_coment, iv_post_option, iv_share, img_preview_image, iv_re_share;
         LinearLayout profile, ll_privacy_item, shared_profile;
@@ -627,6 +658,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             txt_date = itemView.findViewById(R.id.txt_date);
             txt_des = itemView.findViewById(R.id.txt_des);
             txt_comments = itemView.findViewById(R.id.txt_comments);
+            txt_share = itemView.findViewById(R.id.txt_share);
             txt_reaction = itemView.findViewById(R.id.txt_reaction);
             img_profile = itemView.findViewById(R.id.img_profile);
 //            img_picture = itemView.findViewById(R.id.img_picture);

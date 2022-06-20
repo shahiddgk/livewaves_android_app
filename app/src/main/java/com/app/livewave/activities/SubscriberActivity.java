@@ -116,7 +116,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
     RelativeLayout heart_view, rl_paused, rl_disconnect;
     TextView tv_watchers, tv_title, txt_paused;
     private Long firebase_like;
-    private KProgressHUD dialog, dialog1;
+    private KProgressHUD dialog;
     String STREAM_ID_TYPE;
     boolean isSecondStream = false;
     int counter = 0;
@@ -224,12 +224,11 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
         card_join.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
+
                 ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().joinStream(stream_id, STREAM_ID_TYPE), SubscriberActivity.this, new ApiResponseHandlerWithFailure<JoinStreamModel>() {
                     @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onSuccess(Response<ApiResponse<JoinStreamModel>> data) {
-                        dialog.dismiss();
                         JoinStreamModel joinStreamModel = data.body().getData();
                         if (ActivityCompat.checkSelfPermission(SubscriberActivity.this,
                                 android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
@@ -259,7 +258,6 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 
                     @Override
                     public void onFailure(String failureCause) {
-                        dialog.dismiss();
                         if (webRTCClientSub != null) {
                             if (webRTCClientSub.isStreaming())
                                 webRTCClientSub.stopStream();
@@ -493,13 +491,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
                 onBackPressed();
             }
         });
-        dialog1 = BaseUtils.progressDialog(this);
-        dialog1.setCancellable(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                onBackPressed();
-            }
-        });
+
         userModel = Paper.book().read(Constants.currentUser);
         db = FirebaseFirestore.getInstance();
         tv_watchers = findViewById(R.id.tv_watchers);
@@ -731,7 +723,6 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
                             });
                             ll_dual.setVisibility(View.GONE);
                             renderer_2.setVisibility(View.GONE);
-                            dialog.dismiss();
                             isSecondStream = false;
                         }
                     }
@@ -842,11 +833,9 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
         if (streamId.equals(platform_id))
             rl_disconnect.setVisibility(View.GONE);
         Log.w(getClass().getSimpleName(), "disconnected");
-        Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
-        dialog.dismiss();
+       // Toast.makeText(this, "Disconnected", Toast.LENGTH_LONG).show();
         if (streamId.equals(platform_id)) {
             if (webRTCClient != null) {
-                dialog.dismiss();
                 webRTCClient.stopStream();
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -856,16 +845,14 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
                             webRTCClient.onVideoScalingSwitch(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
                             webRTCClient.startStream();
                         }
-                        dialog.dismiss();
                     }
                 }, 10000);
-                dialog.dismiss();
             }
         }
         if (guestPlatformId != null) {
             if (streamId.equals(guestPlatformId)) {
                 if (webRTCClientSub != null) {
-                    dialog1.show();
+
                     webRTCClientSub.stopStream();
 //                    initSecondStream();
                     final Handler handler = new Handler();
@@ -876,10 +863,8 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
                                 webRTCClientSub.onVideoScalingSwitch(RendererCommon.ScalingType.SCALE_ASPECT_FIT);
                                 webRTCClientSub.startStream();
                             }
-                            dialog.dismiss();
                         }
                     }, 15000);
-                    dialog.dismiss();
                 }
             }
         }
@@ -895,6 +880,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
     @Override
     public void onPublishFinished(String streamId) {
         Toast.makeText(SubscriberActivity.this, "Publish Finished", Toast.LENGTH_SHORT).show();
+
         if (webRTCClientSub != null) {
             if (webRTCClientSub.isStreaming()) {
                 webRTCClientSub.stopStream();
@@ -920,13 +906,15 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
     @Override
     public void onPlayFinished(String streamId) {
         isStreaming = false;
+
         Toast.makeText(SubscriberActivity.this, "Play Finished", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void noStreamExistsToPlay(String streamId) {
         Log.w(getClass().getSimpleName(), "noStreamExistsToPlay");
-        Toast.makeText(this, "No stream exist to play", Toast.LENGTH_LONG).show();
+
+     //   Toast.makeText(this, "No stream exist to play", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -1021,14 +1009,12 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
             firebaseStreamEvent.remove();
         if (Integer.parseInt(tv_watchers.getText().toString()) > 0)
             db.collection(fireStoreStreamInfoUrl).document(platform_id).update("viewers", FieldValue. increment(-1));
-        dialog.dismiss();
         super.onDestroy();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
         if (isGuest || isJoined) {
             db.collection(fireStoreStreamInfoUrl).document(platform_id).update("platformId", "", "guestId", 0);
         }
@@ -1231,7 +1217,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 //                    @RequiresApi(api = Build.VERSION_CODES.M)
 //                    @Override
 //                    public void onSuccess(Response<ApiResponse<JoinStreamModel>> data) {
-////                        dialog.dismiss();
+////
 //                        ((HomeActivity)getActivity()).hideProgressDialog();
 //                        JoinStreamModel joinStreamModel = data.body().getData();
 //                        if (ActivityCompat.checkSelfPermission(getActivity(),
@@ -1261,7 +1247,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 //
 //                    @Override
 //                    public void onFailure(String failureCause) {
-//                        dialog.dismiss();
+//
 //                        if (webRTCClientSub != null) {
 //                            if (webRTCClientSub.isStreaming())
 //                                webRTCClientSub.stopStream();
@@ -1690,7 +1676,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 //                            });
 //                            ll_dual.setVisibility(View.GONE);
 //                            renderer_2.setVisibility(View.GONE);
-//                            dialog.dismiss();
+//
 //                            isSecondStream = false;
 //                        }
 //                    }
@@ -1974,7 +1960,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 //            firebaseStreamEvent.remove();
 //        if (Integer.parseInt(tv_watchers.getText().toString()) > 0)
 //            db.collection(fireStoreStreamInfoUrl).document(platform_id).update("viewers", FieldValue. increment(-1));
-//        dialog.dismiss();
+//
 //        super.onDestroy();
 //    }
 //
