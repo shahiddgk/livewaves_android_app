@@ -218,6 +218,9 @@ public class SplashActivity extends AppCompatActivity {
                     } else if (getIntent().getAction().equals("android.intent.action.SEND")) {
 
                         if (getIntent().getType().startsWith("image/")) {
+                            Uri uri = getIntent().getClipData().getItemAt(0).getUri();
+                            System.out.println("GIFF PATH");
+                            System.out.println(uri);
                             String[] filePathColumn = {MediaStore.Images.Media.DATA};
                             Cursor cursor = getContentResolver().query(getIntent().getClipData().getItemAt(0).getUri()
                                     , filePathColumn, null, null, null);

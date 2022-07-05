@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -371,6 +372,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         img_location = view.findViewById(R.id.img_location);
         img_send = view.findViewById(R.id.img_send);
         et_message = view.findViewById(R.id.et_message);
+
+        et_message.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 
         rv_messages = view.findViewById(R.id.rv_messages);
         rv_messages.setHasFixedSize(true);

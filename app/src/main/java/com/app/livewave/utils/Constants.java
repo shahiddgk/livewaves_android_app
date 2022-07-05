@@ -23,7 +23,7 @@ public class Constants {
 
 
     public static final String tokenId = "tokenId";
-    public static final String serverURL = "ws://18.189.167.57:5080//WebRTCAppEE/websocket";//"wss://www.streaming.globalfansy.fi:5443/WebRTCAppEE/websocket";
+    public static final String serverURL = "wss://stream-prod.livewaves.app/WebRTCAppEE/websocket";//"wss://www.streaming.globalfansy.fi:5443/WebRTCAppEE/websocket";
 
 
     //if app is in APP_NOT_IN_REVIEW show every thing normally if APP_NOT_IN_REVIEW hide everything that says payment

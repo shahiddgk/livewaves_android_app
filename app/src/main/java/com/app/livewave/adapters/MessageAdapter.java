@@ -2,8 +2,11 @@ package com.app.livewave.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,12 +96,51 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 }
             }
         }
+
+        System.out.println("ITS Message Data");
+        System.out.println(messageList.get(position).message);
+
+
+           // holder.txt_msg.setTextColor(Color.BLUE);
+
+            holder.txt_msg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("ITS URL");
+
+                    if (messageList.get(position).message.contains("http") || messageList.get(position).message.contains("https")) {
+
+                        Uri uri = Uri.parse(messageList.get(position).message);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(intent);
+                    }
+                }
+            });
+
+
         holder.txt_msg.setText(messageList.get(position).message);
         Glide.with(context).load(messageList.get(position).attachment).into(holder.img_picture);
         holder.txt_message_time.setText(BaseUtils.getTimeFromMiliSecond(messageList.get(position).getSentAt()));
 
         if (messageList.get(position).senderId == userModel.getId()) {
-            holder.layout_chat_right.setOnLongClickListener(new View.OnLongClickListener() {
+
+//            holder.iv_delete_message.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    BaseUtils.showAlertDialog("Delete Chat", "Are you sure you want to delete this chat", context, new DialogBtnClickInterface() {
+//                        @Override
+//                        public void onClick(boolean positive) {
+//                            if (positive) {
+//                                rootRef.collection(Constants.firebaseDatabaseRoot).document(rootId).collection("Messages").document(messageList.get(position).id).update("attachmentType", 0);
+//                                rootRef.collection(Constants.firebaseDatabaseRoot).document(rootId).collection("Messages").document(messageList.get(position).id).update("message", "This message was deleted");
+//                                holder.txt_msg.setTextColor(Color.BLACK);
+//                            }
+//                        }
+//                    });
+//                }
+//            });
+
+                holder.txt_msg.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     BaseUtils.showAlertDialog("Delete Chat", "Are you sure you want to delete this chat", context, new DialogBtnClickInterface() {
@@ -107,6 +149,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                             if (positive) {
                                 rootRef.collection(Constants.firebaseDatabaseRoot).document(rootId).collection("Messages").document(messageList.get(position).id).update("attachmentType", 0);
                                 rootRef.collection(Constants.firebaseDatabaseRoot).document(rootId).collection("Messages").document(messageList.get(position).id).update("message", "This message was deleted");
+                                holder.txt_msg.setTextColor(Color.BLACK);
                             }
                         }
                     });
@@ -114,6 +157,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 }
             });
         }
+
+//        if (messageList.get(position).message.equals("This message was deleted")) {
+//            holder.iv_delete_message.setVisibility(View.GONE);
+//        }
     }
 
     private void audioMessage(int position, AppCompatSeekBar seek_bar, TextView txt_duration, ImageView img_play, ImageView img_pause, MyViewHolder holder) {
@@ -209,13 +256,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView txt_msg, txt_message_time, txt_duration, txt_name;
         CircleImageView img_user_profile;
-        ImageView img_picture, img_play, img_pause;
+        ImageView img_picture, img_play, img_pause,iv_delete_message;
         AppCompatSeekBar seek_bar;
         RelativeLayout rl_audio_view;
         LinearLayout layout_chat_right;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+         //   iv_delete_message = itemView.findViewById(R.id.iv_delete_message);
             txt_name = itemView.findViewById(R.id.txt_name);
             txt_msg = itemView.findViewById(R.id.txt_msg);
             txt_message_time = itemView.findViewById(R.id.txt_message_time);

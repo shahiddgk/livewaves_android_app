@@ -63,6 +63,7 @@
     <string name="todo">TODO</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="please_enter_title">Please Enter Title</string>
+    <string name="stream_title_length">Title must me at least 2 characters</string>
     <string name="title_should_be_less_then_100_char">Title Should be less then 100 Characters</string>
     <string name="empty_string" />
     <string name="paid_is_selected_please_enter_amount">Paid is selected please enter amount</string>
@@ -106,7 +107,7 @@
     <string name="stream">Stream</string>
     <string name="select_event_start_time">Select Event Start Time</string>
     <string name="event_start_time">Event Start Time</string>
-    <string name="field_cant_be_empty">Field Can\'t be Empty</string>
+    <string name="field_cant_be_empty">Field Can\'t be Empty or 0</string>
     <string name="field_cant_be_empty_or_zero">Amount Can\'t be Zero</string>
     <string name="field_must_be_greater">Field must be greater than 10 characters</string>
     <string name="buy">Buy</string>

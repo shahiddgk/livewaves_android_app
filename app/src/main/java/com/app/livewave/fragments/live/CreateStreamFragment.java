@@ -196,6 +196,10 @@ public class CreateStreamFragment extends Fragment implements View.OnClickListen
             et_stream_title.setFocusable(true);
             et_stream_title.setError(getString(R.string.please_enter_title));
             error = true;
+        } else if(streamTitle.length()<2) {
+            et_stream_title.setFocusable(true);
+            et_stream_title.setError(getString(R.string.stream_title_length));
+            error = true;
         } else if (streamTitle.length() > 100) {
             et_stream_title.setFocusable(true);
             et_stream_title.setError(getString(R.string.title_should_be_less_then_100_char));

@@ -666,7 +666,7 @@ public class CreateEventFragment extends Fragment implements View.OnClickListene
             return;
 
         }
-        if (tl_free_paid.getSelectedTabPosition() == 1 && amount.isEmpty()) {
+        if (tl_free_paid.getSelectedTabPosition() == 1 && amount.isEmpty() || amount.equals("0")) {
             tli_amount.requestFocus();
             tli_amount.setError(getString(R.string.field_cant_be_empty));
             return;

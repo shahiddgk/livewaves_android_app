@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -217,6 +218,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         setEditCommentReplyInterface();
         setReplyButtonInterface();
         setHasOptionsMenu(true);
+
+        et_comment.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 
         img_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -556,12 +559,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 }
                 while (m.find()) {
                     if (cursorPosition >= m.start() && cursorPosition <= m.end()) {
-                        final int s2 = m.start() + 1; // add 1 to ommit the "@" tag
+                        final int s2 = m.start(); // add 1 to ommit the "@" tag
                         final int e = m.end();
                         card_for_tags.setVisibility(View.VISIBLE);
                         //add post
-                        //filterData(text.substring(s2, e));
-                        filterTagData(text);
+                        filterTagData(text.substring(s2, e));
+                        //filterTagData(text);
                         break;
                     } else {
 
