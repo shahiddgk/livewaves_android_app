@@ -11,6 +11,7 @@ public class ReactionsCategoryList {
     List<UserModel> sadReactions;
     List<UserModel> wowReactions;
     List<UserModel> angryReactions;
+    List<UserModel> laughingReactions;
 
     public List<UserModel> getAllReactions() {
         return allReactions;
@@ -60,12 +61,21 @@ public class ReactionsCategoryList {
         this.angryReactions = angryReactions;
     }
 
-    public ReactionsCategoryList(List<UserModel> allReactions, List<UserModel> smileReactions, List<UserModel> mehReactions, List<UserModel> sadReactions, List<UserModel> wowReactions, List<UserModel> angryReactions) {
+    public List<UserModel> getLaughingReactions() {
+        return laughingReactions;
+    }
+
+    public void setLaughingReactions(List<UserModel> laughingReactions) {
+        this.laughingReactions = laughingReactions;
+    }
+
+    public ReactionsCategoryList(List<UserModel> allReactions,List<UserModel> smileReactions, List<UserModel> mehReactions, List<UserModel> sadReactions, List<UserModel> wowReactions, List<UserModel> angryReactions,List<UserModel> laughingReactions) {
         this.allReactions = allReactions;
         this.smileReactions = smileReactions;
         this.mehReactions = mehReactions;
         this.sadReactions = sadReactions;
         this.wowReactions = wowReactions;
         this.angryReactions = angryReactions;
+        this.laughingReactions = laughingReactions;
     }
 }

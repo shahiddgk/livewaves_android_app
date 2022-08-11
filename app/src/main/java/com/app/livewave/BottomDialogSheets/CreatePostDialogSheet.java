@@ -976,7 +976,7 @@ public class CreatePostDialogSheet extends BottomSheetDialogFragment implements 
 //        card_cancel = view.findViewById(R.id.card_cancel);
 //        single_image_card = view.findViewById(R.id.single_image_card);
 
-        et_post.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+//        et_post.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 
         rv_multiple_images = view.findViewById(R.id.rv_multiple_images);
         RecyclerView.LayoutManager imageLayoutManager = new GridLayoutManager(getContext(), 3);

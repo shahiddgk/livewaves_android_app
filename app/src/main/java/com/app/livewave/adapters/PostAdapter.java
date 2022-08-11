@@ -888,7 +888,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                         R.drawable.ic_normal_reply,
                         R.drawable.ic_sad_bold,
                         R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold
+                        R.drawable.ic_anygry_bold,
+                        R.drawable.ic_laughing
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -908,6 +909,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     break;
                 case 4:
                     reactPost(postList.get(position), 5, position);
+                    break;
+                case 5:
+                    reactPost(postList.get(position), 6, position);
                     break;
                 default:
                     break;

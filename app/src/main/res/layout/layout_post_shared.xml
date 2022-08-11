@@ -402,7 +402,7 @@
                 android:layout_marginStart="@dimen/margin_8"
                 android:layout_marginRight="@dimen/margin_16"
                 android:layout_marginBottom="@dimen/margin_16"
-                android:text="7 comments" />
+                android:text="0 comments" />
 
             <TextView
                 android:id="@+id/txt_share"
@@ -411,7 +411,7 @@
                 android:layout_marginLeft="@dimen/margin_16"
                 android:layout_marginStart="@dimen/margin_8"
                 android:layout_marginBottom="@dimen/margin_16"
-                android:text="7 shares" />
+                android:text="0 shares" />
 
         </LinearLayout>
 

@@ -198,6 +198,9 @@ public interface ApiInterface {
     @GET(Constants.NOTIFICATIONS)
     Call<ApiResponse<List<AlertModelNew>>> getNotifications();
 
+    @GET(Constants.NOTIFICATIONS+ "/{senderId}/{receiverId}")
+    Call<ApiResponse<Object>> saveMessageNotifications(@Path("senderId") String senderId,@Path("receiverId") String receiverId);
+
     @GET(Constants.NOTIFICATIONS_COUNT)
     Call<ApiResponse<Object>> getNotificationsCount();
 

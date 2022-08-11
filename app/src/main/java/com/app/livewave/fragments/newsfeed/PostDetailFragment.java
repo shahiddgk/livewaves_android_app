@@ -219,7 +219,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         setReplyButtonInterface();
         setHasOptionsMenu(true);
 
-        et_comment.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
+//        et_comment.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_AUTO_CORRECT);
 
         img_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1536,7 +1536,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                         R.drawable.ic_normal_reply,
                         R.drawable.ic_sad_bold,
                         R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold
+                        R.drawable.ic_anygry_bold,
+                        R.drawable.ic_laughing
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -1556,6 +1557,9 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                     break;
                 case 4:
                     reactPost(postModel, 5);
+                    break;
+                case 5:
+                    reactPost(postModel, 6);
                     break;
                 default:
                     break;

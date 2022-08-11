@@ -315,7 +315,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                         R.drawable.ic_normal_reply,
                         R.drawable.ic_sad_bold,
                         R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold
+                        R.drawable.ic_anygry_bold,
+                        R.drawable.ic_laughing
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -335,6 +336,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                     break;
                 case 4:
                     reactOnComment(commentModelList.get(position), 5, userModel.getId(),position);
+                    break;
+                case 5:
+                    reactOnComment(commentModelList.get(position), 6, userModel.getId(),position);
                     break;
                 default:
                     break;

@@ -48,6 +48,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
     public static List<UserModel> sadReactions = new ArrayList<>();
     public static List<UserModel> wowReactions = new ArrayList<>();
     public static List<UserModel> angryReactions = new ArrayList<>();
+    public static List<UserModel> laughingReactions = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -101,11 +102,14 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
                 case ("5"):
                     angryReactions.add(data.get(i).getUser());
                     break;
+                case ("6"):
+                    laughingReactions.add(data.get(i).getUser());
+                    break;
                 default:
                     break;
             }
         }
-        reactionsCategoryLists = new ReactionsCategoryList(allReactions, smileReactions, mehReactions, sadReactions,wowReactions,angryReactions);
+        reactionsCategoryLists = new ReactionsCategoryList(allReactions, smileReactions, mehReactions, sadReactions,wowReactions,angryReactions,laughingReactions);
         reactionBottomSheetViewPagerAdapter = new ReactionBottomSheetViewPagerAdapter(getContext(), reactionsCategoryLists);
         vp_reactions.setAdapter(reactionBottomSheetViewPagerAdapter);
         reactionBottomSheetViewPagerAdapter.notifyDataSetChanged();
@@ -118,6 +122,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
         sadReactions.clear();
         wowReactions.clear();
         angryReactions.clear();
+        laughingReactions.clear();
     }
 
     private void initTabLayout(View view) {
@@ -132,7 +137,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
                     tab.setText("All");
                     break;
                 case 1:
-                    tab.setText("Smile");
+                    tab.setText("Happy");
                     tab.setIcon(getResources().getDrawable(R.drawable.ic_happy_reply));
                     break;
 
@@ -153,6 +158,11 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
                     System.out.println("angryReactions");
                     tab.setText("Angry");
                     tab.setIcon(getResources().getDrawable(R.drawable.ic_anygry_bold));
+                    break;
+                case 6:
+                    System.out.println("laughingReactions");
+                    tab.setText("Laugh");
+                    tab.setIcon(getResources().getDrawable(R.drawable.ic_laughing));
                     break;
             }
 

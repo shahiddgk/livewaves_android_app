@@ -24,8 +24,8 @@ android {
         applicationId "com.app.livewave"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 87
-        versionName "2.08"
+        versionCode 89
+        versionName "2.10"
         multiDexEnabled true
         ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
