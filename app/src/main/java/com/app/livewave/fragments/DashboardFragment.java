@@ -62,7 +62,11 @@ public class DashboardFragment extends Fragment implements PlayerStateListener {
                            int noti_count = (int) count;
                             System.out.println(noti_count);
                             if (noti_count != 0) {
-                                  navView.getOrCreateBadge(R.id.navigation_alert).setNumber(noti_count);
+                                if (noti_count>99) {
+                                    navView.getOrCreateBadge(R.id.navigation_alert).setNumber(99);
+                                } else {
+                                    navView.getOrCreateBadge(R.id.navigation_alert).setNumber(noti_count);
+                                }
                             }else {
                                 navView.getOrCreateBadge(R.id.navigation_alert).setNumber(0);
                                 navView.removeBadge(R.id.navigation_alert);

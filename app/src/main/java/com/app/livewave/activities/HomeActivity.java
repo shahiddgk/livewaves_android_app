@@ -77,6 +77,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
     AppBarLayout appBarLayout;
     int actionBarHeight;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    ConstraintLayout fullscreen_audio_view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         collapsingToolbarLayout.setContentScrimColor(getResources().getColor(R.color.buttercup));
 
         global_wavesplayer = findViewById(R.id.global_wavesplayer);
+        fullscreen_audio_view = findViewById(R.id.fullscreen_audio_view);
 
 //        global_wavesplayer.setOnClickListener(v -> {
 //            loadFragment(R.string.tag_now_playing, null);
@@ -351,7 +353,11 @@ public class HomeActivity extends WavesPlayerBaseActivity {
     public void onBackPressed() {
         // Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragment_container_view);
         int fragments = getSupportFragmentManager().getBackStackEntryCount();
-        if (fragments > 1) {
+
+        if (fullscreen_audio_view.getVisibility() == View.VISIBLE) {
+            fullscreen_audio_view.setVisibility(View.GONE);
+            findViewById(R.id.btn_close_full_screen_player).setVisibility(View.GONE);
+        } else if (fragments > 1) {
             getSupportFragmentManager().popBackStackImmediate();
         } else {
             finish();

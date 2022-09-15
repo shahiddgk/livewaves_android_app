@@ -55,12 +55,15 @@ public class Track implements Serializable {
     @SerializedName("total_play")
     @Expose
     private Integer totalPlay;
+    @SerializedName("qty")
+    @Expose
+    private Integer shareCount;
 
     private String name;
 
     private int playerState = 0;
 
-    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt) {
+    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt,Integer shareCount) {
         this.id = id;
         this.trackPath = trackPath;
         this.userId = userId;
@@ -77,9 +80,10 @@ public class Track implements Serializable {
         this.description = description;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.shareCount = shareCount;
     }
 
-    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt, String name) {
+    public Track(Integer id, String trackPath, Integer userId, String title, String artist_name, Integer categoryId,Integer totalPlay,Integer shareCount, String attachment, String status, String paid, String deleted, String isPublic, String amount, String description, String createdAt, String updatedAt, String name) {
         this.id = id;
         this.trackPath = trackPath;
         this.userId = userId;
@@ -97,6 +101,7 @@ public class Track implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.name = name;
+        this.shareCount = shareCount;
     }
 
     public Integer getId() {
@@ -153,6 +158,14 @@ public class Track implements Serializable {
 
     public void setTotalPlay(Integer totalPlay) {
         this.totalPlay = totalPlay;
+    }
+
+    public Integer getShareCount() {
+        return shareCount == null ? 0 : shareCount;
+    }
+
+    public void setShareCount(Integer shareCount) {
+        this.shareCount = shareCount;
     }
 
     public String getAttachment() {

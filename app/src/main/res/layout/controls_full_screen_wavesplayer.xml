@@ -7,9 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fullscreen_audio_view"
-        android:visibility="gone"
-        >
+        android:id="@+id/fullscreen_audio_view">
 
         <ImageView
             android:id="@+id/image_full_screen_view"
@@ -29,8 +27,8 @@
             <com.app.livewave.widgets.CircularSeekBar
                 android:id="@+id/song_progress_full_screen_circular"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
+                android:layout_width="270dp"
+                android:layout_height="270dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
@@ -72,16 +70,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
-                android:layout_marginStart="40dp"
                 android:weightSum="5">
 
 
                 <TextView
                     android:id="@+id/song_duration"
-                    android:layout_width="294dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="00.00"
+                    android:text="00:00"
                     android:textColor="#ffffff"
                     android:textSize="18sp"
 
@@ -136,17 +133,31 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <ImageButton
-        android:visibility="gone"
+<!--    <ImageButton-->
+<!--        android:visibility="gone"-->
+<!--        android:id="@+id/btn_close_full_screen_player"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:contentDescription="@string/app_name"-->
+<!--        android:elevation="@dimen/margin_5"-->
+<!--        android:paddingRight="10dp"-->
+<!--        android:paddingTop="10dp"-->
+<!--        android:src="@drawable/dropdown" />-->
+
+    <ImageView
+        android:layout_marginTop="@dimen/margin_60"
+        android:paddingTop="@dimen/margin_10"
         android:id="@+id/btn_close_full_screen_player"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/buttercup"
         android:layout_alignParentRight="true"
-        android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/app_name"
         android:elevation="@dimen/margin_5"
+        android:layout_marginRight="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="10dp"
-        android:src="@drawable/dropdown" />
+        android:src="@drawable/full_screen_close" />
 
 </RelativeLayout>

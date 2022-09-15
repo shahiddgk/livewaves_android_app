@@ -52,9 +52,11 @@ import com.app.livewave.interfaces.UploadingProgressInterface;
 import com.app.livewave.interfaces.onClickInterfaceForEditPost;
 import com.app.livewave.models.ParameterModels.OnRefreshPost;
 import com.app.livewave.models.ParameterModels.OnTouch;
+import com.app.livewave.models.ReadUnreadMessagesNotification;
 import com.app.livewave.models.ResponseModels.ApiResponse;
 import com.app.livewave.models.ResponseModels.GenericDataModel;
 import com.app.livewave.models.ResponseModels.PostModel;
+import com.app.livewave.models.ResponseModels.SubscriptionModel;
 import com.app.livewave.models.ResponseModels.UserModel;
 import com.app.livewave.retrofit.ApiClient;
 import com.app.livewave.utils.ApiManager;
@@ -94,7 +96,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
     private ImageView img_cover, editProfile, img_edit_event_cover;
     private ProgressBar progress_bar;
     private CircleImageView img_profile, img_status;
-    private TextView txt_name, txt_followers, txt_following, txt_bio;
+    private TextView txt_name, txt_followers, txt_following, txt_bio,ic_message_count;
     private UserModel userModel;
     private List<PostModel> posts = new ArrayList<>();
     private NestedScrollView nested_scroll_view;
@@ -148,8 +150,13 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
                 bottomSheetDialog.show(fm, "myDialog");
             }
         });
+
         root.findViewById(R.id.chat_card).setOnClickListener(v -> {
 //                startActivity(new Intent(getActivity(), InboxActivity.class));
+
+            readMessagesApiCall();
+
+
 
             ((HomeActivity) getActivity()).loadFragment(R.string.tag_inbox, null);
 
@@ -293,6 +300,22 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
             intent.putStringArrayListExtra("Images", images);
             startActivity(intent);
         });
+    }
+
+    private void readMessagesApiCall() {
+
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().readMessages(userModel.getId()), getContext(), new ApiResponseHandler<List<ReadUnreadMessagesNotification>>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<List<ReadUnreadMessagesNotification>>> data) {
+                System.out.println("Message Read Api Called");
+                System.out.println(data.body().getMessage());
+                if (data!=null) {
+                    ic_message_count.setText("0");
+                    ic_message_count.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
 
@@ -469,11 +492,13 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         img_profile = view.findViewById(R.id.img_profile);
         img_status = view.findViewById(R.id.img_status);
         txt_name = view.findViewById(R.id.txt_name);
+        ic_message_count = view.findViewById(R.id.ic_message_count);
         txt_followers = view.findViewById(R.id.txt_followers);
         txt_following = view.findViewById(R.id.txt_following);
         txt_bio = view.findViewById(R.id.txt_bio);
 //        dialog = BaseUtils.progressDialog(getActivity());
         loadingDialog = BaseUtils.showProgressDialog(getActivity());
+        loadUnreadMessages();
         getActionData();
         loadProfile();
         loadPost();
@@ -525,6 +550,34 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
                 loadProfile();
                 loadPost();
                 swipe_to_refresh.setRefreshing(false);
+            }
+        });
+    }
+
+    private void loadUnreadMessages() {
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().unReadMessages(), getContext(), new ApiResponseHandler<List<ReadUnreadMessagesNotification>>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<List<ReadUnreadMessagesNotification>>> data) {
+                System.out.println("UnRead Messages Api Called");
+                System.out.println(data.body().getMessage());
+                if (data!=null) {
+                    setDataForNotification(data.body().getData());
+                }
+            }
+
+            private void setDataForNotification(List< ReadUnreadMessagesNotification > data) {
+
+                    if (data.size() > 0) {
+
+                        ic_message_count.setVisibility(View.VISIBLE);
+                        if (data.size()>99) {
+                            ic_message_count.setText(data.size()+"+");
+                        } else {
+                            ic_message_count.setText(data.size() + "");
+                        }
+                    }else {
+                        ic_message_count.setVisibility(View.GONE);
+                    }
             }
         });
     }

@@ -295,12 +295,21 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
             stream_id = getIntent().getStringExtra("ID");
             STREAM_ID_TYPE = getIntent().getStringExtra("STREAM_ID_TYPE");
             isGuest = false;
+//            System.out.println("STREAM STREAM STREAM IS GUEST");
+//            System.out.println(getIntent().getStringExtra("PLATFORM_ID"));
+//            System.out.println(getIntent().getStringExtra("TITLE"));
+//            System.out.println(stream_id);
         } else {
             stream_title = getIntent().getStringExtra("Title");
             platform_id = getIntent().getStringExtra("HostPlatformId");
             myPlatformId = getIntent().getStringExtra("PlatformId");
             isGuest = true;
+//            System.out.println("STREAM STREAM STREAM");
+//            System.out.println(getIntent().getStringExtra("PlatformId"));
+//            System.out.println(getIntent().getStringExtra("Title"));
+//            System.out.println(stream_id);
         }
+
 
     }
 

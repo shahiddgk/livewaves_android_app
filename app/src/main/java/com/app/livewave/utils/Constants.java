@@ -49,6 +49,9 @@ public class Constants {
     public static final String CATEGORIES_API = "categories";
     public static final String USER_REACTION = "post";
     public static final String SHARE_POSTS_COUNT = "posts/{id}/shares/{sharingId}";
+    public static final String VIDEO_POSTS_COUNT = "waves/{id}/viewers/{sharingId}";
+    public static final String READ_MESSAGES = "read/messages/{id}";
+    public static final String UNREAD_MESSAGES = "unread/messages/count";
     public static final String NEWS_FEED = "newsfeed";
     public static final String WAVES_ITEMS_LIST = "waves";
     public static final String WAVES_ITEMS_LIST_WITH_ID = "waves/{id}";
@@ -175,6 +178,8 @@ public class Constants {
     public static final String[] videosExtensions = new String[]{"mp4", "webm", "avi", "3gp", "flv", "ogg"};
 
     public static final String URL = "URL";
+    public static final String VIDEO_VIEW_COUNT = "Video_View_Count";
+    public static final String VIDEO_SHARE_COUNT = "Video_Share_Count";
     public static final String HASH_TAG = "hashTag";
     public static final String VIEWS = "views";
     public static final String LIKE = "like";

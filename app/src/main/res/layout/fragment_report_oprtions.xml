@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/top_left_and_right_borders_round"
+    android:backgroundTint="@color/white"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_block"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawablePadding="@dimen/sp_20"
+            android:focusable="true"
+            android:padding="@dimen/margin_20"
+            android:text="Block"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_20"
+            android:drawableTint="@color/black"
+            app:drawableStartCompat="@drawable/ic_baseline_block_24" />
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_report"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawablePadding="@dimen/sp_20"
+            android:focusable="true"
+            android:padding="@dimen/margin_20"
+            android:text="Report"
+            android:textColor="@color/black"
+            android:drawableTint="@color/black"
+            android:textSize="@dimen/sp_20"
+            app:drawableStartCompat="@drawable/ic_outline_report_24" />
+
+
+    </LinearLayout>
+</LinearLayout>

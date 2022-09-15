@@ -186,6 +186,7 @@
                     android:layout_height="40dp"
                     android:layout_toLeftOf="@+id/waves_video"
                     android:layout_marginTop="@dimen/margin_16"
+                    android:layout_marginRight="@dimen/margin_20"
                     app:cardBackgroundColor="@color/white"
                     app:cardCornerRadius="20dp"
                     app:cardElevation="2dp">
@@ -226,7 +227,8 @@
                     android:layout_below="@+id/img_cover"
                     android:layout_marginTop="-40dp"
                     app:shape_roundRect_topLeftRadius="30dp"
-                    app:shape_roundRect_topRightRadius="30dp">
+                    app:shape_roundRect_topRightRadius="30dp"
+                    tools:ignore="MissingClass">
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -348,25 +350,50 @@
                         app:tint="@color/white" />
                 </com.google.android.material.card.MaterialCardView>
 
-                <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/chat_card"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="@dimen/margin_16"
-                    android:layout_marginTop="@dimen/margin_8"
-                    android:layout_marginBottom="@dimen/margin_8"
-                    app:cardBackgroundColor="@color/buttercup"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="2dp">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="8dp"
-                        android:src="@drawable/ic_comment"
-                        app:tint="@color/white" />
-                </com.google.android.material.card.MaterialCardView>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/chat_card"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginStart="@dimen/margin_16"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        app:cardBackgroundColor="@color/buttercup"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="2dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="8dp"
+                            android:src="@drawable/ic_comment"
+                            app:tint="@color/white" />
+
+
+                    </com.google.android.material.card.MaterialCardView>
+                    </LinearLayout>
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/ic_message_count"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/notification_badge"
+                        android:text="0"
+                        android:visibility="gone"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_events"

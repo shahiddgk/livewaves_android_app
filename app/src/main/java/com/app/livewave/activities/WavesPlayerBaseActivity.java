@@ -135,24 +135,39 @@ public class WavesPlayerBaseActivity extends AppCompatActivity implements View.O
             }, 200);
         }
 
-//        findViewById(R.id.floatPlayer).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                findViewById(R.id.btn_close_full_screen_player).setVisibility(View.VISIBLE);
-//                findViewById(R.id.fullscreen_audio_view).setVisibility(View.VISIBLE);
-//            }
-//        });
+        findViewById(R.id.imageViewControl).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findViewById(R.id.btn_close_full_screen_player).setVisibility(View.VISIBLE);
+                findViewById(R.id.fullscreen_audio_view).setVisibility(View.VISIBLE);
+            }
+        });
 
-//        findViewById(R.id.btn_close_full_screen_player).setOnClickListener(new View.OnClickListener() {
-//                                                                               @Override
-//                                                                               public void onClick(View view) {
-//                                                                                   findViewById(R.id.btn_close_full_screen_player).setVisibility(View.GONE);
-//                                                                                   findViewById(R.id.fullscreen_audio_view).setVisibility(View.GONE);
-//                                                                               }
-//                                                                           }
-//        );
+        findViewById(R.id.floatPlayer).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findViewById(R.id.btn_close_full_screen_player).setVisibility(View.VISIBLE);
+                findViewById(R.id.fullscreen_audio_view).setVisibility(View.VISIBLE);
+            }
+        });
+        findViewById(R.id.image_full_screen_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        findViewById(R.id.btn_close_full_screen_player).setOnClickListener(new View.OnClickListener() {
+                                                                               @Override
+                                                                               public void onClick(View view) {
+                                                                                   findViewById(R.id.btn_close_full_screen_player).setVisibility(View.GONE);
+                                                                                   findViewById(R.id.fullscreen_audio_view).setVisibility(View.GONE);
+                                                                               }
+                                                                           }
+        );
 
     }
+
 
     private void updatePlayingStatus() {
         if (playerStateListener != null) playerStateListener.updatePlayerState();
@@ -331,7 +346,7 @@ public class WavesPlayerBaseActivity extends AppCompatActivity implements View.O
 
     @Override
     public void onStopTrackingTouch(CircularSeekBar seekBar) {
-        mUserIsSeeking = true;
+        seekBar.getProgress();
     }
 
     @Override
@@ -354,13 +369,13 @@ public class WavesPlayerBaseActivity extends AppCompatActivity implements View.O
                 seekBarFullScreen.setProgress(position);
             }
             if (timerText != null && timerTextFullScreen!= null) {
-                runOnUiThread(() -> timerText.setText(String.format("%d:%d",
+                runOnUiThread(() -> timerText.setText(String.format("%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(Long.valueOf(position)),
                         TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(position)) -
                                 TimeUnit.MINUTES.toSeconds(
                                         TimeUnit.MILLISECONDS.toMinutes(Long.valueOf(position))))));
 
-                runOnUiThread(() -> timerTextFullScreen.setText(String.format("%d:%d",
+                runOnUiThread(() -> timerTextFullScreen.setText(String.format("%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(Long.valueOf(position)),
                         TimeUnit.MILLISECONDS.toSeconds(Long.valueOf(position)) -
                                 TimeUnit.MINUTES.toSeconds(

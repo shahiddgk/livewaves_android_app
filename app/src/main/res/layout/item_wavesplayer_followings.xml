@@ -142,6 +142,40 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/song_share_laylout"
+            android:layout_below="@id/uploadedBy"
+            android:layout_marginStart="@dimen/margin_3"
+            android:layout_marginTop="@dimen/margin_3"
+            android:layout_marginEnd="@dimen/margin_3"
+            android:layout_marginBottom="@dimen/margin_3"
+            android:layout_toRightOf="@+id/song_view_laylout"
+            android:background="@drawable/green_round_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/song_share_text"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/artistName"
+                android:layout_marginLeft="5dp"
+                android:text="0" />
+
+            <ImageView
+                android:paddingHorizontal="@dimen/margin_1"
+                android:layout_gravity="center"
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_baseline_playlist_add_24"
+                />
+
+        </LinearLayout>
+
 
 <!--        <TextView-->
 <!--            android:id="@+id/viewer_count"-->

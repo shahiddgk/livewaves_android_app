@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardCornerRadius="@dimen/margin_30"
+    app:elevation="5dp"
+    android:background="@drawable/exit_card_shape"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="@dimen/margin_30"
+    tools:context=".DialogSheets.ExitDialogueSheet">
+
+    <RelativeLayout
+        android:background="@drawable/exit_card_shape"
+        android:layout_marginVertical="@dimen/margin_10"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/report"
+            android:gravity="start"
+            android:layout_gravity="start"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+        <TextView
+
+            android:layout_marginLeft="@dimen/margin_10"
+            android:textSize="@dimen/margin_20"
+            android:gravity="start"
+            android:layout_gravity="start"
+            android:text="Report content for?"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_below="@+id/report"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:gravity="start"
+            android:layout_gravity="start"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/report_user"
+                android:layout_marginTop="@dimen/margin_15"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:id="@+id/rd1"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sexual Content?"
+                    />
+                <RadioButton
+                    android:id="@+id/rd2"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Violent or repulsive content?"
+                    />
+                <RadioButton
+                    android:id="@+id/rd3"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Hateful and abusive content?"
+                    />
+                <RadioButton
+                    android:id="@+id/rd4"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Harassment or bullying?"
+                    />
+                <RadioButton
+                    android:id="@+id/rd5"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Harmful or dangerous?"
+                    />
+                <RadioButton
+                    android:id="@+id/rd6"
+                    android:buttonTint="@color/buttercup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Promotes terrorism?"
+                    />
+
+            </RadioGroup>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/content"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_no"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_16"
+                android:backgroundTint="@color/pizza"
+                android:outlineProvider="background"
+                android:text="Cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/radius_12"
+                app:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_yes"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_16"
+                android:backgroundTint="@color/pizza"
+                android:outlineProvider="background"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                app:cornerRadius="@dimen/radius_12"
+                app:elevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

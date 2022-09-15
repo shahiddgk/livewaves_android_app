@@ -41,7 +41,7 @@ public class WavesTrendingTracksAdapters extends RecyclerView.Adapter<RecyclerVi
     int viewId;
     WPAdapterOptionsListener wpAdapterOptionsListener;
     Integer id;
-    Integer count;
+    Integer count,shareCount;
 
     public WavesTrendingTracksAdapters(WPAdapterOptionsListener wpAdapterOptionsListener, ArrayList<Track> songArrayList,
                                         Activity activity,
@@ -81,6 +81,22 @@ public class WavesTrendingTracksAdapters extends RecyclerView.Adapter<RecyclerVi
             } else {
                 classHolder.linearLayout.setVisibility(View.GONE);
             }
+
+
+            System.out.println("TOTAL SHARE SONG FOLLOWING");
+            System.out.println(songArrayList.get(position).getShareCount());
+            shareCount = songArrayList.get(position).getShareCount();
+            if (shareCount != 0) {
+                classHolder.shareCountLayout.setVisibility(View.VISIBLE);
+
+                classHolder.playListAdd.setText(shareCount.toString());
+
+            } else {
+
+                classHolder.shareCountLayout.setVisibility(View.GONE);
+
+            }
+
             System.out.println("TOTAL PRICE FOR FOLLOWING");
             System.out.println(songArrayList.get(position).getAmount());
             classHolder.songPricing.setText(songArrayList.get(position).getAmount() == null || songArrayList.get(position).getAmount() == "0" || songArrayList.get(position).getAmount().equals("0") ? "Free" : "$" + songArrayList.get(position).getAmount());
@@ -149,10 +165,10 @@ public class WavesTrendingTracksAdapters extends RecyclerView.Adapter<RecyclerVi
 
 
     class Holder extends RecyclerView.ViewHolder {
-        TextView songTitle, artistName, songPricing, uploadedBy,songView;
+        TextView songTitle, artistName, songPricing, uploadedBy,songView,playListAdd;
         ImageView settings_icon, image_song;
         ImageButton playPause;
-        LinearLayout linearLayout;
+        LinearLayout linearLayout,shareCountLayout;
 
         public Holder(View itemView) {
             super(itemView);
@@ -165,6 +181,8 @@ public class WavesTrendingTracksAdapters extends RecyclerView.Adapter<RecyclerVi
             linearLayout = itemView.findViewById(R.id.song_view_laylout);
             songView = itemView.findViewById(R.id.song_view_text);
             settings_icon = itemView.findViewById(R.id.settings_icon_following);
+            playListAdd = itemView.findViewById(R.id.song_share_text);
+            shareCountLayout = itemView.findViewById(R.id.song_share_laylout);
         }
     }
 

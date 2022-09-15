@@ -19,6 +19,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -318,7 +319,19 @@ public class WebviewActivity extends AppCompatActivity {
         @JavascriptInterface
         public void showMessage(String toast) {
             if (getIntent().getStringExtra("type").equals("stream")) {
-                getStreamById(getIntent().getStringExtra("id"));
+
+                if ((ActivityCompat.checkSelfPermission(mContext, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &&
+                        (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
+                    getStreamById(getIntent().getStringExtra("id"));
+                } else {
+                    Toast.makeText(mContext, "Permission Denied -> Go to Setting -> Allow Permission", Toast.LENGTH_SHORT).show();
+                    ActivityCompat.requestPermissions(
+                            WebviewActivity.this,
+                            new String[]{
+                                    android.Manifest.permission.CAMERA,
+                                    android.Manifest.permission.RECORD_AUDIO},
+                            1);
+                }
             } else {
                 finish();
             }
@@ -327,6 +340,8 @@ public class WebviewActivity extends AppCompatActivity {
     }
 
     private void getStreamById(String id) {
+//        System.out.println("STREAM DETAILS");
+//        System.out.println(id);
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -336,8 +351,14 @@ public class WebviewActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Response<ApiResponse<StreamModel>> data) {
                         StreamModel streamModel = data.body().getData();
+//                        System.out.println("STREAM DETAILS");
+//                        System.out.println(streamModel.getId());
+//                        System.out.println(streamModel.getPlatformID());
+//                        System.out.println(streamModel.getTitle());
+
                         Intent intent = new Intent(WebviewActivity.this, SubscriberActivity.class);
                         intent.putExtra("ID", streamModel.getId());
+                        intent.putExtra("Subscriber","Subscriber");
                         intent.putExtra("TITLE", streamModel.getTitle());
                         intent.putExtra("PLATFORM_ID", streamModel.getPlatformID());
                         intent.putExtra("STREAM_ID_TYPE", "stream_id");

@@ -262,7 +262,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
 
             commentReplyAdapter.notifyDataSetChanged();
 
-            holder.comment_replies_view.setHasFixedSize(true);
+            holder.comment_replies_view.setHasFixedSize(false);
             holder.comment_replies_view.setAdapter(commentReplyAdapter);
 
         }

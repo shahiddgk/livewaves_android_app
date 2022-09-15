@@ -26,13 +26,20 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.app.livewave.BottomDialogSheets.PostOptionsDialogFragment;
 import com.app.livewave.BottomDialogSheets.ReactionDetailFragment;
+import com.app.livewave.BottomDialogSheets.ReportDialogSheet;
+import com.app.livewave.BottomDialogSheets.ReportOptionsDialogSheet;
 import com.app.livewave.BottomDialogSheets.ShareBottomSheet;
+import com.app.livewave.DialogSheets.ExitDialogueSheet;
+import com.app.livewave.DialogSheets.report_content_list;
 import com.app.livewave.R;
 import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.activities.VideoPlayerActivity;
 import com.app.livewave.activities.WebviewActivity;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
+import com.app.livewave.interfaces.DialogBtnClickInterface;
+import com.app.livewave.interfaces.MessageInterface;
+import com.app.livewave.interfaces.PostOptionInterface;
 import com.app.livewave.interfaces.onClickInterfaceForEditPost;
 import com.app.livewave.models.ParameterModels.OnTouch;
 import com.app.livewave.models.ResponseModels.ApiResponse;
@@ -61,8 +68,10 @@ import com.hendraanggrian.appcompat.widget.SocialView;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
@@ -79,6 +88,8 @@ import static com.app.livewave.utils.Constants.NEWS_FEED;
 import static com.app.livewave.utils.Constants.POST_MODEL;
 import static com.app.livewave.utils.Constants.URL;
 import static com.app.livewave.utils.Constants.USER_ID;
+import static com.app.livewave.utils.Constants.VIDEO_SHARE_COUNT;
+import static com.app.livewave.utils.Constants.VIDEO_VIEW_COUNT;
 import static com.app.livewave.utils.setDescriptionsDataUtils.extractUrls;
 import static com.app.livewave.utils.setDescriptionsDataUtils.isContainLink;
 
@@ -166,7 +177,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         //        holder.txt_date.setText(DateUtils.getRelativeTimeSpanString(BaseUtils.getDate(postList.get(position).getCreatedAt())));
         holder.txt_date.setText(BaseUtils.convertFromUTCTime(postList.get(position).getCreatedAt()));
         if (postList.get(position).getUserId() != userModel.getId() && (userModel.getId() != userId || from.equals(NEWS_FEED)))
-            holder.iv_post_option.setVisibility(View.GONE);
+            holder.iv_post_option.setVisibility(View.VISIBLE);
         else
             holder.iv_post_option.setVisibility(View.VISIBLE);
 
@@ -247,7 +258,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 //                    ((HomeActivity) context).loadFragment(R.string.tag_webview, bundle);
                 });
                 holder.iv_shared_play_video.setOnClickListener(v -> {
+
+                    addViewCount(postList.get(position).getId()+"",position);
+
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
+                    String share_Count = postList.get(position).getTotalShares() + "";
+                    intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                    String view_Count = postList.get(position).getTotalViews() + "";
+                    intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
                     intent.putExtra(URL, sharedPostModel.getAttachments().get(0).getPath());
                     context.startActivity(intent);
                 });
@@ -316,7 +334,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 //                    ((HomeActivity) context).loadFragment(R.string.tag_webview, bundle);
                 });
                 holder.iv_play_video.setOnClickListener(v -> {
+
+                    addViewCount(postList.get(position).getId()+"",position);
+
                     Intent intent = new Intent(context, VideoPlayerActivity.class);
+                    System.out.println(postList.get(position).getTotalShares());
+                    String share_Count = postList.get(position).getTotalShares() + "";
+                    intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                    String view_Count = postList.get(position).getTotalViews() + "";
+                    intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
                     intent.putExtra(URL, postList.get(position).getAttachments().get(0).getPath());
                     context.startActivity(intent);
                 });
@@ -448,25 +474,118 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                 }
         );
         holder.iv_post_option.setOnClickListener(v -> {
-            PostOptionsDialogFragment postOptionsDialogFragment = new PostOptionsDialogFragment(postList.get(position), userModel.getId(), userId);
-            postOptionsDialogFragment.addListener(pressedButton -> {
-                if (pressedButton.equals(context.getString(R.string.delete))) {
-                    BaseUtils.showAlertDialog("Alert", "Are you sure want to delete this post?", context, positive -> {
-                        if (positive) {
-                            deletePost(position);
+            if (postList.get(position).getUserId() != userModel.getId() && (userModel.getId() != userId || from.equals(NEWS_FEED))) {
+                System.out.println("Options Clicked on Other Posts");
+
+                ReportOptionsDialogSheet dialogSheet = new ReportOptionsDialogSheet(userModel, userId, NEWS_FEED);
+                dialogSheet.addListener(new PostOptionInterface() {
+                    @Override
+                    public void pressed(String pressedButton) {
+                        if (pressedButton.equals("Report")) {
+                            BaseUtils.showAlertDialog("Report", "Are you sure, you want to report this post ?", context, new DialogBtnClickInterface() {
+                                @Override
+                                public void onClick(boolean positive) {
+                                    if (positive) {
+                                        reportDialog();
+                                    }
+                                }
+                            });
+
+
                         }
-                    });
-                } else if (pressedButton.equals(context.getString(R.string.edit))) {
-                    if (onClickInterfaceForEditPost != null) {
-                        onClickInterfaceForEditPost.onClickEdit(postList.get(position));
+                        dialogSheet.dismiss();
+
                     }
-                }  //add option if any
 
-                postOptionsDialogFragment.dismiss();
+                    private void reportDialog() {
 
-            });
-            FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
-            postOptionsDialogFragment.show(fragmentManager, "Post Option");
+                        report_content_list report_content_list = new report_content_list();
+                        FragmentManager fmm = ((FragmentActivity) context).getSupportFragmentManager();
+                        report_content_list.show(fmm, "report content");
+
+                        report_content_list.addListener(new PostOptionInterface() {
+                            @Override
+                            public void pressed(String PressedButton) {
+                                if (PressedButton == "Report") {
+                                    HashMap<String, Object> hashMap = new HashMap();
+                                    hashMap.put("reported_id", postList.get(position).getProfile().getId());
+                                    hashMap.put("message", "Content report");
+                                    hashMap.put("title", "Report");
+                                    ApiManager.apiCall(ApiClient.getInstance().getInterface().report(hashMap), context, new ApiResponseHandler<UserModel>() {
+                                        @Override
+                                        public void onSuccess(Response<ApiResponse<UserModel>> data) {
+//                            BaseUtils.showToast(UserProfileActivity.this, "Reported!");
+                                            report_content_list.dismiss();
+                                            postList.remove(position);
+                                            notifyDataSetChanged();
+                                            BaseUtils.showLottieDialog(context, "Reported!", R.raw.check, new DialogBtnClickInterface() {
+                                                @Override
+                                                public void onClick(boolean positive) {
+
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    report_content_list.dismiss();
+                                }
+                            }
+                        });
+
+//                        ReportDialogSheet enterAmountDialogSheet = new ReportDialogSheet(new MessageInterface() {
+//                            @Override
+//                            public void IAmountEnter(String mAmount) {
+//                                if (mAmount != null) {
+//                                    HashMap<String, Object> hashMap = new HashMap();
+//                                    hashMap.put("reported_id", postList.get(position).getProfile().getId());
+//                                    hashMap.put("message", mAmount);
+//                                    hashMap.put("title", "Report");
+//                                    ApiManager.apiCall(ApiClient.getInstance().getInterface().report(hashMap), context, new ApiResponseHandler<UserModel>() {
+//                                        @Override
+//                                        public void onSuccess(Response<ApiResponse<UserModel>> data) {
+////                            BaseUtils.showToast(UserProfileActivity.this, "Reported!");
+//                                            BaseUtils.showLottieDialog(context, "Reported!", R.raw.check, new DialogBtnClickInterface() {
+//                                                @Override
+//                                                public void onClick(boolean positive) {
+//
+//                                                }
+//                                            });
+//                                        }
+//                                    });
+//                                } else {
+//
+//                                }
+//                            }
+//                        });
+//                        FragmentManager fm = ((FragmentActivity) context).getSupportFragmentManager();
+//                        enterAmountDialogSheet.show(fm, "amount");
+                    }
+                });
+                FragmentManager fm = ((FragmentActivity) context).getSupportFragmentManager();
+                dialogSheet.show(fm, "myDialog");
+
+            } else {
+
+                PostOptionsDialogFragment postOptionsDialogFragment = new PostOptionsDialogFragment(postList.get(position), userModel.getId(), userId);
+                postOptionsDialogFragment.addListener(pressedButton -> {
+                    if (pressedButton.equals(context.getString(R.string.delete))) {
+                        BaseUtils.showAlertDialog("Alert", "Are you sure want to delete this post?", context, positive -> {
+                            if (positive) {
+                                deletePost(position);
+                            }
+                        });
+                    } else if (pressedButton.equals(context.getString(R.string.edit))) {
+                        if (onClickInterfaceForEditPost != null) {
+                            onClickInterfaceForEditPost.onClickEdit(postList.get(position));
+                        }
+                    }  //add option if any
+
+                    postOptionsDialogFragment.dismiss();
+
+                });
+                FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
+                postOptionsDialogFragment.show(fragmentManager, "Post Option");
+            }
         });
         holder.txt_reaction.setOnClickListener(v -> {
             ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment(String.valueOf(postList.get(position).getId()),"0");
@@ -522,6 +641,23 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 //                }
             }
         });
+    }
+
+    private void addViewCount(String trackId,int position) {
+        System.out.println(trackId);
+        System.out.println(userId);
+
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToVideoPostForViews(userId,trackId), context, new ApiResponseHandler<Object>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<Object>> data) {
+                System.out.println("Post View count added");
+                System.out.println(data.body().getMessage());
+                if (data.body().getMessage().equals("waves count updated Successfully")) {
+                    postList.get(position).setTotalViews(postList.get(position).getTotalViews() + 1);
+                }
+            }
+        });
+
     }
 
     private void addCount(String trackId, TextView txt_share) {

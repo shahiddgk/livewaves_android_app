@@ -9,6 +9,7 @@ import com.app.livewave.models.ParameterModels.CreateEventRequestModel;
 import com.app.livewave.models.ParameterModels.CreatePostModel;
 import com.app.livewave.models.ParameterModels.CreateStreamModel;
 import com.app.livewave.models.ParameterModels.HashtagsModel;
+import com.app.livewave.models.ReadUnreadMessagesNotification;
 import com.app.livewave.models.RequestModels.AddTrackToPlaylistModel;
 import com.app.livewave.models.RequestModels.ChangeSubscriptionStatus;
 import com.app.livewave.models.RequestModels.CreateSubscriptionRequestModel;
@@ -339,6 +340,15 @@ public interface ApiInterface {
 
     @GET(Constants.SHARE_POSTS_COUNT)
     Call<ApiResponse<Object>> addCountToPostForShare(@Path("id") Integer id,@Path("sharingId") String sharingId);
+
+    @GET(Constants.VIDEO_POSTS_COUNT)
+    Call<ApiResponse<Object>> addCountToVideoPostForViews(@Path("id") Integer id, @Path("sharingId") String sharingId);
+
+    @GET(Constants.READ_MESSAGES)
+    Call<ApiResponse<List<ReadUnreadMessagesNotification>>> readMessages(@Path("id") Integer id);
+
+    @GET(Constants.UNREAD_MESSAGES)
+    Call<ApiResponse<List<ReadUnreadMessagesNotification>>> unReadMessages();
 
     @GET(Constants.REELS_COUNT_NUMBER)
     Call<ApiResponse<Object>> addCountToWaves(@Path("id") Integer id,@Path("postId") Integer postId);

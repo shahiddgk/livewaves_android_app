@@ -6,11 +6,14 @@ import static com.app.livewave.utils.Constants.HIDE_HEADER;
 import static com.app.livewave.utils.Constants.OTHER_PERSON_PROFILE;
 import static com.app.livewave.utils.Constants.POST_CREATE_DIALOG;
 import static com.app.livewave.utils.Constants.SPECIFIC_USER_ID;
+import static com.app.livewave.utils.Constants.USER_PROFILE;
 import static com.app.livewave.utils.Constants.currentUser;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -25,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,9 +40,11 @@ import com.app.livewave.BottomDialogSheets.CreatePostDialogSheet;
 import com.app.livewave.BottomDialogSheets.EnterAmountDialogSheet;
 import com.app.livewave.BottomDialogSheets.OptionsDialogSheet;
 import com.app.livewave.BottomDialogSheets.ReportDialogSheet;
+import com.app.livewave.BottomDialogSheets.ReportOptionsDialogSheet;
 import com.app.livewave.R;
 import com.app.livewave.activities.FullScreenActivity;
 import com.app.livewave.activities.HomeActivity;
+import com.app.livewave.activities.SubscriberActivity;
 import com.app.livewave.activities.WebviewActivity;
 import com.app.livewave.adapters.PostAdapter;
 import com.app.livewave.interfaces.ApiResponseHandler;
@@ -95,7 +101,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
     private CreatePostDialogSheet bottomSheetDialog;
     private String userId;
     private LinearLayout ll_what_on_mind, layout_following, layout_followers;
-    private MaterialCardView chat_card, profile_follow_card, events_card, live_card, card_subscriptions_user;
+    private MaterialCardView chat_card, profile_follow_card, events_card, live_card, card_subscriptions_user,card_report_user;
     private UserModel userModel, otherUserModel;
     private KProgressHUD dialog;
     final Handler handler = new Handler();
@@ -358,35 +364,51 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 FragmentManager fm = getChildFragmentManager();
                 dialogSheet.show(fm, "myDialog");
 
-//                //Unfollow user
-//                if (userModel.getFollow().equals(1)) {
-//                    BaseUtils.showAlertDialog("Unfollow", "Are you sure want to unfollow " + userModel.getName() + " ?", UserProfileActivity.this, new DialogBtnClickInterface() {
-//                        @Override
-//                        public void onClick(boolean positive) {
-//                            if (positive) {
-//                                followUnFollowUser();
-//                            }
-//                        }
-//                    });
-//                } else {
-//                    followUnFollowUser();
-//
-//                }
-
-
-                //Follow user
-//                else if (userModel.getFollow().equals(0) && userModel.getRequested().equals(0) && userModel.getPrivate().equals("0")) {
-//                    followUnFollowUser();
-//                }
-//
-//
-//                //send request
-//                else if (userModel.getRequested().equals(0) && userModel.getFollow().equals(0)
-//                        && userModel.getPrivate().equals("1")) {
-//
-//                }
             }
         });
+
+        card_report_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReportOptionsDialogSheet dialogSheet = new ReportOptionsDialogSheet(otherUserModel, Integer.parseInt(userId),USER_PROFILE);
+                dialogSheet.addListener(new PostOptionInterface() {
+                    @Override
+                    public void pressed(String pressedButton) {
+                        if (pressedButton.equals("Report")) {
+                            BaseUtils.showAlertDialog("Report", "Are you sure, you want to report " + userModel.getName() + " ?", getActivity(), new DialogBtnClickInterface() {
+                                @Override
+                                public void onClick(boolean positive) {
+                                    if (positive) {
+                                        reportDialog();
+                                    }
+                                }
+                            });
+
+
+                        } else if (pressedButton.equals("Block")) {
+                            if (userModel.getIsBlocked().equals(0)) {
+                                BaseUtils.showAlertDialog("Block", "Are you sure, you want to block " + userModel.getName() + " ?", getActivity(), new DialogBtnClickInterface() {
+                                    @Override
+                                    public void onClick(boolean positive) {
+                                        if (positive) {
+                                            blockUser();
+                                        }
+                                    }
+                                });
+                            } else {
+                                blockUser();
+                            }
+                        }
+                        dialogSheet.dismiss();
+
+                    }
+                });
+                FragmentManager fm = getChildFragmentManager();
+                dialogSheet.show(fm, "myDialog");
+            }
+        });
+
+
         events_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -410,13 +432,15 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
             @Override
             public void onClick(View v) {
                 //if stream is paid
-                Intent intent;
                 if (otherUserModel.getStream().getAmount() > 0 && otherUserModel.getStream().getIsPaid() == 0) {
-                    intent = new Intent(getActivity(), WebviewActivity.class);
+
+                    System.out.println("Paid Stream");
+
+                    Intent intent = new Intent(getContext(), WebviewActivity.class);
                     intent.putExtra("id", "stream_id=" + otherUserModel.getStream().getId());
                     intent.putExtra("type", "stream");
                     intent.putExtra("intent_type", "6");
-
+                    startActivity(intent);
 //                    Bundle bundle = new Bundle();
 //                    bundle.putString("id", "stream_id=" + otherUserModel.getStream().getId());
 //                    bundle.putString("type", "stream");
@@ -425,21 +449,47 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 }
                 //if stream is free or the person already paid of the stream
                 else {
-//                    intent = new Intent(UserProfileActivity.this, SubscriberActivity.class);
+                    System.out.println("Stream Testing");
+                    System.out.println(otherUserModel.getStream().getId());
+                    System.out.println(otherUserModel.getStream().getTitle());
+                    System.out.println(otherUserModel.getStream().getPlatformID());
+
+                    if ((ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) &&
+                            (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)) {
+
+                        Intent intent = new Intent(getContext(), SubscriberActivity.class);
+                        intent.putExtra("ID", otherUserModel.getStream().getId().toString());
+                        intent.putExtra("TITLE", otherUserModel.getStream().getTitle());
+                        intent.putExtra("PLATFORM_ID", otherUserModel.getStream().getPlatformID());
+                        intent.putExtra("STREAM_ID_TYPE", "stream_id");
+                        intent.putExtra("Subscriber", "Subscriber");
+                        startActivity(intent);
+
+                    } else {
+                        Toast.makeText(getContext(), "Permission Denied -> Go to Setting -> Allow Permission", Toast.LENGTH_SHORT).show();
+                        ActivityCompat.requestPermissions(
+                                getActivity(),
+                                new String[]{
+                                        android.Manifest.permission.CAMERA,
+                                        android.Manifest.permission.RECORD_AUDIO},
+                                1);
+                    }
+
+//                    intent = new Intent(getContext(), SubscriberActivity.class);
 //                    intent.putExtra("ID", otherUserModel.getStream().getId());
 //                    intent.putExtra("TITLE", otherUserModel.getStream().getTitle());
 //                    intent.putExtra("PLATFORM_ID", otherUserModel.getStream().getPlatformID());
 //                    intent.putExtra("STREAM_ID_TYPE", "stream_id");
 //                    intent.putExtra("Subscriber", "Subscriber");
-//                startActivity(intent);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("ID", otherUserModel.getStream().getId());
-                    bundle.putString("TITLE", otherUserModel.getStream().getTitle());
-                    bundle.putString("PLATFORM_ID", otherUserModel.getStream().getPlatformID());
-                    bundle.putString("STREAM_ID_TYPE", "stream_id");
-                    bundle.putString("Subscriber", "Subscriber");
-                    ((HomeActivity) getActivity()).loadFragment(R.string.tag_subscriber, bundle);
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putInt("ID", otherUserModel.getStream().getId());
+//                    bundle.putString("TITLE", otherUserModel.getStream().getTitle());
+//                    bundle.putString("PLATFORM_ID", otherUserModel.getStream().getPlatformID());
+//                    bundle.putString("STREAM_ID_TYPE", "stream_id");
+//                    bundle.putString("Subscriber", "Subscriber");
+//                    ((HomeActivity) getActivity()).loadFragment(R.string.tag_subscriber, bundle);
                 }
             }
         });
@@ -596,6 +646,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
         dialog = BaseUtils.progressDialog(getActivity());
         live_card = view.findViewById(R.id.live_card);
         card_subscriptions_user = view.findViewById(R.id.card_subscriptions_user);
+        card_report_user = view.findViewById(R.id.card_report_user);
         tv_account_status = view.findViewById(R.id.tv_account_status);
         swipe_to_refresh = view.findViewById(R.id.swipe_to_refresh);
         layout_followers = view.findViewById(R.id.layout_followers);

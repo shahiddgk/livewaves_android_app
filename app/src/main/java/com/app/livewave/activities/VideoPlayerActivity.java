@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,21 +27,31 @@ public class VideoPlayerActivity extends AppCompatActivity implements EventListe
     PlayerView exoplayerView;
     SimpleExoPlayer absPlayerInternal;
     int appNameStringRes = R.string.app_name;
-
+    TextView txt_view_count,txt_share_count;
+    String shareCount,viewCount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        shareCount = getIntent().getStringExtra(Constants.VIDEO_SHARE_COUNT);
+        System.out.println(shareCount);
+
+        viewCount = getIntent().getStringExtra(Constants.VIDEO_VIEW_COUNT);
+        System.out.println(viewCount);
+
         initViews();
         String url = getIntent().getStringExtra(Constants.URL);
         System.out.println(url);
+
         absPlayerInternal = new SimpleExoPlayer.Builder(this).build();
         exoplayerView.setPlayer(absPlayerInternal);
         MediaItem mediaItem = MediaItem.fromUri(url);
         absPlayerInternal.setMediaItem(mediaItem);
         absPlayerInternal.prepare();
         absPlayerInternal.play();
+
 
         findViewById(R.id.img_back).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +62,18 @@ public class VideoPlayerActivity extends AppCompatActivity implements EventListe
     }
 
     private void initViews() {
+
         exoplayerView = findViewById(R.id.exoplayerView);
+        txt_view_count = findViewById(R.id.txt_video_view_count);
+        txt_share_count = findViewById(R.id.txt_video_share_count);
+
+        setData();
+    }
+
+    private void setData() {
+        System.out.println("THis Execution");
+        txt_share_count.setText(shareCount);
+        txt_view_count.setText(viewCount);
     }
 
     @Override

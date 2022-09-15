@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentSkipListMap;
 
+import static com.app.livewave.utils.Constants.VIDEO_SHARE_COUNT;
+import static com.app.livewave.utils.Constants.VIDEO_VIEW_COUNT;
+
 
 public class GettingStartedAdapter extends RecyclerView.Adapter<GettingStartedAdapter.MyViewHolder> {
 
@@ -49,6 +52,10 @@ public class GettingStartedAdapter extends RecyclerView.Adapter<GettingStartedAd
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, VideoPlayerActivity.class);
+
+                intent.putExtra(VIDEO_SHARE_COUNT,"0");
+
+                intent.putExtra(VIDEO_VIEW_COUNT,"0");
                 intent.putExtra(Constants.URL, videoModelList.get(position).getVideo());
                 context.startActivity(intent);
             }

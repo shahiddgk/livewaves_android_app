@@ -134,6 +134,8 @@ import static com.app.livewave.utils.Constants.HIDE_HEADER;
 import static com.app.livewave.utils.Constants.REQUEST_IMAGE_CAPTURE;
 import static com.app.livewave.utils.Constants.URL;
 import static com.app.livewave.utils.Constants.USER_ID;
+import static com.app.livewave.utils.Constants.VIDEO_SHARE_COUNT;
+import static com.app.livewave.utils.Constants.VIDEO_VIEW_COUNT;
 import static com.app.livewave.utils.Constants.currentUser;
 import static com.app.livewave.utils.setDescriptionsDataUtils.commentModel;
 import static com.app.livewave.utils.setDescriptionsDataUtils.extractUrls;
@@ -831,7 +833,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 //        }
 
         iv_shared_play_video.setOnClickListener(v -> {
+            addViewCount(postModel.getId()+"");
             Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+            String share_Count = sharedPostModel.getTotalShares() + "";
+            intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+            String view_Count = sharedPostModel.getTotalViews() + "";
+            intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
             intent.putExtra(URL, sharedPostModel.getAttachments().get(0).getPath());
             startActivity(intent);
         });
@@ -906,6 +913,22 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment(String.valueOf(postModel.getId()),"0");
             FragmentManager fragmentManager = getChildFragmentManager();
             reactionDetailFragment.show(fragmentManager, "Reactions");
+        });
+    }
+
+    private void addViewCount(String id) {
+        System.out.println(id);
+        System.out.println(userId);
+
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToVideoPostForViews(userId,id), getContext(), new ApiResponseHandler<Object>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<Object>> data) {
+                System.out.println("Post View count added");
+                System.out.println(data.body().getMessage());
+                if (data.body().getMessage().equals("waves count updated Successfully")) {
+                   postModel.setTotalViews(postModel.getTotalViews() + 1);
+                }
+            }
         });
     }
 
@@ -1467,7 +1490,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 iv_play_video.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        addViewCount(postModel.getId()+"");
                         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                        String share_Count = postModel.getTotalShares() + "";
+                        intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                        String view_Count = postModel.getTotalViews() + "";
+                        intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
                         intent.putExtra(URL, postModel.getAttachments().get(0).getPath());
                         startActivity(intent);
                     }
@@ -1475,7 +1503,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 iv_shared_play_video.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        addViewCount(postModel.getId()+"");
                         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
+                        String share_Count = postModel.getTotalShares() + "";
+                        intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                        String view_Count = postModel.getTotalViews() + "";
+                        intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
                         intent.putExtra(URL, postModel.getAttachments().get(0).getPath());
                         startActivity(intent);
                     }

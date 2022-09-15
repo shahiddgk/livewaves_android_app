@@ -54,6 +54,9 @@ public class PostModel implements Serializable {
     @SerializedName("total_shares")
     @Expose
     private int totalShares;
+    @SerializedName("waves_view_count")
+    @Expose
+    private int totalViews;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -255,6 +258,14 @@ public class PostModel implements Serializable {
 
     public void setTotalShares(int totalShares) {
         this.totalShares = totalShares;
+    }
+
+    public int getTotalViews() {
+        return totalViews;
+    }
+
+    public void setTotalViews(int totalViews) {
+        this.totalViews = totalViews;
     }
 
 
