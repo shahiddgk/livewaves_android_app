@@ -32,7 +32,10 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -120,7 +123,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.txt_msg.setText(messageList.get(position).message);
         Glide.with(context).load(messageList.get(position).attachment).into(holder.img_picture);
-        holder.txt_message_time.setText(BaseUtils.getTimeFromMiliSecond(messageList.get(position).getSentAt()));
+
+        Date date = new Date(messageList.get(position).sentAt);
+        DateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");
+
+        holder.txt_message_time.setText(dateFormat.format(date) +"  "+BaseUtils.getTimeFromMiliSecond(messageList.get(position).getSentAt()));
 
         if (messageList.get(position).senderId == userModel.getId()) {
 

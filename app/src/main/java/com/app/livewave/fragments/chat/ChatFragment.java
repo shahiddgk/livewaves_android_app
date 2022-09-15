@@ -369,7 +369,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         img_show_options = view.findViewById(R.id.img_show_options);
         img_select_picture = view.findViewById(R.id.img_select_picture);
         img_record = view.findViewById(R.id.img_record);
-        img_location = view.findViewById(R.id.img_location);
+   //     img_location = view.findViewById(R.id.img_location);
         img_send = view.findViewById(R.id.img_send);
         et_message = view.findViewById(R.id.et_message);
 

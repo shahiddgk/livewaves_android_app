@@ -292,12 +292,13 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
     private void initReactionsListener(int position, Holder holder) {
         ReactionsConfig config = new ReactionsConfigBuilder(context)
                 .withReactions(new int[]{
-                        R.drawable.ic_happy_reply,
-                        R.drawable.ic_normal_reply,
-                        R.drawable.ic_sad_bold,
-                        R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold,
-                        R.drawable.ic_laughing
+                        R.drawable.smile,
+                        R.drawable.meh,
+                        R.drawable.sad,
+                        R.drawable.sad,
+                        R.drawable.angry,
+                        R.drawable.laughing,
+                        R.drawable.crying
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -320,6 +321,9 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
                     break;
                 case 5:
                     reactOnComment(commentModelList.get(position), 6, userModel.getId(),position);
+                    break;
+                case 6:
+                    reactOnComment(commentModelList.get(position), 7, userModel.getId(),position);
                     break;
                 default:
                     break;

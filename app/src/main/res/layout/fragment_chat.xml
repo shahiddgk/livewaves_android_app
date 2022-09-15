@@ -77,16 +77,16 @@
                     android:visibility="gone"
                     app:tint="@color/buttercup" />
 
-                <ImageView
-                    android:id="@+id/img_location"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="15dp"
-                    android:layout_toEndOf="@id/img_record"
-                    android:src="@drawable/ic_cursor"
-                    android:visibility="gone"
-                    app:tint="@color/buttercup" />
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_location"-->
+<!--                    android:layout_width="15dp"-->
+<!--                    android:layout_height="15dp"-->
+<!--                    android:layout_centerVertical="true"-->
+<!--                    android:layout_marginStart="15dp"-->
+<!--                    android:layout_toEndOf="@id/img_record"-->
+<!--                    android:src="@drawable/ic_cursor"-->
+<!--                    android:visibility="gone"-->
+<!--                    app:tint="@color/buttercup" />-->
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
                     android:layout_toStartOf="@+id/img_send"
-                    android:layout_toEndOf="@id/img_location"
+                    android:layout_toEndOf="@id/img_record"
                     app:cardCornerRadius="@dimen/radius_12">
 
                     <com.google.android.material.textfield.TextInputEditText

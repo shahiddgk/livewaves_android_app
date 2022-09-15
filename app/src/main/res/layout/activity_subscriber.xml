@@ -236,20 +236,22 @@
     <LinearLayout
         android:layout_marginTop="@dimen/dimen_150"
         android:layout_below="@+id/tv_title"
-        android:id="@+id/r2_android"
+        android:id="@+id/ll_chat_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackgroundBorderless"
         android:layout_marginBottom="@dimen/margin_50"
         android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_chat"
-        android:layout_width="match_parent"
+        android:layout_width="280dp"
         android:layout_height="420dp"
-        android:layout_marginStart="@dimen/margin_16"
-        android:layout_marginEnd="@dimen/margin_16" />
+        android:layout_marginStart="@dimen/margin_10"/>
     </LinearLayout>
 
     <LinearLayout

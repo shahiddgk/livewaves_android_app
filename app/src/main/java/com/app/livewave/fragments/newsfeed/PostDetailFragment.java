@@ -1565,12 +1565,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private void setUpReactionsClick() {
         ReactionsConfig config = new ReactionsConfigBuilder(getActivity())
                 .withReactions(new int[]{
-                        R.drawable.ic_happy_reply,
-                        R.drawable.ic_normal_reply,
-                        R.drawable.ic_sad_bold,
-                        R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold,
-                        R.drawable.ic_laughing
+                        R.drawable.smile,
+                        R.drawable.meh,
+                        R.drawable.sad,
+                        R.drawable.wow,
+                        R.drawable.angry,
+                        R.drawable.laughing,
+                        R.drawable.crying
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -1593,6 +1594,9 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                     break;
                 case 5:
                     reactPost(postModel, 6);
+                    break;
+                case 6:
+                    reactPost(postModel, 7);
                     break;
                 default:
                     break;

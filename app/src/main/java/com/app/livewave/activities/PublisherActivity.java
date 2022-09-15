@@ -39,6 +39,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.livewave.BottomDialogSheets.InviteUserDialogSheet;
 import com.app.livewave.R;
 import com.app.livewave.adapters.LiveChatAdapter;
+import com.app.livewave.fragments.live.OnSwipeTouchListener;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
@@ -121,7 +122,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
     boolean isEvent;
     int width, height;
     MaterialCardView cardLive;
-    LinearLayout ll_guest;
+    LinearLayout ll_guest,ll_chat;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -405,6 +406,24 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
         rv_chat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new LiveChatAdapter(this);
         rv_chat.setAdapter(adapter);
+
+        ll_chat = findViewById(R.id.ll_chat_main);
+
+        ll_chat.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(PublisherActivity.this, "Left", Toast.LENGTH_SHORT).show();
+                rv_chat.animate().translationX(-700).setDuration(600);
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(PublisherActivity.this, "Right", Toast.LENGTH_SHORT).show();
+                rv_chat.animate().translationX(0).setDuration(600);
+
+            }
+        });
+
 
         tv_title.setText(title);
 

@@ -67,19 +67,21 @@
         android:layout_alignParentBottom="true" />
 
     <LinearLayout
-        android:id="@+id/rl_chat"
+        android:id="@+id/ll_chat_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackgroundBorderless"
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
-            android:layout_width="match_parent"
+            android:layout_width="280dp"
             android:layout_height="200dp"
-            android:layout_marginStart="@dimen/margin_16"
-            android:layout_marginEnd="@dimen/margin_16" />
+            android:layout_marginStart="@dimen/margin_10" />
 
         <LinearLayout
             android:id="@+id/ll_chat"

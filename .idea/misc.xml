@@ -58,6 +58,14 @@
         <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/tag_item.xml" value="0.4320652173913043" />
         <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/track_options_dialog.xml" value="0.41983695652173914" />
         <entry key="..\:/WorkingProjects/livewaves2.0_android/app/src/main/res/layout/track_unlike_options_dialog.xml" value="0.41983695652173914" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/activity_publisher.xml" value="0.24954710144927536" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/activity_subscriber.xml" value="0.18802083333333333" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/fragment_chat.xml" value="0.24954710144927536" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/fragment_friend_request.xml" value="0.24954710144927536" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/layout_post_attachment.xml" value="0.18802083333333333" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/layout_post_shared.xml" value="0.18802083333333333" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/layout_post_text.xml" value="0.18802083333333333" />
+        <entry key="..\:/xampp/htdocs/livewaves_android_app/app/src/main/res/layout/layout_post_video.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable-xxhdpi/green_round_bg.xml" value="0.24479166666666666" />
         <entry key="app/src/main/res/drawable/ic_attach_money_black_24dp.xml" value="0.29010416666666666" />
         <entry key="app/src/main/res/drawable/ic_baseline_playlist_add_24.xml" value="0.17864583333333334" />
@@ -125,7 +133,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

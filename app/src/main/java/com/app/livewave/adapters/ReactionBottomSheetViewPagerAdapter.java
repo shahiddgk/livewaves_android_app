@@ -71,7 +71,12 @@ public class ReactionBottomSheetViewPagerAdapter extends RecyclerView.Adapter<Re
                     break;
                 case 6:
                     postReactionsAdapter = new PostReactionsAdapter(userReactions.getLaughingReactions(), context);
-                    noReactionsVisibility(userReactions.getAngryReactions(), "Laughing Reactions", holder.tv_no_reactions);
+                    noReactionsVisibility(userReactions.getLaughingReactions(), "Laughing Reactions", holder.tv_no_reactions);
+
+                    break;
+                case 7:
+                    postReactionsAdapter = new PostReactionsAdapter(userReactions.getCryingReactions(), context);
+                    noReactionsVisibility(userReactions.getCryingReactions(), "Laughing Reactions", holder.tv_no_reactions);
 
                     break;
             }
@@ -98,7 +103,7 @@ public class ReactionBottomSheetViewPagerAdapter extends RecyclerView.Adapter<Re
 
     @Override
     public int getItemCount() {
-        return 7;
+        return 8;
     }
 
     public static class ViewPagerViewHolder extends RecyclerView.ViewHolder {

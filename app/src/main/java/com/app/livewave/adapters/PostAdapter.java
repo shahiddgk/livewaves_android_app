@@ -175,7 +175,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         }
 
         //        holder.txt_date.setText(DateUtils.getRelativeTimeSpanString(BaseUtils.getDate(postList.get(position).getCreatedAt())));
-        holder.txt_date.setText(BaseUtils.convertFromUTCTime(postList.get(position).getCreatedAt()));
+        holder.txt_date.setText(BaseUtils.convertFromUTCTime(postList.get(position).getCreatedAt())+ "  " + BaseUtils.getTimeFromDate(postList.get(position).getCreatedAt()));
         if (postList.get(position).getUserId() != userModel.getId() && (userModel.getId() != userId || from.equals(NEWS_FEED)))
             holder.iv_post_option.setVisibility(View.VISIBLE);
         else
@@ -1020,12 +1020,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     private void initReactionsListener(int position, MyViewHolder holder) {
         ReactionsConfig config = new ReactionsConfigBuilder(context)
                 .withReactions(new int[]{
-                        R.drawable.ic_happy_reply,
-                        R.drawable.ic_normal_reply,
-                        R.drawable.ic_sad_bold,
-                        R.drawable.ic_wow_bold,
-                        R.drawable.ic_anygry_bold,
-                        R.drawable.ic_laughing
+                        R.drawable.smile,
+                        R.drawable.meh,
+                        R.drawable.sad,
+                        R.drawable.wow,
+                        R.drawable.angry,
+                        R.drawable.laughing,
+                        R.drawable.crying
                 }).withPopupGravity(PopupGravity.SCREEN_LEFT)
                 .build();
 
@@ -1048,6 +1049,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
                     break;
                 case 5:
                     reactPost(postList.get(position), 6, position);
+                    break;
+                case 6:
+                    reactPost(postList.get(position), 7, position);
                     break;
                 default:
                     break;

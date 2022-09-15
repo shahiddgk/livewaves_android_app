@@ -41,6 +41,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.app.livewave.BottomDialogSheets.EnterAmountDialogSheet;
 import com.app.livewave.R;
 import com.app.livewave.adapters.LiveChatAdapter;
+import com.app.livewave.fragments.live.OnSwipeTouchListener;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
 import com.app.livewave.interfaces.Direction;
@@ -127,6 +128,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
     Boolean isJoined = false;
     
     Boolean isFullScreen = false;
+    LinearLayout ll_chat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -528,6 +530,23 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
         rv_chat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         adapter = new LiveChatAdapter(this);
         rv_chat.setAdapter(adapter);
+
+        ll_chat = findViewById(R.id.ll_chat_main);
+        ll_chat.setOnTouchListener(new OnSwipeTouchListener(this) {
+            @Override
+            public void onSwipeLeft() {
+                Toast.makeText(SubscriberActivity.this, "Left", Toast.LENGTH_SHORT).show();
+                rv_chat.animate().translationX(-700).setDuration(600);
+            }
+
+            @Override
+            public void onSwipeRight() {
+                Toast.makeText(SubscriberActivity.this, "Right", Toast.LENGTH_SHORT).show();
+                rv_chat.animate().translationX(0).setDuration(600);
+
+            }
+        });
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;

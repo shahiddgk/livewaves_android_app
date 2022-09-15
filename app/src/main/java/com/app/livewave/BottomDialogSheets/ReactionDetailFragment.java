@@ -49,6 +49,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
     public static List<UserModel> wowReactions = new ArrayList<>();
     public static List<UserModel> angryReactions = new ArrayList<>();
     public static List<UserModel> laughingReactions = new ArrayList<>();
+    public static List<UserModel> cryingReactions = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -109,7 +110,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
                     break;
             }
         }
-        reactionsCategoryLists = new ReactionsCategoryList(allReactions, smileReactions, mehReactions, sadReactions,wowReactions,angryReactions,laughingReactions);
+        reactionsCategoryLists = new ReactionsCategoryList(allReactions, smileReactions, mehReactions, sadReactions,wowReactions,angryReactions,laughingReactions,cryingReactions);
         reactionBottomSheetViewPagerAdapter = new ReactionBottomSheetViewPagerAdapter(getContext(), reactionsCategoryLists);
         vp_reactions.setAdapter(reactionBottomSheetViewPagerAdapter);
         reactionBottomSheetViewPagerAdapter.notifyDataSetChanged();
@@ -123,6 +124,7 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
         wowReactions.clear();
         angryReactions.clear();
         laughingReactions.clear();
+        cryingReactions.clear();
     }
 
     private void initTabLayout(View view) {
@@ -138,31 +140,36 @@ public class ReactionDetailFragment extends BottomSheetDialogFragment {
                     break;
                 case 1:
                     tab.setText("Happy");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_happy_reply));
+                    tab.setIcon(getResources().getDrawable(R.drawable.smile));
                     break;
 
                 case 2:
                     tab.setText("Meh");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_normal_reply));
+                    tab.setIcon(getResources().getDrawable(R.drawable.meh));
                     break;
                 case 3:
                     tab.setText("Sad");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_sad_bold));
+                    tab.setIcon(getResources().getDrawable(R.drawable.sad));
                     break;
                 case 4:
                     System.out.println("wowReactions");
                     tab.setText("Wow");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_wow_bold));
+                    tab.setIcon(getResources().getDrawable(R.drawable.wow));
                     break;
                 case 5:
                     System.out.println("angryReactions");
                     tab.setText("Angry");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_anygry_bold));
+                    tab.setIcon(getResources().getDrawable(R.drawable.angry));
                     break;
                 case 6:
                     System.out.println("laughingReactions");
                     tab.setText("Laugh");
-                    tab.setIcon(getResources().getDrawable(R.drawable.ic_laughing));
+                    tab.setIcon(getResources().getDrawable(R.drawable.laughing));
+                    break;
+                case 7:
+                    System.out.println("cryingReactions");
+                    tab.setText("crying");
+                    tab.setIcon(getResources().getDrawable(R.drawable.laughing));
                     break;
             }
 

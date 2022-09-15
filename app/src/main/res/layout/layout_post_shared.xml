@@ -67,6 +67,10 @@
                     android:textColor="@color/thunder"
                     android:textSize="20sp" />
             </LinearLayout>
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
@@ -333,11 +337,11 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/txt_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_8" />
+<!--    <TextView-->
+<!--        android:id="@+id/txt_date"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="@dimen/margin_8" />-->
     <LinearLayout
         android:id="@+id/ll_privacy_item"
         android:layout_width="match_parent"
