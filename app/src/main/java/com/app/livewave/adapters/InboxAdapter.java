@@ -5,6 +5,7 @@ import static com.app.livewave.utils.Constants.HEADER_TITLE;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +44,16 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
     Context context;
     int currentUserId;
     FirebaseFirestore rootRef;
+    public static int clickedChatPosition;
+
 
     public InboxAdapter(Context context, Integer id) {
         this.context = context;
         this.inboxList = new ArrayList<>();
         this.currentUserId = id;
         rootRef = FirebaseFirestore.getInstance();
+
+
     }
 
     @NonNull
@@ -128,6 +133,8 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
 //                intent.putExtra("inboxModel", myJson);
 //                context.startActivity(intent);
 
+                clickedChatPosition = position;
+
                 Bundle bundle = new Bundle();
                 bundle.putString("inboxModel", myJson);
                 if (!inboxList.get(position).getTitle().equals("")) {
@@ -154,6 +161,9 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
         this.inboxList = new ArrayList<>();
         this.inboxList = inboxModelList;
         notifyDataSetChanged();
+        for (int i = 0; i < inboxList.size(); i++) {
+            Log.e("inbox members", "InboxAdapter: " + inboxList.get(i).members );
+        }
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

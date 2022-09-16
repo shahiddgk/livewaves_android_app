@@ -33,13 +33,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.paperdb.Paper;
 
 public class InboxFragment extends Fragment implements PlayerStateListener {
 
-//    private Toolbar toolbar;
+    //    private Toolbar toolbar;
     RecyclerView rv_inbox;
     InboxAdapter adapter;
     FirebaseFirestore rootRef;
@@ -51,19 +52,41 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     TextView txt_new_group;
     static InboxFragment instance;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        rootRef = FirebaseFirestore.getInstance();
+        Paper.init(getActivity());
+        userModel = Paper.book().read(Constants.currentUser);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
         setHasOptionsMenu(true);
         initViews(view);
-        initClickListener();
-        getInboxListFromFirebase();
+
 
         return view;
     }
 
-//    @Override
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initClickListener();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getInboxListFromFirebase();
+        setUpRecyclerView();
+    }
+
+    //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_inbox);
@@ -95,13 +118,16 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                 if (error != null) {
                     Log.e("ErrorFetchingData", error.toString());
                 }
-                inboxModelList.clear();
+              //  inboxModelList.clear();
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
+                        Log.e("TAG", "onEvent: " + dc.getType());
                         switch (dc.getType()) {
                             case ADDED:
                                 InboxModel chatRoot = dc.getDocument().toObject(InboxModel.class);
                                 inboxModelList.add(chatRoot);
+                                Log.e("TAG", "onEvent: "  + inboxModelList.size() );
+                                Log.e("inbox size", "onEvent: " + inboxModelList.size());
                                 int pos = -1;
                                 for (int i = inboxModelList.size() - 1; i > -1; i--) {
                                     for (int j = 0; j < inboxModelList.get(i).membersInfo.size(); j++) {
@@ -116,7 +142,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     }
                                     pos = -1;
                                 }
-                                //adapter.setList(inboxModelList);
+                                // adapter.setList(inboxModelList);
                                 adapter.notifyDataSetChanged();
                                 break;
                             case MODIFIED:
@@ -133,6 +159,9 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                         check = 1;
                                     }
                                 }
+
+                                Log.e("TAG", "onEvent: " + check  + "  " + modifiedMessage.members);
+
                                 if (check == 0) {
                                     inboxModelList.add(modifiedMessage);
                                 }
@@ -150,12 +179,15 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     }
                                     pos1 = -1;
                                 }
-                                adapter.notifyDataSetChanged();
+                                Collections.swap(inboxModelList,InboxAdapter.clickedChatPosition,0);
+                                adapter.notifyItemMoved(InboxAdapter.clickedChatPosition,0);
                                 break;
                             case REMOVED:
                                 break;
                         }
                     }
+                } else {
+                    Log.e("else ", "onEvent: " + "nulll");
                 }
 
             }
@@ -163,12 +195,12 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     }
 
     private void initViews(View view) {
-        Paper.init(getActivity());
-        userModel = Paper.book().read(Constants.currentUser);
+
+        Log.e("current user", "initViews: " + userModel.getName());
 //        toolbar = view.findViewById(R.id.toolbar);
         rv_inbox = view.findViewById(R.id.rv_inbox);
         txt_new_group = view.findViewById(R.id.txt_new_group);
-        rootRef = FirebaseFirestore.getInstance();
+
 //        inboxRef = rootRef.collection(Constants.firebaseDatabaseRoot");
 
 //        CollapsingToolbarLayout collapsingToolbarLayout =
@@ -179,12 +211,17 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+    }
+
+    private void setUpRecyclerView() {
         rv_inbox.setHasFixedSize(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv_inbox.setLayoutManager(layoutManager);
         adapter = new InboxAdapter(getActivity(), userModel.getId());
         adapter.setList(inboxModelList);
         rv_inbox.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

@@ -126,6 +126,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     int messageEndCheck = 0;
     int check = 0;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -657,6 +658,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     }
 
     private void sendMessageToFirebase(String attachment, String message, Integer senderId, long sentAt, int attachmentType) {
+        Log.e("i am here", "sendMessageToFirebase: "  );
         if (inboxModel != null) {
             DocumentReference reference = db.collection(Constants.firebaseDatabaseRoot).document(inboxModel.id).collection("Messages").document();
             MessageModel messageModel = new MessageModel(attachment, message, senderId, sentAt, attachmentType, reference.getId());
@@ -735,6 +737,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         hashMap.put("lastMessageId", lastMessageId);
         List<MembersInfo> membersInfo = new ArrayList<>();
         membersInfo = inboxModel.membersInfo;
+        Log.e("member info", "updateLastMessage: " + membersInfo.size() );
         for(int i=0 ; i<membersInfo.size() ; i++){
             membersInfo.get(i).setType("available");
         }

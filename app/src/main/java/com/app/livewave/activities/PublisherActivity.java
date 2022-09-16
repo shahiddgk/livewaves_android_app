@@ -158,7 +158,6 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
                 sendMessageToFirebase(et_comment.getText().toString());
             }
 
-
         });
         img_like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -747,6 +746,8 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
         Toast.makeText(PublisherActivity.this, "Destroy", Toast.LENGTH_SHORT).show();
         if (firebaseChatListener != null)
             firebaseChatListener.remove();
+        webRTCClient.disableVideo();
+        webRTCClient.disableAudio();
         webRTCClient = null;
         super.onDestroy();
 
@@ -765,6 +766,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
                             public void onSuccess(Response<ApiResponse<StreamModel>> data) {
                                 if (webRTCClient.isStreaming()) {
                                     webRTCClient.stopStream();
+
                                 }
                                 if (webRTCClientGuest != null) {
                                     webRTCClient.stopStream();

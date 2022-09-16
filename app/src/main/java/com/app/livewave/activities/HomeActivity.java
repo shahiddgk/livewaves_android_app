@@ -9,6 +9,7 @@ import static com.app.livewave.utils.Constants.SPECIFIC_USER_ID;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -131,7 +132,12 @@ public class HomeActivity extends WavesPlayerBaseActivity {
             //For Current Store Items Only
             Bundle bundle = new Bundle();
             bundle.putBoolean(HIDE_HEADER, false);
-            loadFragment(R.string.tag_dashboard, bundle);
+            try {
+                loadFragment(R.string.tag_dashboard, bundle);
+            }catch (IllegalStateException e){
+                Log.e("TAG", "onCreate: " + e.getMessage() );
+            }
+
 
             // loadFragment(R.string.tag_wp_store, bundle);
         }

@@ -50,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     int MSG_TYPE_LEFT = 0;
     int MSG_TYPE_RIGHT = 1;
     UserModel userModel;
-    List<MembersInfo> membersInfo = new ArrayList();
+    List<MembersInfo> membersInfo;
     MyViewHolder holder1;
     MediaPlayer player1;
     FirebaseFirestore rootRef;
