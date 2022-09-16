@@ -1251,8 +1251,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         txt_name.setText(postModel.getUser().getName());
         txt_profile_name.setText(postModel.getProfile().getName());
         txt_des.setText(postModel.getDescription());
-        Glide.with(this).load(getUrlforPicture(postModel.getUser().getPhoto())).placeholder(R.drawable.profile_place_holder).into(img_profile);
-        Glide.with(this).load(getUrlforPicture(userModel.getPhoto())).placeholder(R.drawable.profile_place_holder).into(civ_user_img);
+        Glide.with(requireActivity()).load(getUrlforPicture(postModel.getUser().getPhoto())).placeholder(R.drawable.profile_place_holder).into(img_profile);
+        Glide.with(requireActivity()).load(getUrlforPicture(userModel.getPhoto())).placeholder(R.drawable.profile_place_holder).into(civ_user_img);
         if (postModel.getTotalReactions() > 0) {
             txt_reaction.setVisibility(View.VISIBLE);
             if (postModel.getMyReaction() != 0) {
@@ -1546,7 +1546,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 public void onFailure(String failureCause) {
                     dialog.dismiss();
 
-                    getActivity().onBackPressed();
+                   requireActivity().onBackPressed();
                 }
             });
         }

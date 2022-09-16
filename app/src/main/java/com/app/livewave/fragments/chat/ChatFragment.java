@@ -752,14 +752,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         img_show_options.setVisibility(View.VISIBLE);
         img_select_picture.setVisibility(View.GONE);
         img_record.setVisibility(View.GONE);
-        img_location.setVisibility(View.GONE);
+      //  img_location.setVisibility(View.GONE);
     }
 
     private void showOptions() {
         img_show_options.setVisibility(View.GONE);
         img_select_picture.setVisibility(View.VISIBLE);
         img_record.setVisibility(View.VISIBLE);
-        img_location.setVisibility(View.VISIBLE);
+      //  img_location.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("MissingSuperCall")
