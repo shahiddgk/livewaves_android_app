@@ -411,6 +411,9 @@ public class SplashActivity extends AppCompatActivity {
 
         if (Paper.book().read(Constants.isLogin, false) && mAuth.getCurrentUser() != null) {
 
+
+            Log.e("TAG", "redirectToActivity: "  +Paper.book().read(Constants.isLogin, false) + mAuth.getCurrentUser());
+
             if (extras != null) {
                 if (extras.containsKey("type")) {
                     String key = extras.getString("type");

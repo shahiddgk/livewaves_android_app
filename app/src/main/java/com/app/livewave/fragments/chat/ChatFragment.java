@@ -125,6 +125,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     CollectionReference inboxRef;
     int messageEndCheck = 0;
     int check = 0;
+    public static boolean messageSent = false;
 
 
     @Nullable
@@ -668,8 +669,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
                 @Override
                 public void onSuccess(Void aVoid) {
                     et_message.setText("");
-                    if (attachmentType == 0)
+                    if (attachmentType == 0) {
                         updateLastMessage(message, senderId, userModel.getName(), sentAt, inboxModel.getId(), reference.getId());
+                        messageSent = true;
+                    }
                     else if (attachmentType == 1)
                         updateLastMessage("Image", senderId, userModel.getName(), sentAt, inboxModel.getId(), reference.getId());
                     else

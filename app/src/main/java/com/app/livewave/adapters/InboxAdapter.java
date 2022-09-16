@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.livewave.R;
 import com.app.livewave.activities.HomeActivity;
+import com.app.livewave.fragments.chat.ChatFragment;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
 import com.app.livewave.models.InboxModel;
 import com.app.livewave.models.MembersInfo;
@@ -144,6 +145,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
                         UserModel userModel = Paper.book().read(Constants.currentUser);
                         if (inboxList.get(position).getMembersInfo().get(i).getId() != userModel.getId()) {
                             bundle.putString(HEADER_TITLE, inboxList.get(position).getMembersInfo().get(i).getName());
+                            Log.e("name", "onClick: " + inboxList.get(position).getMembersInfo().get(i).getName() );
                         }
                     }
                 }

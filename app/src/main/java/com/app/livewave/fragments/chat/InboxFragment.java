@@ -67,6 +67,8 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
         setHasOptionsMenu(true);
         initViews(view);
+        getInboxListFromFirebase();
+        setUpRecyclerView();
 
 
         return view;
@@ -77,13 +79,13 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
         super.onViewCreated(view, savedInstanceState);
         initClickListener();
 
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        getInboxListFromFirebase();
-        setUpRecyclerView();
+
     }
 
     //    @Override
@@ -179,8 +181,8 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     }
                                     pos1 = -1;
                                 }
-                                Collections.swap(inboxModelList,InboxAdapter.clickedChatPosition,0);
-                                adapter.notifyItemMoved(InboxAdapter.clickedChatPosition,0);
+                            adapter.notifyDataSetChanged();
+
                                 break;
                             case REMOVED:
                                 break;
@@ -217,6 +219,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     private void setUpRecyclerView() {
         rv_inbox.setHasFixedSize(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        layoutManager.scrollToPositionWithOffset(0,inboxModelList.size());
         rv_inbox.setLayoutManager(layoutManager);
         adapter = new InboxAdapter(getActivity(), userModel.getId());
         adapter.setList(inboxModelList);

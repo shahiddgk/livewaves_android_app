@@ -200,6 +200,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         System.out.println(fTagId);
 
         final String tagString = Integer.toString(fTagId);
+        Log.e("for tag checking ", "loadFragment: " + tagString );
         performFragmentTransaction(tagString, fTagId, b);
     }
 
@@ -232,7 +233,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
                     fragmentTransaction.add(R.id.fragment_container_view, fragment, tagString);
                 }
                 fragmentTransaction.addToBackStack(tagString);
-                fragmentTransaction.commit();
+                fragmentTransaction.commitAllowingStateLoss();
                 fm.executePendingTransactions();
             };
             if (mPendingRunnable != null) {
