@@ -1269,7 +1269,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         }
         setAttachment(postModel, false);
 //        txt_date.setText(DateUtils.getRelativeTimeSpanString(BaseUtils.getDate(postModel.getCreatedAt())));
-        txt_date.setText(BaseUtils.convertFromUTCTime(postModel.getCreatedAt()));
+        txt_date.setText(BaseUtils.convertFromUTCTime(postModel.getCreatedAt()) + " " +BaseUtils.getTimeFromDate(postModel.getCreatedAt()));
         if (postModel.getAttachments().size() == 0)
             setImagePreview(postModel, false);
         checkPostPrivacy(postModel, false);

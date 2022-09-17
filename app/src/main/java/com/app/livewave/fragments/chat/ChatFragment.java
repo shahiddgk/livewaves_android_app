@@ -749,6 +749,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         db.collection(Constants.firebaseDatabaseRoot).document(id).update(hashMap).addOnSuccessListener(new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
+                Log.e("update last ", "onSuccess: " );
                 dialog.dismiss();
             }
         });

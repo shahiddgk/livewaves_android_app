@@ -47,6 +47,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     //    CollectionReference inboxRef;
     UserModel userModel;
     List<InboxModel> inboxModelList = new ArrayList<>();
+    List<InboxModel> inboxModelListNew;
     FollowingDialogSheet followingDialogSheet;
     SelectGroupMembers selectGroupMembers;
     TextView txt_new_group;
@@ -69,6 +70,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
         initViews(view);
         getInboxListFromFirebase();
         setUpRecyclerView();
+        Log.e("oncreateview", "onCreateView: " );
 
 
         return view;
@@ -85,6 +87,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     @Override
     public void onResume() {
         super.onResume();
+        Log.e("resume", "onResume: " );
 
     }
 
@@ -120,7 +123,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                 if (error != null) {
                     Log.e("ErrorFetchingData", error.toString());
                 }
-              //  inboxModelList.clear();
+                 inboxModelList.clear();
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
                         Log.e("TAG", "onEvent: " + dc.getType());
@@ -128,8 +131,8 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                             case ADDED:
                                 InboxModel chatRoot = dc.getDocument().toObject(InboxModel.class);
                                 inboxModelList.add(chatRoot);
-                                Log.e("TAG", "onEvent: "  + inboxModelList.size() );
-                                Log.e("inbox size", "onEvent: " + inboxModelList.size());
+                                Log.e("added", "onEvent: " + inboxModelList.size());
+                                Log.e("added", "onEvent: " + inboxModelList.size());
                                 int pos = -1;
                                 for (int i = inboxModelList.size() - 1; i > -1; i--) {
                                     for (int j = 0; j < inboxModelList.get(i).membersInfo.size(); j++) {
@@ -145,6 +148,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     pos = -1;
                                 }
                                 // adapter.setList(inboxModelList);
+
                                 adapter.notifyDataSetChanged();
                                 break;
                             case MODIFIED:
@@ -162,10 +166,11 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     }
                                 }
 
-                                Log.e("TAG", "onEvent: " + check  + "  " + modifiedMessage.members);
+                                Log.e("modified", "onEvent: " + check + "  " + modifiedMessage.members);
 
                                 if (check == 0) {
                                     inboxModelList.add(modifiedMessage);
+                                    Log.e("size", "onEvent: " + inboxModelList.size() );
                                 }
                                 int pos1 = -1;
                                 for (int i = inboxModelList.size() - 1; i > -1; i--) {
@@ -181,8 +186,12 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                                     }
                                     pos1 = -1;
                                 }
-                            adapter.notifyDataSetChanged();
-
+//                                InboxModel inboxModel = inboxModelList.get(InboxAdapter.clickedChatPosition);
+//                                inboxModelList.set(InboxAdapter.clickedChatPosition,inboxModelList.get(0));
+//                                inboxModelList.set(0,inboxModel);
+//                                adapter.notifyDataSetChanged();
+                                getInboxListFromFirebase();
+                                adapter.notifyDataSetChanged();
                                 break;
                             case REMOVED:
                                 break;
@@ -219,7 +228,6 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     private void setUpRecyclerView() {
         rv_inbox.setHasFixedSize(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        layoutManager.scrollToPositionWithOffset(0,inboxModelList.size());
         rv_inbox.setLayoutManager(layoutManager);
         adapter = new InboxAdapter(getActivity(), userModel.getId());
         adapter.setList(inboxModelList);

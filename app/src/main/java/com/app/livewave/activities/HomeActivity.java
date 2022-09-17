@@ -406,6 +406,11 @@ public class HomeActivity extends WavesPlayerBaseActivity {
             }
         });
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
 
 //public class HomeActivity extends AppCompatActivity {

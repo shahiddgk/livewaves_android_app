@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/margin_10"
-    android:elevation="@dimen/margin_20">
+    app:cardCornerRadius="@dimen/margin_10"
+    app:cardElevation="@dimen/margin_10">
 
     <LinearLayout
         android:orientation="vertical"
@@ -65,39 +66,27 @@
             android:layout_below="@+id/img_Comment_preview_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:weightSum="4"
             android:orientation="horizontal">
+
 
             <ImageView
                 android:id="@+id/iv_reaction"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_below="@+id/tv_comment_text"
-                android:layout_marginEnd="166dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="@dimen/margin_10"
-                android:layout_toStartOf="@+id/iv_reply_button"
-                android:padding="@dimen/margin_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_weight="1"
                 android:src="@drawable/ic_like"
                 app:tint="@color/black" />
 
-            <TextView
-                android:id="@+id/iv_reply_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_comment_text"
-                android:layout_marginTop="@dimen/margin_5"
-                android:layout_toStartOf="@+id/iv_edit"
-                android:padding="@dimen/margin_5"
-                android:text="reply" />
+
 
             <ImageView
                 android:id="@+id/iv_edit"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
+                android:layout_weight="1"
                 android:layout_marginTop="@dimen/margin_10"
-                android:layout_toStartOf="@+id/iv_remove"
-                android:layout_marginLeft="@dimen/margin_5"
-                android:padding="@dimen/margin_5"
                 android:src="@drawable/ic_edit" />
 
             <ImageView
@@ -105,8 +94,18 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="@dimen/margin_10"
-                android:padding="@dimen/margin_5"
-                android:src="@drawable/ic_baseline_delete_24" />
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_delete_24"
+                app:tint="@color/black" />
+            <TextView
+                android:id="@+id/iv_reply_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/margin_20"
+                android:layout_marginTop="14dp"
+                android:text="Reply" />
 
         </LinearLayout>
 
