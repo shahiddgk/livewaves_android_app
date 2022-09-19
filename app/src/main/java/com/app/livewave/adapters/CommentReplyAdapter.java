@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,6 +78,7 @@ import io.paperdb.Paper;
 import retrofit2.Response;
 
 public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapter.Holder> {
+    private static final String TAG = "CommentReplyAdapter";
     private Context context;
     private List<ReplyModel> commentModelList = new ArrayList<>();
     private UserModel userModel;
@@ -97,7 +99,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
     public void CommentReplyAdapterAddItem(ReplyModel commentRequestModel) {
         System.out.println("NEW DATA ITEM ADDED");
         System.out.println(commentRequestModel.getComment());
-        commentModelList.add(0,commentRequestModel);
+        commentModelList.add(0, commentRequestModel);
         notifyDataSetChanged();
     }
 
@@ -153,9 +155,21 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
         }
 
         holder.txt_reaction.setOnClickListener(v -> {
-            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment("0",String.valueOf(commentModelList.get(position).getId()));
+            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment("0", String.valueOf(commentModelList.get(position).getId()));
             FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
             reactionDetailFragment.show(fragmentManager, "Reactions");
+        });
+        holder.edit_comment_reply_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.e(TAG, "onClick: " + "clicked" );
+                Log.e(TAG, "onClick: " + editCommentInterface );
+                if (editCommentInterface != null) {
+                    editCommentInterface.editCommentReply(commentModelList.get(position),position);
+                }else {
+                    Log.e(TAG, "onClick: " + "null" );
+                }
+            }
         });
 
 
@@ -181,25 +195,24 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
 
         if (userModel.getId().equals(commentModel.getCommenterId())) {
             holder.iv_remove.setVisibility(View.VISIBLE);
-          //  holder.iv_edit.setVisibility(View.VISIBLE);
+            //  holder.iv_edit.setVisibility(View.VISIBLE);
 
-        } else if (postModel!= null) {
-            if (userModel.getId().equals(postModel.getUserId()))
-            {
+        } else if (postModel != null) {
+            if (userModel.getId().equals(postModel.getUserId())) {
                 holder.iv_remove.setVisibility(View.VISIBLE);
- //               holder.edit_comment_reply_button.setVisibility(View.VISIBLE);
-            }else {
+                //               holder.edit_comment_reply_button.setVisibility(View.VISIBLE);
+            } else {
                 holder.iv_remove.setVisibility(View.GONE);
- //               holder.edit_comment_reply_button.setVisibility(View.GONE);
+                //               holder.edit_comment_reply_button.setVisibility(View.GONE);
             }
-         //   holder.iv_edit.setVisibility(View.GONE);
+            //   holder.iv_edit.setVisibility(View.GONE);
             holder.iv_remove.setVisibility(View.GONE);
-  //          holder.edit_comment_reply_button.setVisibility(View.GONE);
+            //          holder.edit_comment_reply_button.setVisibility(View.GONE);
         } else {
 
             holder.iv_remove.setVisibility(View.GONE);
-   //         holder.edit_comment_reply_button.setVisibility(View.VISIBLE);
-   //         holder.edit_comment_reply_button.setVisibility(View.GONE);
+            //         holder.edit_comment_reply_button.setVisibility(View.VISIBLE);
+            //         holder.edit_comment_reply_button.setVisibility(View.GONE);
 
         }
 
@@ -236,22 +249,22 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.HASH_TAG, text.toString());
                 bundle.putString(HEADER_TITLE, text.toString());
-                ((HomeActivity)context).loadFragment(R.string.tag_hashtag,bundle);
+                ((HomeActivity) context).loadFragment(R.string.tag_hashtag, bundle);
             }
         });
         holder.tv_comment_text.setOnHyperlinkClickListener(new SocialView.OnClickListener() {
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
-                if (text.toString().contains("pl/post")){
+                if (text.toString().contains("pl/post")) {
                     String postId = text.toString().substring(text.toString().lastIndexOf("/") + 1);
                     getPostFromApiId(postId);
 
-                }else if (text.toString().contains("http")){
+                } else if (text.toString().contains("http")) {
                     Uri uri = Uri.parse(text.toString());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     context.startActivity(intent);
                 } else {
-                    Uri uri = Uri.parse("https://"+text.toString());
+                    Uri uri = Uri.parse("https://" + text.toString());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     context.startActivity(intent);
                 }
@@ -272,7 +285,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
         holder.tv_comment_text.setOnMentionClickListener(new SocialView.OnClickListener() {
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
-                ((HomeActivity)context).openUserProfile(text.toString());
+                ((HomeActivity) context).openUserProfile(text.toString());
 //                BaseUtils.openUserProfile(text.toString(), context);
 //                for (int i = 0; i < commentModel.getTagData().size(); i++){
 //                    if (commentModel.getTagData().get(i).getName().equals(text.toString())){
@@ -287,7 +300,6 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
     }
 
 
-
     @SuppressLint("ClickableViewAccessibility")
     private void initReactionsListener(int position, Holder holder) {
         ReactionsConfig config = new ReactionsConfigBuilder(context)
@@ -295,7 +307,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
                         R.drawable.smile,
                         R.drawable.meh,
                         R.drawable.sad,
-                        R.drawable.sad,
+                        R.drawable.wow,
                         R.drawable.angry,
                         R.drawable.laughing,
                         R.drawable.crying
@@ -305,25 +317,25 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
         ReactionPopup popup = new ReactionPopup(context, config, (p) -> {
             switch (p) {
                 case 0:
-                    reactOnComment(commentModelList.get(position), 1, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 1, userModel.getId(), position);
                     break;
                 case 1:
-                    reactOnComment(commentModelList.get(position), 2, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 2, userModel.getId(), position);
                     break;
                 case 2:
-                    reactOnComment(commentModelList.get(position), 3, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 3, userModel.getId(), position);
                     break;
                 case 3:
-                    reactOnComment(commentModelList.get(position), 4, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 4, userModel.getId(), position);
                     break;
                 case 4:
-                    reactOnComment(commentModelList.get(position), 5, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 5, userModel.getId(), position);
                     break;
                 case 5:
-                    reactOnComment(commentModelList.get(position), 6, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 6, userModel.getId(), position);
                     break;
                 case 6:
-                    reactOnComment(commentModelList.get(position), 7, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 7, userModel.getId(), position);
                     break;
                 default:
                     break;
@@ -339,7 +351,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
         });
     }
 
-    private void reactOnComment(ReplyModel commentModel, int reaction,int reactorId,int position) {
+    private void reactOnComment(ReplyModel commentModel, int reaction, int reactorId, int position) {
         ApiManager.apiCall(ApiClient.getInstance().getInterface().reactionOnComment(commentModel.getId(), reaction, postModel.getId()), context, data -> {
             assert data.body() != null;
             if (data.body().getMessage().equals("Reaction Removed Successfully")) {
@@ -398,6 +410,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
                 });
             }
         });
+
 
 //        holder.edit_comment_reply_button.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -604,7 +617,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
 
     private void editComment(CommentReplyRequestModel commentModel, int position) {
 
-        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().editCommentReply(commentModel),context , new ApiResponseHandlerWithFailure<ReplyModel>() {
+        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().editCommentReply(commentModel), context, new ApiResponseHandlerWithFailure<ReplyModel>() {
             @Override
             public void onSuccess(Response<ApiResponse<ReplyModel>> data) {
                 System.out.println("UPDATE SUCCESS FULLY");
@@ -646,15 +659,15 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        private CircleImageView civ_user_img,civ_user_img_reply_edit;
-        private TextView  tv_name,txt_reaction,edit_comment_button;
+        private CircleImageView civ_user_img, civ_user_img_reply_edit;
+        private TextView tv_name, txt_reaction, edit_comment_button;
         SocialTextView tv_comment_text;
-        private ImageView iv_remove,img_reaction,img_preview_image,edit_comment_reply_button,img_upload,img_uri;
+        private ImageView iv_remove, img_reaction, img_preview_image, edit_comment_reply_button, img_upload, img_uri;
         LinearLayout edit_comment_reply_layout;
         private TextInputEditText et_comment;
- //       RelativeLayout imgevieid;
+        //       RelativeLayout imgevieid;
         //EditText et_comment_reply;
-                //iv_edit;
+        //iv_edit;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
@@ -663,7 +676,7 @@ public class CommentReplyAdapter extends RecyclerView.Adapter<CommentReplyAdapte
             tv_comment_text = itemView.findViewById(R.id.tv_reply_comment_text);
             tv_name = itemView.findViewById(R.id.tv_reply_name);
             iv_remove = itemView.findViewById(R.id.iv_reply_remove);
- //           edit_comment_reply_button = itemView.findViewById(R.id.iv_edit_comment_reply);
+            edit_comment_reply_button = itemView.findViewById(R.id.iv_reply_edit);
             img_reaction = itemView.findViewById(R.id.iv_reaction_reply);
             img_preview_image = itemView.findViewById(R.id.img_Comment_reply_preview_image);
 //            edit_comment_reply_layout = itemView.findViewById(R.id.edit_comment_reply_layout);

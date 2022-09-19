@@ -12,6 +12,7 @@ import android.provider.Settings;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -146,7 +147,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             tv_comment_text, tv_no_comments, txt_preview_title, txt_preview_des,
             txt_shared_name, txt_shared_profile_name, txt_shared_preview_title, txt_shared_preview_des, txt_shared_content, tv_shared_pay_to_unlock;
     private CircleImageView img_profile, civ_user_img, img_shared_profile;
-    private ImageView img_reaction, img_share,tv_post_option, iv_play_video, img_preview_image, iv_paid,img_upload,
+    private ImageView img_reaction, img_share, tv_post_option, iv_play_video, img_preview_image, iv_paid, img_upload,
             img_shared_preview_image, iv_shared_play_video;
     private LinearLayout profile, shared_profile, ll_privacy_item;
     ViewPager image_shared_slider, image_slider;
@@ -154,7 +155,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private int REQUEST_GIFF = 2;
     SocialTextView txt_des, txt_shared_des;
     private TextInputEditText et_comment;
-    private RecyclerView rv_comments,rv_comments_replies;
+    private RecyclerView rv_comments, rv_comments_replies;
     private LinearLayoutManager linearLayoutManager;
     private CommentAdapter commentAdapter;
     private CommentReplyAdapter commentReplyAdapter;
@@ -174,10 +175,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private SwipeRefreshLayout swipe_to_refresh;
     private RecyclerView rv_tags;
     //    private AppBarLayout app_bar;
-    boolean editedComment,editedCommentReply,commentReply,isImage = false, isVideo = false;
+    boolean editedComment, editedCommentReply, commentReply, isImage = false, isVideo = false;
     private String commentId;
+    private String commentIdReply;
     private int editCommentPosition = -1;
-    private KProgressHUD dialog,loadingDialog;
+    private int editCommentReplyPosition = -1;
+    private KProgressHUD dialog, loadingDialog;
     private NestedScrollView nested_scroll_view;
     private ProgressBar progress_bar;
     private MaterialCardView card_for_tags;
@@ -198,7 +201,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private String uploadAttachmentPath;
     private String uploadAttachmentExtension;
     private Uri uri;
-    private ImageView img_uri,img_cancel;
+    private ImageView img_uri, img_cancel;
     RelativeLayout imgevieid;
     private FirebaseUtils utils;
     int count = 0;
@@ -269,7 +272,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         txt_des.setOnMentionClickListener(new SocialView.OnClickListener() {
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
-                ((HomeActivity)getActivity()).openUserProfile(text.toString());
+                ((HomeActivity) getActivity()).openUserProfile(text.toString());
 //                BaseUtils.openUserProfile(text.toString(), getActivity());
 //                for (int i = 0; i < postModel.getTagsData().size(); i++){
 //                    if (postModel.getTagsData().get(i).getName().equals(text.toString())){
@@ -280,10 +283,11 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         });
         return view;
     }
+
     private void uploadMultipleFilesToServer() {
         dialog.show();
-        if(editedComment) {
-            if (uploadAttachment!=null) {
+        if (editedComment) {
+            if (uploadAttachment != null) {
                 File file = new File(BaseUtils.getPath(getContext(), uploadAttachment));
                 String unique_name = UUID.randomUUID().toString();
                 System.out.println("unique_name");
@@ -319,7 +323,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             }
         } else if (commentReply) {
 
-            if (uploadAttachment!=null) {
+            if (uploadAttachment != null) {
                 File file = new File(BaseUtils.getPath(getContext(), uploadAttachment));
                 String unique_name = UUID.randomUUID().toString();
                 System.out.println("unique_name");
@@ -358,7 +362,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
         } else {
 
-            if (uploadAttachment!=null) {
+            if (uploadAttachment != null) {
                 File file = new File(BaseUtils.getPath(getContext(), uploadAttachment));
                 String unique_name = UUID.randomUUID().toString();
                 System.out.println("unique_name");
@@ -399,8 +403,6 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         }
 
     }
-
-
 
 
 //    @Override
@@ -537,14 +539,14 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (s.toString().equals("")) {
-                        editedComment = false;
-                        editedCommentReply = false;
-                        commentReply = false;
-                        commentId = "";
-                        tv_comment_text.setText(R.string.post);
-                        editCommentPosition = -1;
-                    }
+                if (s.toString().equals("")) {
+                    editedComment = false;
+                    editedCommentReply = false;
+                    commentReply = false;
+                    commentId = "";
+                    tv_comment_text.setText(R.string.post);
+                    editCommentPosition = -1;
+                }
             }
 
             @Override
@@ -628,19 +630,21 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     }
 
     private void setEditCommentReplyInterface() {
-        commentReplyAdapter.setInterface(new EditCommentReply() {
+        commentAdapter.setCommentReplyInterface(new EditCommentReply() {
 
             @Override
             public void editCommentReply(ReplyModel commentModel, int position) {
+                Log.e("comment checking ", "editCommentReply: " + commentModel.getComment());
+                Log.e("position from RV", "editCommentReply: " + position );
                 et_comment.setText(commentModel.getComment());
                 editedCommentReply = true;
                 System.out.println("AFTER EDITED");
                 System.out.println(tv_comment_text.getText().toString().trim());
-                commentId = commentModel.getId().toString();
+                commentIdReply = commentModel.getId().toString();
                 System.out.println("AFTER EDITED CommentID");
-                System.out.println(commentId);
+                System.out.println(commentIdReply);
                 tv_comment_text.setText(R.string.edit_reply_comment);
-                editCommentPosition = position;
+                editCommentReplyPosition = position;
             }
 
         });
@@ -649,13 +653,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private void setReplyButtonInterface() {
         commentAdapter.setReplies(new ReplyButton() {
             @Override
-            public void setReplyButton(boolean replyButton,int position) {
+            public void setReplyButton(boolean replyButton, int position) {
                 System.out.println(replyButton);
-                if (replyButton){
+                if (replyButton) {
                     int commentId = 0;
                     editedComment = false;
 
-                    et_comment.setText("");
+                    et_comment.setText(commentModelList.get(position).getUser().getName());
                     uploadAttachment = null;
                     uploadAttachmentExtension = null;
                     uploadAttachmentPath = null;
@@ -672,8 +676,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                     System.out.println("COMMENT_ID");
                     commentReplyRequestModel.setParent_id(commentId);
                     editCommentPosition = -1;
-                    tv_comment_text.setText(R.string.comment_reply);
-            } else {
+                    tv_comment_text.setText("Reply");
+                } else {
 
                     editedComment = false;
                     commentReply = false;
@@ -697,6 +701,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         commentAdapter = new CommentAdapter(getActivity());
         rv_comments.setLayoutManager(linearLayoutManager);
         rv_comments.setAdapter(commentAdapter);
+        commentAdapter.notifyDataSetChanged();
 
         rv_comments_replies = view.findViewById(R.id.rv_comments_replies);
         linearLayoutManager = new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false);
@@ -833,12 +838,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 //        }
 
         iv_shared_play_video.setOnClickListener(v -> {
-            addViewCount(postModel.getId()+"");
+            addViewCount(postModel.getId() + "");
             Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
             String share_Count = sharedPostModel.getTotalShares() + "";
-            intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+            intent.putExtra(VIDEO_SHARE_COUNT, share_Count);
             String view_Count = sharedPostModel.getTotalViews() + "";
-            intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
+            intent.putExtra(VIDEO_VIEW_COUNT, view_Count);
             intent.putExtra(URL, sharedPostModel.getAttachments().get(0).getPath());
             startActivity(intent);
         });
@@ -858,6 +863,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                             showSettingsDialog();
                         }
                     }
+
                     @Override
                     public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();
@@ -910,7 +916,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             }
         });
         txt_reaction.setOnClickListener(v -> {
-            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment(String.valueOf(postModel.getId()),"0");
+            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment(String.valueOf(postModel.getId()), "0");
             FragmentManager fragmentManager = getChildFragmentManager();
             reactionDetailFragment.show(fragmentManager, "Reactions");
         });
@@ -920,13 +926,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         System.out.println(id);
         System.out.println(userId);
 
-        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToVideoPostForViews(userId,id), getContext(), new ApiResponseHandler<Object>() {
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToVideoPostForViews(userId, id), getContext(), new ApiResponseHandler<Object>() {
             @Override
             public void onSuccess(Response<ApiResponse<Object>> data) {
                 System.out.println("Post View count added");
                 System.out.println(data.body().getMessage());
                 if (data.body().getMessage().equals("waves count updated Successfully")) {
-                   postModel.setTotalViews(postModel.getTotalViews() + 1);
+                    postModel.setTotalViews(postModel.getTotalViews() + 1);
                 }
             }
         });
@@ -934,7 +940,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
     private void addCount(String trackId) {
 
-        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToPostForShare(userId,trackId), getContext(), new ApiResponseHandler<Object>() {
+        ApiManager.apiCall(ApiClient.getInstance().getInterface().addCountToPostForShare(userId, trackId), getContext(), new ApiResponseHandler<Object>() {
             @Override
             public void onSuccess(Response<ApiResponse<Object>> data) {
                 System.out.println("Post Share count added");
@@ -1054,8 +1060,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         FragmentManager fragmentManager = ((FragmentActivity) getContext()).getSupportFragmentManager();
         giffImageGridListView.show(fragmentManager, "Giff image list");
         giffImageGridListView.addListener(pressedButton -> {
-               //add option if any
-            if (pressedButton.equals(null) || pressedButton.equals("")){
+            //add option if any
+            if (pressedButton.equals(null) || pressedButton.equals("")) {
                 System.out.println("Nothing selected");
             } else {
                 System.out.println("SELECTED GIFF URL");
@@ -1084,13 +1090,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
                 Uri selectedImageUri = data.getData();
                 if (selectedImageUri != null) {
-               //     final Uri imageUri = data.getData();
+                    //     final Uri imageUri = data.getData();
                     count = 1;
                     uploadAttachment = selectedImageUri;
                     imgevieid.setVisibility(View.VISIBLE);
                     img_uri.setImageURI(selectedImageUri);
 
-                   // Glide.with(MyApplication.getAppContext()).load(imageUri).into(img_uri);
+                    // Glide.with(MyApplication.getAppContext()).load(imageUri).into(img_uri);
 
                 } else {
                     count = 0;
@@ -1210,17 +1216,16 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                         nextPageUrl = data.body().getData().getNextPageUrl();
                         if (currentPageNumber == 1) {
                             commentModelList = new ArrayList<>();
-                            commentReplyModelList = new ArrayList<>();
+                               commentReplyModelList = new ArrayList<>();
                             commentModelList = data.body().getData().getData();
-                            for (int i =0; i < commentModelList.size(); i++ )
-                            {
+                            for (int i = 0; i < commentModelList.size(); i++) {
                                 commentReplyModelList.addAll(commentModelList.get(i).getChildren());
                             }
                         } else {
                             commentModelList.addAll(data.body().getData().getData());
                         }
                         commentAdapter.setData(commentModelList, postModel);
-                        commentReplyAdapter.setData(commentReplyModelList,postModel);
+                        commentReplyAdapter.setData(commentReplyModelList, postModel);
                         commentAdapter.notifyDataSetChanged();
                         commentReplyAdapter.notifyDataSetChanged();
                         tv_no_comments.setVisibility(View.GONE);
@@ -1269,7 +1274,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         }
         setAttachment(postModel, false);
 //        txt_date.setText(DateUtils.getRelativeTimeSpanString(BaseUtils.getDate(postModel.getCreatedAt())));
-        txt_date.setText(BaseUtils.convertFromUTCTime(postModel.getCreatedAt()) + " " +BaseUtils.getTimeFromDate(postModel.getCreatedAt()));
+        txt_date.setText(BaseUtils.convertFromUTCTime(postModel.getCreatedAt()) + " " + BaseUtils.getTimeFromDate(postModel.getCreatedAt()));
         if (postModel.getAttachments().size() == 0)
             setImagePreview(postModel, false);
         checkPostPrivacy(postModel, false);
@@ -1490,12 +1495,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 iv_play_video.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addViewCount(postModel.getId()+"");
+                        addViewCount(postModel.getId() + "");
                         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
                         String share_Count = postModel.getTotalShares() + "";
-                        intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                        intent.putExtra(VIDEO_SHARE_COUNT, share_Count);
                         String view_Count = postModel.getTotalViews() + "";
-                        intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
+                        intent.putExtra(VIDEO_VIEW_COUNT, view_Count);
                         intent.putExtra(URL, postModel.getAttachments().get(0).getPath());
                         startActivity(intent);
                     }
@@ -1503,12 +1508,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 iv_shared_play_video.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        addViewCount(postModel.getId()+"");
+                        addViewCount(postModel.getId() + "");
                         Intent intent = new Intent(getActivity(), VideoPlayerActivity.class);
                         String share_Count = postModel.getTotalShares() + "";
-                        intent.putExtra(VIDEO_SHARE_COUNT,share_Count);
+                        intent.putExtra(VIDEO_SHARE_COUNT, share_Count);
                         String view_Count = postModel.getTotalViews() + "";
-                        intent.putExtra(VIDEO_VIEW_COUNT,view_Count);
+                        intent.putExtra(VIDEO_VIEW_COUNT, view_Count);
                         intent.putExtra(URL, postModel.getAttachments().get(0).getPath());
                         startActivity(intent);
                     }
@@ -1546,7 +1551,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 public void onFailure(String failureCause) {
                     dialog.dismiss();
 
-                   requireActivity().onBackPressed();
+                    requireActivity().onBackPressed();
                 }
             });
         }
@@ -1812,15 +1817,15 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         int id = v.getId();
         if (id == R.id.img_profile) {
             if (postModel.getUserId() != userId)
-                ((HomeActivity)getActivity()).openUserProfile(postModel.getUser().getId().toString());
+                ((HomeActivity) getActivity()).openUserProfile(postModel.getUser().getId().toString());
 //                BaseUtils.openUserProfile(postModel.getUser().getId().toString(), getActivity());
         } else if (id == R.id.txt_profile_name) {
             if (postModel.getProfileId() != userId)
-                ((HomeActivity)getActivity()).openUserProfile(postModel.getProfile().getId().toString());
+                ((HomeActivity) getActivity()).openUserProfile(postModel.getProfile().getId().toString());
 //                BaseUtils.openUserProfile(postModel.getProfile().getId().toString(), getActivity());
         } else if (id == R.id.txt_name) {
             if (postModel.getUserId() != userId)
-                ((HomeActivity)getActivity()).openUserProfile(postModel.getUser().getId().toString());
+                ((HomeActivity) getActivity()).openUserProfile(postModel.getUser().getId().toString());
 //                BaseUtils.openUserProfile(postModel.getUser().getId().toString(), getActivity());
         } else if (id == R.id.iv_post_option) {
 
@@ -1856,17 +1861,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 addCommentReply(commentReplyRequestModel);
             } else if (commentReply && uploadAttachment != null) {
                 uploadMultipleFilesToServer();
-            } else if(editedCommentReply) {
+            } else if (editedCommentReply) {
                 editCommentReply(commentReplyRequestModel);
-            } else if (editedComment && uploadAttachment != null)
-            {
+            } else if (editedComment && uploadAttachment != null) {
                 uploadMultipleFilesToServer();
-            }
-            else if (uploadAttachment != null)
-            {
+            } else if (uploadAttachment != null) {
                 uploadMultipleFilesToServer();
-            }
-            else {
+            } else {
                 addComment(commentRequestModel);
             }
         }
@@ -1922,17 +1923,27 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     }
 
     private void editCommentReply(CommentReplyRequestModel commentReplyRequestModel) {
-        ReplyModel mCommentModel = findCommentReplyObjectWithCommentId(commentId);
+        ReplyModel mCommentModel = findCommentReplyObjectWithCommentId(commentIdReply);
+        Log.e("ids", "editCommentReply: " + mCommentModel.getId() );
         ReplyModel tempForFailureCause = mCommentModel;
         mCommentModel.setComment(commentReplyRequestModel.getComment());
         mCommentModel.setIds(commentReplyRequestModel.getIds());
         mCommentModel.setTag(commentReplyRequestModel.getTags());
 
-        if ( uploadAttachmentPath != null ) {
+        if (uploadAttachmentPath != null) {
             mCommentModel.setAttachment(uploadAttachmentPath);
+        } else {
+
+            commentReplyRequestModel.setAttachment(" ");
+            commentReplyRequestModel.setAttachment(null);
         }
 
-        commentReplyModelList.set(editCommentPosition, mCommentModel);
+        commentReplyModelList.set(editCommentReplyPosition, mCommentModel);
+        Log.e("position", "editCommentReply: " + editCommentReplyPosition );
+        for (int i = 0; i < commentReplyModelList.size(); i++) {
+            Log.e("list", "editCommentReply: " + commentReplyModelList.get(i).getComment());
+        }
+        Log.e("edited comment", "editCommentReply: " + mCommentModel.getComment());
 
         commentReplyAdapter.notifyDataSetChanged();
 
@@ -1940,11 +1951,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             @Override
             public void onSuccess(Response<ApiResponse<ReplyModel>> data) {
                 et_comment.setText("");
+
                 uploadAttachment = null;
                 uploadAttachmentExtension = null;
                 uploadAttachmentPath = null;
                 imgevieid.setVisibility(View.GONE);
-
+                Log.e("on sucess", "onSuccess: ");
             }
 
             @Override
@@ -1957,7 +1969,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                 uploadAttachmentPath = null;
                 imgevieid.setVisibility(View.GONE);
 
-                commentReplyModelList.set(editCommentPosition, tempForFailureCause);
+                commentReplyModelList.set(editCommentReplyPosition, tempForFailureCause);
                 commentReplyAdapter.notifyDataSetChanged();
             }
         });
@@ -2017,7 +2029,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     private void addCommentReply(ReplyModel data) {
         System.out.println("COMMENTER NAME");
         commentReplyModelList.add(0, data);
-        commentReplyAdapter.setData(commentReplyModelList,postModel);
+        commentReplyAdapter.setData(commentReplyModelList, postModel);
 //        commentAdapter.setCommentReplyData(commentReplyModelList, postModel);
 
         tv_no_comments.setVisibility(View.GONE);
@@ -2102,10 +2114,10 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
         ApiClient.getInstance().getInterface().getCommentByPostId(postId, currentPageNumber).cancel();
 
-        if (((HomeActivity)getActivity()).isTaskRoot(this)) {
+        if (((HomeActivity) getActivity()).isTaskRoot(this)) {
             Bundle bundle = new Bundle();
-            bundle.putBoolean(HIDE_HEADER,false);
-            ((HomeActivity)getActivity()).loadFragment(R.string.tag_dashboard,bundle);
+            bundle.putBoolean(HIDE_HEADER, false);
+            ((HomeActivity) getActivity()).loadFragment(R.string.tag_dashboard, bundle);
         }
 //        else {
 //            getActivity().onBackPressed();

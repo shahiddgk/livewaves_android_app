@@ -101,7 +101,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
     private CreatePostDialogSheet bottomSheetDialog;
     private String userId;
     private LinearLayout ll_what_on_mind, layout_following, layout_followers;
-    private MaterialCardView chat_card, profile_follow_card, events_card, live_card, card_subscriptions_user,card_report_user;
+    private MaterialCardView chat_card, profile_follow_card, events_card, live_card, card_subscriptions_user, card_report_user;
     private UserModel userModel, otherUserModel;
     private KProgressHUD dialog;
     final Handler handler = new Handler();
@@ -243,7 +243,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 bundle.putString("Id", "0");
                 bundle.putString("userId", userId);
                 bundle.putString(HEADER_TITLE, "Following");
-                ((HomeActivity) getActivity()).performFragmentTransaction(tagId,R.string.tag_follow,bundle);
+                ((HomeActivity) getActivity()).performFragmentTransaction(tagId, R.string.tag_follow, bundle);
             }
         });
         view.findViewById(R.id.layout_followers).setOnClickListener(new View.OnClickListener() {
@@ -269,7 +269,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 bundle.putString("Id", "1");
                 bundle.putString("userId", userId);
                 bundle.putString(HEADER_TITLE, "Followers");
-                ((HomeActivity) getActivity()).performFragmentTransaction(tagId,R.string.tag_follow,bundle);
+                ((HomeActivity) getActivity()).performFragmentTransaction(tagId, R.string.tag_follow, bundle);
             }
         });
         view.findViewById(R.id.followers).setOnClickListener(new View.OnClickListener() {
@@ -288,7 +288,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 bundle.putString("Id", "1");
                 bundle.putString("userId", userId);
                 bundle.putString(HEADER_TITLE, "Followers");
-                ((HomeActivity) getActivity()).performFragmentTransaction(tagId,R.string.tag_follow,bundle);
+                ((HomeActivity) getActivity()).performFragmentTransaction(tagId, R.string.tag_follow, bundle);
             }
         });
         txt_followers.setOnClickListener(new View.OnClickListener() {
@@ -308,7 +308,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                 bundle.putString("Id", "1");
                 bundle.putString("userId", userId);
                 bundle.putString(HEADER_TITLE, "Followers");
-                ((HomeActivity) getActivity()).performFragmentTransaction(tagId,R.string.tag_follow,bundle);
+                ((HomeActivity) getActivity()).performFragmentTransaction(tagId, R.string.tag_follow, bundle);
             }
         });
         profile_follow_card.setOnClickListener(new View.OnClickListener() {
@@ -370,7 +370,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
         card_report_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ReportOptionsDialogSheet dialogSheet = new ReportOptionsDialogSheet(otherUserModel, Integer.parseInt(userId),USER_PROFILE);
+                ReportOptionsDialogSheet dialogSheet = new ReportOptionsDialogSheet(otherUserModel, Integer.parseInt(userId), USER_PROFILE);
                 dialogSheet.addListener(new PostOptionInterface() {
                     @Override
                     public void pressed(String pressedButton) {
@@ -601,7 +601,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
 //        dialog.show();
         ((HomeActivity) getActivity()).hideProgressDialog();
 
-        ApiManager.apiCallWithFailure(new ApiClient().getInterface().followUnfollowUser(Integer.parseInt(userId)), getActivity(), new ApiResponseHandlerWithFailure<String>() {
+        ApiManager.apiCallWithFailure(new ApiClient().getInterface().followUnfollowUser(Integer.parseInt(userId.trim())), getActivity(), new ApiResponseHandlerWithFailure<String>() {
             @Override
             public void onSuccess(Response<ApiResponse<String>> data) {
 //                dialog.dismiss();
@@ -731,46 +731,50 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
     }
 
     private void loadPost() {
-        ApiManager.apiCall(ApiClient.getInstance().getInterface().getPost(Integer.parseInt(userId), currentPageNumber), getActivity(),
-                new ApiResponseHandler<GenericDataModel<PostModel>>() {
-                    @Override
-                    public void onSuccess(Response<ApiResponse<GenericDataModel<PostModel>>> data) {
-                        if (data != null) {
-                            if (data.body().getData().getData().size() > 0) {
-                                if (userModel.getPrivate().equals("1") && userModel.getFollow().equals(0))
-                                    return;
+        try {
+            ApiManager.apiCall(ApiClient.getInstance().getInterface().getPost(Integer.parseInt(userId), currentPageNumber), getActivity(),
+                    new ApiResponseHandler<GenericDataModel<PostModel>>() {
+                        @Override
+                        public void onSuccess(Response<ApiResponse<GenericDataModel<PostModel>>> data) {
+                            if (data != null) {
+                                if (data.body().getData().getData().size() > 0) {
+                                    if (userModel.getPrivate().equals("1") && userModel.getFollow().equals(0))
+                                        return;
 
-                                tv_account_status.setVisibility(View.GONE);
-                                currentPageNumber = data.body().getData().getCurrentPage();
-                                nextPageUrl = data.body().getData().getNextPageUrl();
-                                if (currentPageNumber == 1) {
-                                    posts = new ArrayList<>();
-                                    posts = data.body().getData().getData();
-                                } else {
-                                    posts.addAll(data.body().getData().getData());
-                                }
-                                Activity activity = getActivity();
-                                if (isAdded() && activity != null) {
-                                    if (posts.size() > 0) {
-                                        handler.postDelayed(
-                                                new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        adapter.setList(posts);
-                                                        progress_bar.setVisibility(View.GONE);
-                                                    }
-                                                },500);
+                                    tv_account_status.setVisibility(View.GONE);
+                                    currentPageNumber = data.body().getData().getCurrentPage();
+                                    nextPageUrl = data.body().getData().getNextPageUrl();
+                                    if (currentPageNumber == 1) {
+                                        posts = new ArrayList<>();
+                                        posts = data.body().getData().getData();
+                                    } else {
+                                        posts.addAll(data.body().getData().getData());
                                     }
+                                    Activity activity = getActivity();
+                                    if (isAdded() && activity != null) {
+                                        if (posts.size() > 0) {
+                                            handler.postDelayed(
+                                                    new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            adapter.setList(posts);
+                                                            progress_bar.setVisibility(View.GONE);
+                                                        }
+                                                    }, 500);
+                                        }
 
+                                    }
+                                } else {
+                                    rv_user_profile.setVisibility(View.GONE);
+                                    tv_account_status.setVisibility(View.VISIBLE);
+                                    tv_account_status.setText(getString(R.string.posts_found));
                                 }
-                            } else {
-                                rv_user_profile.setVisibility(View.GONE);
-                                tv_account_status.setVisibility(View.VISIBLE);
-                                tv_account_status.setText(getString(R.string.posts_found));
                             }
                         }
-                    }
-                });
+                    });
+        } catch (NumberFormatException numberFormatException) {
+            Log.e("Error Number ", "loadPost: " + numberFormatException.getMessage());
+        }
 
     }
 
@@ -787,7 +791,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                         userId = otherUserModel.getId().toString();
                         Paper.book().write("UserID", userId);
                         Activity activity = getActivity();
-                        if (isAdded() && activity!=null) {
+                        if (isAdded() && activity != null) {
                             adapter = new PostAdapter(getActivity(), Integer.parseInt(userId), OTHER_PERSON_PROFILE, rv_user_profile);
                             rv_user_profile.setAdapter(adapter);
                             adapter.notifyDataSetChanged();

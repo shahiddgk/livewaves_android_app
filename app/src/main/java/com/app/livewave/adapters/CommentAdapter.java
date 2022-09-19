@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
 import com.app.livewave.interfaces.EditCommentInterface;
+import com.app.livewave.interfaces.EditCommentReply;
 import com.app.livewave.interfaces.ReplyButton;
 import com.app.livewave.models.ParameterModels.OnTouch;
 import com.app.livewave.models.ResponseModels.ApiResponse;
@@ -70,9 +72,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
     private LinearLayoutManager linearLayoutManager;
     private CommentReplyAdapter commentReplyAdapter;
     private boolean isReplies;
+    private EditCommentReply editCommentReply;
 
     public void setInterface(EditCommentInterface editCommentInterface) {
         this.editCommentInterface = editCommentInterface;
+    }
+
+    public void setCommentReplyInterface(EditCommentReply editCommentReply) {
+        this.editCommentReply = editCommentReply;
     }
 
     public CommentAdapter(Context context) {
@@ -89,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         notifyDataSetChanged();
     }
 
-    public void setReplies(ReplyButton replyButton){
+    public void setReplies(ReplyButton replyButton) {
         this.replyButton = replyButton;
     }
 
@@ -118,8 +125,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                 }
             });
         }
-        if (commentModel.getAttachment() == null || commentModel.getAttachment().equals(null))
-        {
+        if (commentModel.getAttachment() == null || commentModel.getAttachment().equals(null)) {
             holder.img_preview_image.setVisibility(GONE);
 
         } else {
@@ -151,7 +157,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         }
 
         holder.txt_reaction.setOnClickListener(v -> {
-            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment("0",String.valueOf(commentModelList.get(position).getId()));
+            ReactionDetailFragment reactionDetailFragment = new ReactionDetailFragment("0", String.valueOf(commentModelList.get(position).getId()));
             FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
             reactionDetailFragment.show(fragmentManager, "Reactions");
         });
@@ -187,11 +193,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
             holder.iv_remove.setVisibility(View.VISIBLE);
             holder.iv_edit.setVisibility(View.VISIBLE);
 
-        } else if (postModel!= null) {
-            if (userModel.getId().equals(postModel.getUserId()))
-            {
+        } else if (postModel != null) {
+            if (userModel.getId().equals(postModel.getUserId())) {
                 holder.iv_remove.setVisibility(View.VISIBLE);
-            }else {
+            } else {
                 holder.iv_remove.setVisibility(GONE);
             }
             holder.iv_edit.setVisibility(GONE);
@@ -226,29 +231,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.HASH_TAG, text.toString());
                 bundle.putString(HEADER_TITLE, text.toString());
-                ((HomeActivity)context).loadFragment(R.string.tag_hashtag,bundle);
+                ((HomeActivity) context).loadFragment(R.string.tag_hashtag, bundle);
             }
         });
         holder.tv_comment_text.setOnHyperlinkClickListener(new SocialView.OnClickListener() {
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
-                if (text.toString().contains("pl/post")){
+                if (text.toString().contains("pl/post")) {
                     String postId = text.toString().substring(text.toString().lastIndexOf("/") + 1);
                     getPostFromApiId(postId);
 
-                }else if (text.toString().contains("http")){
+                } else if (text.toString().contains("http")) {
                     Uri uri = Uri.parse(text.toString());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     context.startActivity(intent);
                 } else {
-                    Uri uri = Uri.parse("https://"+text.toString());
+                    Uri uri = Uri.parse("https://" + text.toString());
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     context.startActivity(intent);
                 }
             }
         });
 
-        if (commentModel.getChildren().size()>0) {
+        if (commentModel.getChildren().size() > 0) {
             List<ReplyModel> commentReplyModelList = new ArrayList<>();
             commentReplyModelList = commentModelList.get(position).getChildren();
 
@@ -258,12 +263,41 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
             linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             holder.comment_replies_view.setLayoutManager(linearLayoutManager);
             holder.comment_replies_view.setAdapter(commentReplyAdapter);
-           // initReactionsListener(position, holder);
+            // initReactionsListener(position, holder);
 
             commentReplyAdapter.notifyDataSetChanged();
 
             holder.comment_replies_view.setHasFixedSize(false);
             holder.comment_replies_view.setAdapter(commentReplyAdapter);
+            commentReplyAdapter.setInterface(new EditCommentReply() {
+                @Override
+                public void editCommentReply(ReplyModel replyModel, int position) {
+                    Log.e("TAG", "editCommentReply: ");
+                    if (editCommentReply != null) {
+                        try {
+                            Log.e("TAG", "editCommentReply: " + commentModelList.get(position).getChildren().get(position).getComment());
+                            editCommentReply.editCommentReply(replyModel, position);
+                        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                            Log.e("index out of ", "editCommentReply: " + indexOutOfBoundsException.getMessage() );
+                        }
+
+                    }
+                }
+            });
+
+
+            if (replyButton != null) {
+                if (holder.comment_replies_view.getVisibility() == View.GONE) {
+                    holder.comment_replies_view.setVisibility(View.VISIBLE);
+
+
+                } else {
+                    replyButton.setReplyButton(false, position);
+                    holder.comment_replies_view.setVisibility(GONE);
+
+                }
+            }
+
 
         }
 
@@ -271,19 +305,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
             @Override
             public void onClick(View view) {
                 isReplies = !isReplies;
-
-                if (replyButton!=null) {
-                    if (holder.comment_replies_view.getVisibility() == View.GONE) {
-                        holder.comment_replies_view.setVisibility(View.VISIBLE);
-
-                        replyButton.setReplyButton(true,position);
-
-                    } else {
-                        replyButton.setReplyButton(false,position);
-                        holder.comment_replies_view.setVisibility(GONE);
-
-                    }
-                }
+                replyButton.setReplyButton(true, position);
 
             }
         });
@@ -291,7 +313,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         holder.tv_comment_text.setOnMentionClickListener(new SocialView.OnClickListener() {
             @Override
             public void onClick(@NonNull SocialView view, @NonNull CharSequence text) {
-                ((HomeActivity)context).openUserProfile(text.toString());
+                ((HomeActivity) context).openUserProfile(text.toString());
 //                BaseUtils.openUserProfile(text.toString(), context);
 //                for (int i = 0; i < commentModel.getTagData().size(); i++){
 //                    if (commentModel.getTagData().get(i).getName().equals(text.toString())){
@@ -304,7 +326,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         setUpOnclickListeners(holder, position);
 
     }
-
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -324,25 +345,25 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         ReactionPopup popup = new ReactionPopup(context, config, (p) -> {
             switch (p) {
                 case 0:
-                    reactOnComment(commentModelList.get(position), 1, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 1, userModel.getId(), position);
                     break;
                 case 1:
-                    reactOnComment(commentModelList.get(position), 2, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 2, userModel.getId(), position);
                     break;
                 case 2:
-                    reactOnComment(commentModelList.get(position), 3, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 3, userModel.getId(), position);
                     break;
                 case 3:
-                    reactOnComment(commentModelList.get(position), 4, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 4, userModel.getId(), position);
                     break;
                 case 4:
-                    reactOnComment(commentModelList.get(position), 5, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 5, userModel.getId(), position);
                     break;
                 case 5:
-                    reactOnComment(commentModelList.get(position), 6, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 6, userModel.getId(), position);
                     break;
                 case 6:
-                    reactOnComment(commentModelList.get(position), 7, userModel.getId(),position);
+                    reactOnComment(commentModelList.get(position), 7, userModel.getId(), position);
                     break;
                 default:
                     break;
@@ -358,14 +379,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         });
     }
 
-    private void reactOnComment(CommentModel commentModel, int reaction,int reactorId,int position) {
+    private void reactOnComment(CommentModel commentModel, int reaction, int reactorId, int position) {
         ApiManager.apiCall(ApiClient.getInstance().getInterface().reactionOnComment(commentModel.getId(), reaction, postModel.getId()), context, data -> {
             assert data.body() != null;
             if (data.body().getMessage().equals("Reaction Removed Successfully")) {
                 System.out.println("Removed Successfully");
                 commentModelList.get(position).setTotalReactions(commentModelList.get(position).getTotalReactions() - 1);
-        //        if (data.body().getData().getReactorId() == userModel.getId())
-                    commentModelList.get(position).setMyReaction(0);
+                //        if (data.body().getData().getReactorId() == userModel.getId())
+                commentModelList.get(position).setMyReaction(0);
             } else {
                 if (commentModelList.get(position).getMyReaction() == 0) {
                     commentModelList.get(position).setTotalReactions(commentModelList.get(position).getTotalReactions() + 1);
@@ -374,7 +395,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                     System.out.println(userModel.getId());
                     System.out.println(commentModelList.get(position).getMyReaction());
 //                    if (data.body().getData().getReactorId() == userModel.getId()){}
-                      //  commentModelList.get(position).setMyReaction(1);
+                    //  commentModelList.get(position).setMyReaction(1);
                 }
                 System.out.println("REACTOR ID Reaction Checking");
                 System.out.println(commentModelList.get(position).getMyReaction());
@@ -431,7 +452,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                 System.out.println("EDIT CLICKED");
                 System.out.println(editCommentInterface);
                 if (editCommentInterface != null) {
-                    editCommentInterface.editComment(commentModelList.get(position), position);
+                    try {
+
+                        editCommentInterface.editComment(commentModelList.get(position), position);
+                    } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+                        Log.e("Index Out ", "onClick: " + indexOutOfBoundsException.getMessage());
+                    }
                 }
             }
         });
@@ -465,9 +491,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
 
     public class Holder extends RecyclerView.ViewHolder {
         private CircleImageView civ_user_img;
-        private TextView  tv_name,tv_reply_button,txt_reaction;
+        private TextView tv_name, tv_reply_button, txt_reaction;
         SocialTextView tv_comment_text;
-        private ImageView iv_remove, iv_edit,img_reaction,img_preview_image;
+        private ImageView iv_remove, iv_edit, img_reaction, img_preview_image;
         RecyclerView comment_replies_view;
 
         public Holder(@NonNull View itemView) {
@@ -478,17 +504,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
             //tv_reply_comment_text = itemView.findViewById(R.id.tv_reply_comment_text);
             tv_name = itemView.findViewById(R.id.tv_name);
             tv_reply_button = itemView.findViewById(R.id.iv_reply_button);
-           // tv_reply_name = itemView.findViewById(R.id.tv_reply_name);
+            // tv_reply_name = itemView.findViewById(R.id.tv_reply_name);
             iv_remove = itemView.findViewById(R.id.iv_remove);
             //iv_reply_remove = itemView.findViewById(R.id.iv_reply_remove);
             iv_edit = itemView.findViewById(R.id.iv_edit);
             comment_replies_view = itemView.findViewById(R.id.rv_comments_replies);
-           // iv_reply_edit = itemView.findViewById(R.id.iv_reply_edit);
+            // iv_reply_edit = itemView.findViewById(R.id.iv_reply_edit);
             img_reaction = itemView.findViewById(R.id.iv_reaction);
             txt_reaction = itemView.findViewById(R.id.txt_reaction);
             img_preview_image = itemView.findViewById(R.id.img_Comment_preview_image);
-           // iv_reply_reaction = itemView.findViewById(R.id.iv_reply_reaction);
-           // list_view = itemView.findViewById(R.id.list_view);
+            // iv_reply_reaction = itemView.findViewById(R.id.iv_reply_reaction);
+            // list_view = itemView.findViewById(R.id.list_view);
         }
     }
 }
