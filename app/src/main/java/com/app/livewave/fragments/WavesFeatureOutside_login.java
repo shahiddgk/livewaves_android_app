@@ -83,7 +83,7 @@ public class WavesFeatureOutside_login extends Fragment {
                 Log.e(TAG, "onPageScrollStateChanged: " + state );
                 if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
                     videosViewPager.setUserInputEnabled(true);
-                } else if (state == videosViewPager.SCROLL_AXIS_VERTICAL) {
+                } else if (state == videosViewPager.SCROLL_AXIS_VERTICAL || state == videosViewPager.SCROLL_AXIS_HORIZONTAL ) {
                     videosViewPager.setUserInputEnabled(true);
                 }
             }

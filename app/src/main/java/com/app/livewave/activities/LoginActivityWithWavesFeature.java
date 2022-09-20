@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.app.livewave.DialogSheets.ExitDialogueSheet;
@@ -75,6 +76,7 @@ public class LoginActivityWithWavesFeature extends AppCompatActivity {
 
         FragmentPageAdapter fragmentPageAdapter = new FragmentPageAdapter(this);
         viewPager2.setAdapter(fragmentPageAdapter);
+
 
     }
 
