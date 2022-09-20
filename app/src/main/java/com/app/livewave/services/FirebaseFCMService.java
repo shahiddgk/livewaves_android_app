@@ -136,7 +136,8 @@ public class FirebaseFCMService extends FirebaseMessagingService {
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(intent);
 
-        } else if (Objects.requireNonNull(message.getData().get("type")).equalsIgnoreCase("message")) {
+        } else if (Objects.requireNonNull(message.getData().get("type")).equalsIgnoreCase("chat")) {
+            Log.e("chat", "showNotification: " + "chat" );
             intent = new Intent(this, SplashActivity.class);
             intent.putExtra("type", message.getData().get("type"));
             intent.putExtra("contentID", message.getData().get("contentID"));
@@ -147,6 +148,8 @@ public class FirebaseFCMService extends FirebaseMessagingService {
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(intent);
         }
+
+        Log.e("fcm ", "showNotification: "+  message.getData().get("type"));
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,

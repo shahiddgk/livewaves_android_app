@@ -315,7 +315,14 @@ public class SplashActivity extends AppCompatActivity {
                 else {
                 }
 
+                if (getIntent().getStringExtra("type").equals("chat")){
+
+                }
+
             }
+
+
+
 
         }
 
@@ -326,6 +333,7 @@ public class SplashActivity extends AppCompatActivity {
                 Log.d("value", extras.getString(key) + " is a value in the bundle");
             }
         }
+
 
     }
 
@@ -497,12 +505,13 @@ public class SplashActivity extends AppCompatActivity {
                         finish();
 
 
-                    } else if (key.equalsIgnoreCase("message")) {
+                    } else if (key.equalsIgnoreCase("chat")) {
 
                         String url = "https://livewaves.app/api/chat/" + extras.getString("contentID") + "?token=" + Paper.book().read(token);
-                        Intent intent = new Intent(SplashActivity.this, WebviewActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                         //intent.putExtra(HAS_EXTRA, R.string.tag_webview);
                         intent.putExtra("intent_type", "5");
+                        intent.putExtra("fromNotification",true);
                         intent.putExtra(URL, url);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                         stackBuilder.addNextIntentWithParentStack(intent);

@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.app.livewave.R;
 import com.app.livewave.adapters.TikTokReelsAdapter;
+import com.app.livewave.fragments.live.OnSwipeTouchListener;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.models.ResponseModels.ApiResponse;
 import com.app.livewave.models.ResponseModels.WavesModelResponse;
@@ -32,7 +36,7 @@ import retrofit2.Response;
 import static org.webrtc.ContextUtils.getApplicationContext;
 
 public class WavesFeatureOutside_login extends Fragment {
-
+    private static final String TAG = "WavesFeatureOutside_log";
     ViewPager2 videosViewPager;
     ArrayList<VideoItem> videoItems;
     private List<WavesModelResponse> wavesVideoItems = new ArrayList<>();
@@ -76,13 +80,15 @@ public class WavesFeatureOutside_login extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-                if (state == videosViewPager.SCROLL_INDICATOR_LEFT){
-                    videosViewPager.setUserInputEnabled(false);
+                Log.e(TAG, "onPageScrollStateChanged: " + state );
+                if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
+                    videosViewPager.setUserInputEnabled(true);
                 } else if (state == videosViewPager.SCROLL_AXIS_VERTICAL) {
                     videosViewPager.setUserInputEnabled(true);
                 }
             }
         });
+
 
 //        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 //            @Override
@@ -114,6 +120,7 @@ public class WavesFeatureOutside_login extends Fragment {
 
     }
 
+
     private void getWavesItems(int currentPageNumber) {
         ApiManager.apiCall(ApiClient.getInstance().getInterface().getWavesListItems(currentPageNumber), getApplicationContext(), new ApiResponseHandler<List<WavesModelResponse>>() {
             @Override
@@ -135,7 +142,7 @@ public class WavesFeatureOutside_login extends Fragment {
                     }
 
                     Context context = getContext();
-
+                    videosViewPager.requestDisallowInterceptTouchEvent(true);
                     videosViewPager.setAdapter(new TikTokReelsAdapter(wavesVideoItems,context,false));
 //                    if (currentPageNumber == 1) {
 //                        dialog.dismiss();

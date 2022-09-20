@@ -46,6 +46,10 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
     int currentUserId;
     FirebaseFirestore rootRef;
     public static int clickedChatPosition;
+    private boolean fromAlerts = false;
+    private String name;
+    String myJson;
+
 
 
     public InboxAdapter(Context context, Integer id) {
@@ -56,6 +60,11 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
 
 
     }
+    public void redirectToChat(boolean fromAlerts,String name){
+        this.fromAlerts = fromAlerts;
+        this.name = name;
+    }
+
 
     @NonNull
     @Override
@@ -130,6 +139,8 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
             public void onClick(View v) {
                 Gson gson = new Gson();
                 String myJson = gson.toJson(inboxList.get(position));
+                Log.e("gson data", "onClick: " + myJson);
+
 //                Intent intent = new Intent(context, ChatFragment.class);
 //                intent.putExtra("inboxModel", myJson);
 //                context.startActivity(intent);
@@ -145,13 +156,43 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
                         UserModel userModel = Paper.book().read(Constants.currentUser);
                         if (inboxList.get(position).getMembersInfo().get(i).getId() != userModel.getId()) {
                             bundle.putString(HEADER_TITLE, inboxList.get(position).getMembersInfo().get(i).getName());
-                            Log.e("name", "onClick: " + inboxList.get(position).getMembersInfo().get(i).getName() );
+                            bundle.putString("senderName", inboxList.get(position).getMembersInfo().get(i).getName());
+                            Log.e("inbox adapter ", "onClick: " + inboxList.get(position).getMembersInfo().get(i).getName());
+                            Log.e("name", "onClick: " + inboxList.get(position).getMembersInfo().get(i).getName());
                         }
                     }
                 }
                 ((HomeActivity) context).loadFragment(R.string.tag_chat, bundle);
             }
         });
+//
+//        if (fromAlerts) {
+//            Log.e("from alerts ", "onBindViewHolder: ");
+//            Gson gson = new Gson();
+//
+//            myJson = gson.toJson(inboxList.get(position).membersInfo.get(position).name);
+//
+//            //  Log.e("gson data", "onClick: " + myJson );
+//
+////                Intent intent = new Intent(context, ChatFragment.class);
+////                intent.putExtra("inboxModel", myJson);
+////                context.startActivity(intent);
+//
+//            clickedChatPosition = position;
+//
+//            Bundle bundle = new Bundle();
+//            bundle.putString("inboxModel", myJson);
+//            if (!inboxList.get(position).getTitle().equals("")) {
+//                bundle.putString(HEADER_TITLE, inboxList.get(position).getTitle());
+//            } else {
+//                UserModel userModel = Paper.book().read(Constants.currentUser);
+//                if (inboxList.get(position).getSenderName() == name) {
+//                    bundle.putString(HEADER_TITLE, name);
+//
+//                }
+//                ((HomeActivity) context).loadFragment(R.string.tag_chat, bundle);
+//            }
+//        }
     }
 
     @Override

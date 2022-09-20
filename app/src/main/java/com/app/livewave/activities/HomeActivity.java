@@ -5,6 +5,7 @@ import static com.app.livewave.utils.Constants.HAS_EXTRA;
 import static com.app.livewave.utils.Constants.HEADER_TITLE;
 import static com.app.livewave.utils.Constants.HIDE_HEADER;
 import static com.app.livewave.utils.Constants.SPECIFIC_USER_ID;
+import static com.app.livewave.utils.Constants.USER_NAME;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -125,6 +126,30 @@ public class HomeActivity extends WavesPlayerBaseActivity {
             }
         });
 
+
+
+//
+//       if (getIntent().getExtras() != null){
+//           if (getIntent().getBooleanExtra("fromNotification",false)){
+//               if(getIntent().getExtras() != null){
+//                   if (getIntent().getBooleanExtra("fromNotification",false)){
+//                       try {
+//                           Log.e("Home", "onCreate: " );
+//
+//                           loadFragment(R.string.tag_inbox,null);
+//                       }catch (IllegalStateException illegalStateException){
+//                           Log.e("error with fragment", "onCreate: "+ illegalStateException.getMessage() );
+//                       }
+//                   }
+//               }
+//
+//
+//           }else {
+//
+//           }
+
+      // }
+        Log.e("TAG", "onCreate: " + "not from notification");
         if (getIntent().hasExtra(HAS_EXTRA)) {
             Bundle bundle = getIntent().getExtras();
             loadFragment(getIntent().getIntExtra(HAS_EXTRA, R.string.tag_dashboard), bundle);
@@ -133,7 +158,12 @@ public class HomeActivity extends WavesPlayerBaseActivity {
             Bundle bundle = new Bundle();
             bundle.putBoolean(HIDE_HEADER, false);
             try {
-                loadFragment(R.string.tag_dashboard, bundle);
+                if (getIntent().getBooleanExtra("fromNotification",false)){
+                    loadFragment(R.string.tag_inbox,null);
+                }else {
+                    loadFragment(R.string.tag_dashboard, bundle);
+                }
+
             }catch (IllegalStateException e){
                 Log.e("TAG", "onCreate: " + e.getMessage() );
             }

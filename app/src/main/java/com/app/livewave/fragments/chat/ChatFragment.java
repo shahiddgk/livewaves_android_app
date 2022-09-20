@@ -126,6 +126,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     int messageEndCheck = 0;
     int check = 0;
     public static boolean messageSent = false;
+    private String senderName;
 
 
     @Nullable
@@ -234,6 +235,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     private void getMessagesFromFirebase() {
         adapter = new MessageAdapter(getActivity(), inboxModel.getMembersInfo(), inboxModel.id);
         rv_messages.setAdapter(adapter);
+        adapter.setSenderName(senderName);
         messageRef = rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxModel.id).collection("Messages");
         Query query = messageRef.orderBy("sentAt").limitToLast(10);
         query.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -299,8 +301,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
                                                 check = 0;
                                             }
                                         }
-                                        for(int i=0 ; i<messagesList1.size() ; i++){
-                                            messagesList.add(i , messagesList1.get(i));
+                                        for (int i = 0; i < messagesList1.size(); i++) {
+                                            messagesList.add(i, messagesList1.get(i));
                                         }
                                         adapter.notifyDataSetChanged();
                                         if (queryDocumentSnapshots.size() > 0)
@@ -371,7 +373,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         img_show_options = view.findViewById(R.id.img_show_options);
         img_select_picture = view.findViewById(R.id.img_select_picture);
         img_record = view.findViewById(R.id.img_record);
-   //     img_location = view.findViewById(R.id.img_location);
+        //     img_location = view.findViewById(R.id.img_location);
         img_send = view.findViewById(R.id.img_send);
         et_message = view.findViewById(R.id.et_message);
 
@@ -397,6 +399,10 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         } else if (bundle.containsKey("friendModel")) {
             friendModel = gson.fromJson(bundle.getString("friendModel"), UserModel.class);
             type = 2;
+        }
+        if (bundle != null) {
+            senderName = bundle.getString("senderName");
+            Log.e("chat fragement", "getBundleData: " + senderName );
         }
     }
 
@@ -659,7 +665,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
     }
 
     private void sendMessageToFirebase(String attachment, String message, Integer senderId, long sentAt, int attachmentType) {
-        Log.e("i am here", "sendMessageToFirebase: "  );
+        Log.e("i am here", "sendMessageToFirebase: ");
         if (inboxModel != null) {
             DocumentReference reference = db.collection(Constants.firebaseDatabaseRoot).document(inboxModel.id).collection("Messages").document();
             MessageModel messageModel = new MessageModel(attachment, message, senderId, sentAt, attachmentType, reference.getId());
@@ -672,8 +678,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
                     if (attachmentType == 0) {
                         updateLastMessage(message, senderId, userModel.getName(), sentAt, inboxModel.getId(), reference.getId());
                         messageSent = true;
-                    }
-                    else if (attachmentType == 1)
+                    } else if (attachmentType == 1)
                         updateLastMessage("Image", senderId, userModel.getName(), sentAt, inboxModel.getId(), reference.getId());
                     else
                         updateLastMessage("Sent a voice message", senderId, userModel.getName(), sentAt, inboxModel.getId(), reference.getId());
@@ -696,11 +701,11 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
                 members.add(friendModel.getId());
             inboxModel.setMembers(members);
             List<MembersInfo> membersInfo = new ArrayList<>();
-            membersInfo.add(new MembersInfo(userModel.getName(), userModel.getId(), userModel.getPhoto(), userModel.getUsername(), true , "available"));
+            membersInfo.add(new MembersInfo(userModel.getName(), userModel.getId(), userModel.getPhoto(), userModel.getUsername(), true, "available"));
             if (type == 1)
-                membersInfo.add(new MembersInfo(followModel.getName(), followModel.getId(), followModel.getPhoto(), followModel.getUsername(), true , "available"));
+                membersInfo.add(new MembersInfo(followModel.getName(), followModel.getId(), followModel.getPhoto(), followModel.getUsername(), true, "available"));
             else
-                membersInfo.add(new MembersInfo(friendModel.getName(), friendModel.getId(), friendModel.getPhoto(), friendModel.getUsername(), true , "available"));
+                membersInfo.add(new MembersInfo(friendModel.getName(), friendModel.getId(), friendModel.getPhoto(), friendModel.getUsername(), true, "available"));
             inboxModel.setMembersInfo(membersInfo);
             inboxModel.setTitle("");
             this.inboxModel = inboxModel;
@@ -740,8 +745,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         hashMap.put("lastMessageId", lastMessageId);
         List<MembersInfo> membersInfo = new ArrayList<>();
         membersInfo = inboxModel.membersInfo;
-        Log.e("member info", "updateLastMessage: " + membersInfo.size() );
-        for(int i=0 ; i<membersInfo.size() ; i++){
+        Log.e("member info", "updateLastMessage: " + membersInfo.size());
+        for (int i = 0; i < membersInfo.size(); i++) {
             membersInfo.get(i).setType("available");
         }
         hashMap.put("membersInfo", membersInfo);
@@ -749,7 +754,7 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         db.collection(Constants.firebaseDatabaseRoot).document(id).update(hashMap).addOnSuccessListener(new OnSuccessListener() {
             @Override
             public void onSuccess(Object o) {
-                Log.e("update last ", "onSuccess: " );
+                Log.e("update last ", "onSuccess: ");
                 dialog.dismiss();
             }
         });
@@ -759,14 +764,14 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         img_show_options.setVisibility(View.VISIBLE);
         img_select_picture.setVisibility(View.GONE);
         img_record.setVisibility(View.GONE);
-      //  img_location.setVisibility(View.GONE);
+        //  img_location.setVisibility(View.GONE);
     }
 
     private void showOptions() {
         img_show_options.setVisibility(View.GONE);
         img_select_picture.setVisibility(View.VISIBLE);
         img_record.setVisibility(View.VISIBLE);
-      //  img_location.setVisibility(View.VISIBLE);
+        //  img_location.setVisibility(View.VISIBLE);
     }
 
     @SuppressLint("MissingSuperCall")

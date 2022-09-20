@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     MediaPlayer player1;
     FirebaseFirestore rootRef;
     String rootId;
+    private String senderName;
 
 
     public MessageAdapter(Context context, List<MembersInfo> membersInfo, String rootId) {
@@ -64,6 +66,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         this.membersInfo = membersInfo;
         rootRef = FirebaseFirestore.getInstance();
         this.rootId = rootId;
+    }
+    public void setSenderName(String name){
+        this.senderName = name;
     }
 
     @NonNull
@@ -123,6 +128,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.txt_msg.setText(messageList.get(position).message);
         Glide.with(context).load(messageList.get(position).attachment).into(holder.img_picture);
+        if (getItemViewType(position) == MSG_TYPE_LEFT){
+            Log.e("Message Adapter", "onBindViewHolder: " + senderName);
+            holder.txt_name.setText(senderName);
+        }
+
 
         Date date = new Date(messageList.get(position).sentAt);
         DateFormat dateFormat = new SimpleDateFormat("dd:MM:yyyy");

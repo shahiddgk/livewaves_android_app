@@ -40,6 +40,8 @@ import io.paperdb.Paper;
 
 public class InboxFragment extends Fragment implements PlayerStateListener {
 
+    private static final String TAG = "InboxFragment";
+
     //    private Toolbar toolbar;
     RecyclerView rv_inbox;
     InboxAdapter adapter;
@@ -52,6 +54,8 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     SelectGroupMembers selectGroupMembers;
     TextView txt_new_group;
     static InboxFragment instance;
+    boolean fromAlerts;
+    String userNameFromAlert;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,10 +71,21 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
         setHasOptionsMenu(true);
+//        if (getArguments() != null){
+//
+//            fromAlerts = getArguments().getBoolean("fromAlert");
+//            userNameFromAlert = getArguments().getString("name");
+//            Log.e(TAG, "onViewCreated: " + fromAlerts );
+//        }else {
+//            Log.e(TAG, "onViewCreated: "  );
+//        }
+
         initViews(view);
         getInboxListFromFirebase();
         setUpRecyclerView();
-        Log.e("oncreateview", "onCreateView: " );
+        Log.e("oncreateview", "onCreateView: ");
+
+
 
 
         return view;
@@ -82,12 +97,14 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
         initClickListener();
 
 
+
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.e("resume", "onResume: " );
+        Log.e("resume", "onResume: ");
 
     }
 
@@ -123,7 +140,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
                 if (error != null) {
                     Log.e("ErrorFetchingData", error.toString());
                 }
-                 inboxModelList.clear();
+                inboxModelList.clear();
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
                         Log.e("TAG", "onEvent: " + dc.getType());
@@ -170,7 +187,7 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
 
                                 if (check == 0) {
                                     inboxModelList.add(modifiedMessage);
-                                    Log.e("size", "onEvent: " + inboxModelList.size() );
+                                    Log.e("size", "onEvent: " + inboxModelList.size());
                                 }
                                 int pos1 = -1;
                                 for (int i = inboxModelList.size() - 1; i > -1; i--) {
@@ -190,9 +207,58 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
 //                                inboxModelList.set(InboxAdapter.clickedChatPosition,inboxModelList.get(0));
 //                                inboxModelList.set(0,inboxModel);
 //                                adapter.notifyDataSetChanged();
-                                getInboxListFromFirebase();
+                                getLastAddedToFirebase();
                                 adapter.notifyDataSetChanged();
                                 break;
+                            case REMOVED:
+                                break;
+                        }
+                    }
+                } else {
+                    Log.e("else ", "onEvent: " + "nulll");
+                }
+
+            }
+        });
+    }
+
+    private void getLastAddedToFirebase() {
+        Query query = rootRef.collection(Constants.firebaseDatabaseRoot).whereArrayContains("members", userModel.getId()).orderBy("sentAt", Query.Direction.DESCENDING);
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("ErrorFetchingData", error.toString());
+                }
+                inboxModelList.clear();
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        Log.e("TAG", "onEvent: " + dc.getType());
+                        switch (dc.getType()) {
+                            case ADDED:
+                                InboxModel chatRoot = dc.getDocument().toObject(InboxModel.class);
+                                inboxModelList.add(chatRoot);
+                                Log.e("added", "onEvent: " + inboxModelList.size());
+                                Log.e("added", "onEvent: " + inboxModelList.size());
+                                int pos = -1;
+                                for (int i = inboxModelList.size() - 1; i > -1; i--) {
+                                    for (int j = 0; j < inboxModelList.get(i).membersInfo.size(); j++) {
+                                        if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType() != null) {
+                                            if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType().equals("delete")) {
+                                                pos = i;
+                                            }
+                                        }
+                                    }
+                                    if (pos != -1) {
+                                        inboxModelList.remove(pos);
+                                    }
+                                    pos = -1;
+                                }
+                                // adapter.setList(inboxModelList);
+
+                                adapter.notifyDataSetChanged();
+                                break;
+                            case MODIFIED:
                             case REMOVED:
                                 break;
                         }
@@ -231,7 +297,9 @@ public class InboxFragment extends Fragment implements PlayerStateListener {
         rv_inbox.setLayoutManager(layoutManager);
         adapter = new InboxAdapter(getActivity(), userModel.getId());
         adapter.setList(inboxModelList);
+        //adapter.redirectToChat(fromAlerts,userNameFromAlert);
         rv_inbox.setAdapter(adapter);
+        Log.e("checking from alerts", "setUpRecyclerView: " + fromAlerts );
         adapter.notifyDataSetChanged();
     }
 

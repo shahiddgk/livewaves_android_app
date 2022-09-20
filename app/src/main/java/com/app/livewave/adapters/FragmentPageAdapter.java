@@ -27,6 +27,7 @@ public class FragmentPageAdapter extends FragmentStateAdapter{
         }
     }
 
+
     @Override
     public int getItemCount() {
         return 2;

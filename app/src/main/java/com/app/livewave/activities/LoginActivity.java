@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 
@@ -37,6 +38,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private static final String TAG = "LoginActivity";
+
     TextInputEditText et_email, et_password;
     private FirebaseAuth mAuth;
     KProgressHUD dialog;
@@ -49,6 +52,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.e(TAG, "onCreate: " );
 //
 //        viewPager = findViewById(R.id.slider_view_pager_login);
 //        viewPager.setAdapter(new ImageSliderAdapterForLoginSignUp(images,LoginActivity.this));
