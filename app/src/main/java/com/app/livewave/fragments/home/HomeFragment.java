@@ -45,11 +45,13 @@ import com.app.livewave.activities.FullScreenActivity;
 import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.activities.ImagePickerActivity;
 import com.app.livewave.adapters.PostAdapter;
+import com.app.livewave.fragments.chat.InboxFragment;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
 import com.app.livewave.interfaces.PostOptionInterface;
 import com.app.livewave.interfaces.UploadingProgressInterface;
 import com.app.livewave.interfaces.onClickInterfaceForEditPost;
+import com.app.livewave.models.InboxModel;
 import com.app.livewave.models.ParameterModels.OnRefreshPost;
 import com.app.livewave.models.ParameterModels.OnTouch;
 import com.app.livewave.models.ReadUnreadMessagesNotification;
@@ -70,6 +72,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.kaopiz.kprogresshud.KProgressHUD;
@@ -91,12 +99,14 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment implements onClickInterfaceForEditPost, PlayerStateListener {
 
+    private static final String TAG = "HomeFragment";
+
     private RecyclerView rv_home;
     private PostAdapter adapter;
     private ImageView img_cover, editProfile, img_edit_event_cover;
     private ProgressBar progress_bar;
     private CircleImageView img_profile, img_status;
-    private TextView txt_name, txt_followers, txt_following, txt_bio,ic_message_count;
+    private TextView txt_name, txt_followers, txt_following, txt_bio, ic_message_count,ic_message_notification_count;
     private UserModel userModel;
     private List<PostModel> posts = new ArrayList<>();
     private NestedScrollView nested_scroll_view;
@@ -106,15 +116,26 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
     private SwipeRefreshLayout swipe_to_refresh;
     private CreatePostDialogSheet bottomSheetDialog;
     private int noOfFriendRequests;
-    public MaterialCardView card_events, card_edit_profile,card_subscriptions;
+    public MaterialCardView card_events, card_edit_profile, card_subscriptions;
     boolean isProfile = false;
     private int REQUEST_IMAGE = 1;
+    private ArrayList<InboxModel> inboxModelList = new ArrayList<>();
     private String profilePath;
     KProgressHUD loadingDialog;
     LinearLayout layout_following, layout_followers;
     String currentFcmToken;
     ScrollView scrollView;
     KProgressHUD dialog;
+    InboxFragment inboxFragment;
+    FirebaseFirestore rootRef;
+    private int notificationCounter = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        inboxFragment = new InboxFragment();
+        rootRef = FirebaseFirestore.getInstance();
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
 
@@ -125,6 +146,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         initClickListeners(root);
         return root;
     }
+
 
     private void initClickListeners(View root) {
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -155,7 +177,6 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
 //                startActivity(new Intent(getActivity(), InboxActivity.class));
 
             readMessagesApiCall();
-
 
 
             ((HomeActivity) getActivity()).loadFragment(R.string.tag_inbox, null);
@@ -267,7 +288,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         root.findViewById(R.id.img_waves_item).setOnClickListener(view -> {
             Bundle bundle = new Bundle();
             bundle.putBoolean(HIDE_HEADER, false);
-            ((HomeActivity)getActivity()).loadFragment(R.string.tag_waves_Features, bundle);
+            ((HomeActivity) getActivity()).loadFragment(R.string.tag_waves_Features, bundle);
         });
         root.findViewById(R.id.img_search).setOnClickListener(v -> {
 //                startActivity(new Intent(getActivity(), SearchFragment.class));
@@ -309,13 +330,111 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
             public void onSuccess(Response<ApiResponse<List<ReadUnreadMessagesNotification>>> data) {
                 System.out.println("Message Read Api Called");
                 System.out.println(data.body().getMessage());
-                if (data!=null) {
+                if (data != null) {
                     ic_message_count.setText("0");
+                    notificationCounter = 0;
+                    Paper.book().delete("notificationCounts");
+                    ic_message_notification_count.setVisibility(View.GONE);
                     ic_message_count.setVisibility(View.GONE);
                 }
             }
         });
 
+
+    }
+
+    private void getLatestMessages() {
+        Query query = rootRef.collection(Constants.firebaseDatabaseRoot).whereArrayContains("members", userModel.getId()).orderBy("sentAt", Query.Direction.DESCENDING);
+        query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    Log.e("ErrorFetchingData", error.toString());
+                }
+                inboxModelList.clear();
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        Log.e("TAG", "onEvent: " + dc.getType());
+                        switch (dc.getType()) {
+                            case ADDED:
+                                InboxModel chatRoot = dc.getDocument().toObject(InboxModel.class);
+                                inboxModelList.add(chatRoot);
+                                Log.e("added", "onEvent: " + inboxModelList.size());
+                                Log.e("added", "onEvent: " + inboxModelList.size());
+                                int pos = -1;
+                                for (int i = inboxModelList.size() - 1; i > -1; i--) {
+                                    for (int j = 0; j < inboxModelList.get(i).membersInfo.size(); j++) {
+                                        if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType() != null) {
+                                            if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType().equals("delete")) {
+                                                pos = i;
+                                            }
+                                        }
+                                    }
+                                    if (pos != -1) {
+                                        inboxModelList.remove(pos);
+                                    }
+                                    pos = -1;
+                                }
+                                // adapter.setList(inboxModelList);
+
+                                break;
+                            case MODIFIED:
+                                int check = 0;
+                                InboxModel modifiedMessage = dc.getDocument().toObject(InboxModel.class);
+                                for (int i = 0; i < inboxModelList.size(); i++) {
+                                    if (inboxModelList.get(i).getId().equals(modifiedMessage.id)) {
+                                        inboxModelList.get(i).senderName = modifiedMessage.senderName;
+                                        inboxModelList.get(i).senderId = modifiedMessage.senderId;
+                                        inboxModelList.get(i).lastMessage = modifiedMessage.lastMessage;
+                                        inboxModelList.get(i).sentAt = modifiedMessage.sentAt;
+                                        inboxModelList.get(i).lastMessageId = modifiedMessage.lastMessageId;
+                                        inboxModelList.get(i).membersInfo = modifiedMessage.membersInfo;
+                                        check = 1;
+                                    }
+                                }
+
+                                Log.e("modified", "onEvent: " + check + "  " + modifiedMessage.members);
+
+                                if (check == 0) {
+                                    inboxModelList.add(modifiedMessage);
+                                    Log.e("size", "onEvent: " + inboxModelList.size());
+                                }
+                                int pos1 = -1;
+                                for (int i = inboxModelList.size() - 1; i > -1; i--) {
+                                    for (int j = 0; j < inboxModelList.get(i).membersInfo.size(); j++) {
+                                        if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType() != null) {
+                                            if (userModel.getId() == inboxModelList.get(i).membersInfo.get(j).getId() && inboxModelList.get(i).membersInfo.get(j).getType().equals("delete")) {
+                                                pos1 = i;
+                                            }
+                                        }
+                                    }
+                                    if (pos1 != -1) {
+                                        inboxModelList.remove(pos1);
+                                    }
+                                    pos1 = -1;
+                                }
+                                notificationCounter++;
+                                Log.e(TAG, "onEvent: n" + notificationCounter);
+                                if (notificationCounter > 0) {
+                                    Paper.book().write("notificationCounts", notificationCounter);
+                                    ic_message_notification_count.setVisibility(View.VISIBLE);
+                                    ic_message_notification_count.setText("" + notificationCounter);
+                                }
+//                                InboxModel inboxModel = inboxModelList.get(InboxAdapter.clickedChatPosition);
+//                                inboxModelList.set(InboxAdapter.clickedChatPosition,inboxModelList.get(0));
+//                                inboxModelList.set(0,inboxModel);
+//                                adapter.notifyDataSetChanged();
+                                break;
+                            case REMOVED:
+                                break;
+                        }
+                    }
+                } else {
+                    Log.e("else ", "onEvent: " + "nulll");
+                }
+
+            }
+        });
     }
 
 
@@ -449,6 +568,9 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         super.onViewCreated(view, savedInstanceState);
         if (userModel != null)
             setData(userModel);
+        getLatestMessages();
+
+
     }
 
     @Override
@@ -457,6 +579,17 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         userModel = Paper.book().read(Constants.currentUser);
         if (userModel != null)
             setData(userModel);
+        notificationCounter = Paper.book().read("notificationCounts",0);
+        Log.e(TAG, "onResume: " + notificationCounter );
+        if (notificationCounter != 0) {
+            if (notificationCounter > 0) {
+
+                ic_message_notification_count.setVisibility(View.VISIBLE);
+                ic_message_notification_count.setText("" + notificationCounter);
+            }
+        } else {
+            ic_message_notification_count.setVisibility(View.GONE);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -476,6 +609,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         layout_following = view.findViewById(R.id.layout_following);
         layout_followers = view.findViewById(R.id.layout_followers);
         rv_home = view.findViewById(R.id.rv_home);
+        ic_message_notification_count = view.findViewById(R.id.ic_message_notification_count);
 //        ViewGroup.LayoutParams params=rv_home.getLayoutParams();
 //        params.height= (int) Constants.screenHeight+1;
 //        rv_home.setLayoutParams(params);
@@ -502,6 +636,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         getActionData();
         loadProfile();
         loadPost();
+
         nested_scroll_view.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
             if (v.getChildAt(v.getChildCount() - 1) != null) {
                 if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
@@ -560,24 +695,25 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
             public void onSuccess(Response<ApiResponse<List<ReadUnreadMessagesNotification>>> data) {
                 System.out.println("UnRead Messages Api Called");
                 System.out.println(data.body().getMessage());
-                if (data!=null) {
+                if (data != null) {
                     setDataForNotification(data.body().getData());
                 }
             }
 
-            private void setDataForNotification(List< ReadUnreadMessagesNotification > data) {
+            private void setDataForNotification(List<ReadUnreadMessagesNotification> data) {
 
-                    if (data.size() > 0) {
 
-                        ic_message_count.setVisibility(View.VISIBLE);
-                        if (data.size()>99) {
-                            ic_message_count.setText(data.size()+"+");
-                        } else {
-                            ic_message_count.setText(data.size() + "");
-                        }
-                    }else {
-                        ic_message_count.setVisibility(View.GONE);
+                if (data.size() > 0) {
+
+                    ic_message_count.setVisibility(View.VISIBLE);
+                    if (data.size() > 99) {
+                        ic_message_count.setText(data.size() + "+");
+                    } else {
+                        ic_message_count.setText(data.size() + "");
                     }
+                } else {
+                    ic_message_count.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -585,15 +721,15 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
     private void getActionData() {
         String action = " ";
         String path = " ";
-       action = Paper.book().read("action");
-       if (action == "android.intent.action.SEND" || action.equals("android.intent.action.SEND")) {
-          path = Paper.book().read("Picture Path");
-          System.out.println("PICTURES PATH IN HOME FRAGEMENT");
-           System.out.println(path);
-           CreatePostDialogSheet createPostDialogSheet = new CreatePostDialogSheet(Constants.POST_EDIT_DIALOG, userModel.getId());
-           FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-           createPostDialogSheet.show(fragmentManager, POST_CREATE_DIALOG);
-       }
+        action = Paper.book().read("action");
+        if (action == "android.intent.action.SEND" || action.equals("android.intent.action.SEND")) {
+            path = Paper.book().read("Picture Path");
+            System.out.println("PICTURES PATH IN HOME FRAGEMENT");
+            System.out.println(path);
+            CreatePostDialogSheet createPostDialogSheet = new CreatePostDialogSheet(Constants.POST_EDIT_DIALOG, userModel.getId());
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            createPostDialogSheet.show(fragmentManager, POST_CREATE_DIALOG);
+        }
 
     }
 
@@ -668,6 +804,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
         }
+
     }
 
     @Override
@@ -680,7 +817,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
 
     @Override
     public void onDestroy() {
-        ApiClient.getInstance().getInterface().getPost(userModel.getId(),currentPageNumber).cancel();
+        ApiClient.getInstance().getInterface().getPost(userModel.getId(), currentPageNumber).cancel();
         ApiClient.getInstance().getInterface().getProfile(userModel.getId().toString()).cancel();
         dialog.dismiss();
         if (EventBus.getDefault().isRegistered(this))

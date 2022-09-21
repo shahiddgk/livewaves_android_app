@@ -392,6 +392,19 @@
                         android:textSize="12sp"
                         android:textAlignment="center"
                         android:textColor="@color/white" />
+                    <TextView
+                        android:gravity="center"
+                        android:id="@+id/ic_message_notification_count"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginLeft="35dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/notification_badge"
+                        android:text="0"
+                        android:visibility="gone"
+                        android:textSize="12sp"
+                        android:textAlignment="center"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
 
 
