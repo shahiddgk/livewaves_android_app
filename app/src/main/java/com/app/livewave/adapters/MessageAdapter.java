@@ -139,7 +139,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.txt_message_time.setText(dateFormat.format(date) +"  "+BaseUtils.getTimeFromMiliSecond(messageList.get(position).getSentAt()));
 
-        if (messageList.get(position).senderId == userModel.getId()) {
+
 
 //            holder.iv_delete_message.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -173,7 +173,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     return false;
                 }
             });
-        }
 
 //        if (messageList.get(position).message.equals("This message was deleted")) {
 //            holder.iv_delete_message.setVisibility(View.GONE);

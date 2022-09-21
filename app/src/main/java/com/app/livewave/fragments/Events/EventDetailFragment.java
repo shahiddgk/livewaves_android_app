@@ -10,6 +10,7 @@ import static com.app.livewave.utils.Constants.HIDE_HEADER;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -48,6 +49,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
+import org.webrtc.EglBase14;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -64,9 +67,18 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     private String eventId, sharingId;
     private UserModel userModel;
     private EventModel event;
+    private Context context;
 //    Toolbar toolbar;
 //    CollapsingToolbarLayout collapsingToolbarLayout;
 //    AppBarLayout app_bar;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity().getApplicationContext();
+
+    }
 
     @Nullable
     @Override
@@ -168,7 +180,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
             btn_direction.setVisibility(View.GONE);
             btn_go_live.setVisibility(View.VISIBLE);
             if (!event.getUserId().equals(userModel.getId())) {
-                btn_go_live.setText(getString(R.string.join));
+                btn_go_live.setText(context.getString(R.string.join));
             }
         } else {
             btn_direction.setVisibility(View.VISIBLE);
@@ -183,13 +195,13 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
             }
             tv_event_price.setText(String.valueOf(event.getAmount()));
         } else {
-            tv_event_price.setText(getString(R.string.free));
+            tv_event_price.setText(context.getString(R.string.free));
             btn_buy.setVisibility(View.GONE);
         }
         if (event.getAddress() != null || event.getLatitude() != null && event.getLongitude() != null)
             tv_address.setText(event.getAddress());
         if (event.getLimited().equals("1")) {
-            tv_limit.setText(getString(R.string.forward_slash_between, event.getTicketsSold().toString(), event.getTickets()));
+            tv_limit.setText(context.getString(R.string.forward_slash_between, event.getTicketsSold().toString(), event.getTickets()));
         } else {
             tv_limit.setText(R.string.unlimited_seats);
         }
@@ -304,7 +316,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
                 if (event.getType().equals("2")) {
                     addCheckIn("stream");
                 } else {
-                    addCheckIn(getString(R.string.normal));
+                    addCheckIn(requireContext().getString(R.string.normal));
                 }
             }
         } else if (id == R.id.btn_buy) {
@@ -440,7 +452,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
 
         } else if (id == R.id.img_delete_event) {
 
-            showAlertDialog(getString(R.string.delete_event), getString(R.string.are_you_sure_cant_to_delete_event), getActivity(), new DialogBtnClickInterface() {
+            showAlertDialog(requireContext().getString(R.string.delete_event), requireContext().getString(R.string.are_you_sure_cant_to_delete_event), getActivity(), new DialogBtnClickInterface() {
                 @Override
                 public void onClick(boolean positive) {
                     if (positive) {
@@ -503,7 +515,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         ApiManager.apiCall(ApiClient.getInstance().getInterface().deleteEvent(eventId), getActivity(), new ApiResponseHandler<EventModel>() {
             @Override
             public void onSuccess(Response<ApiResponse<EventModel>> data) {
-                BaseUtils.showLottieDialog(getActivity(), getString(R.string.event_deleted_successfully), R.raw.delete, new DialogBtnClickInterface() {
+                BaseUtils.showLottieDialog(getActivity(), requireContext().getString(R.string.event_deleted_successfully), R.raw.delete, new DialogBtnClickInterface() {
                     @Override
                     public void onClick(boolean positive) {
                         getActivity().onBackPressed();

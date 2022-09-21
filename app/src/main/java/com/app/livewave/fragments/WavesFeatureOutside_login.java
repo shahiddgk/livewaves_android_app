@@ -3,6 +3,8 @@ package com.app.livewave.fragments;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.app.livewave.R;
+import com.app.livewave.activities.LoginActivityWithWavesFeature;
 import com.app.livewave.adapters.TikTokReelsAdapter;
 import com.app.livewave.fragments.live.OnSwipeTouchListener;
 import com.app.livewave.interfaces.ApiResponseHandler;
@@ -45,6 +48,12 @@ public class WavesFeatureOutside_login extends Fragment {
     int currentPageNumber = 1;
     KProgressHUD dialog;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    boolean selectedFragment = false;
+
+
+    public void setSelectedFragment(boolean selectedFragment) {
+        this.selectedFragment = selectedFragment;
+    }
 
     public WavesFeatureOutside_login() {
         // Required empty public constructor
@@ -72,22 +81,19 @@ public class WavesFeatureOutside_login extends Fragment {
         videosViewPager = view.findViewById(R.id.viewPagerVideos);
         no_videos_available = view.findViewById(R.id.no_videos_available);
         image_back_button = view.findViewById(R.id.img_back_button_waves_feature);
-        videoItems = new ArrayList<>();
-        dialog = BaseUtils.progressDialog(getContext());
-        getWavesItems(currentPageNumber);
 
-        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                super.onPageScrollStateChanged(state);
-                Log.e(TAG, "onPageScrollStateChanged: " + state );
-                if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
-                    videosViewPager.setUserInputEnabled(true);
-                } else if (state == videosViewPager.SCROLL_AXIS_VERTICAL || state == videosViewPager.SCROLL_AXIS_HORIZONTAL ) {
-                    videosViewPager.setUserInputEnabled(true);
-                }
-            }
-        });
+
+
+//        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//                super.onPageScrollStateChanged(state);
+//                Log.e(TAG, "onPageScrollStateChanged: " + state );
+//                if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
+//                    videosViewPager.setUserInputEnabled(true);
+//                }
+//            }
+//        });
 
 
 //        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -120,6 +126,18 @@ public class WavesFeatureOutside_login extends Fragment {
 
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Log.e(TAG, "onViewCreated: ");
+        videoItems = new ArrayList<>();
+        dialog = BaseUtils.progressDialog(getContext());
+
+            getWavesItems(currentPageNumber);
+
+
+
+    }
 
     private void getWavesItems(int currentPageNumber) {
         ApiManager.apiCall(ApiClient.getInstance().getInterface().getWavesListItems(currentPageNumber), getApplicationContext(), new ApiResponseHandler<List<WavesModelResponse>>() {
@@ -135,15 +153,14 @@ public class WavesFeatureOutside_login extends Fragment {
                     wavesVideoItems = data.body().getData();
 
 
-                    if (wavesVideoItems.size()>0) {
+                    if (wavesVideoItems.size() > 0) {
                         no_videos_available.setVisibility(View.GONE);
                     } else {
                         no_videos_available.setVisibility(View.VISIBLE);
                     }
 
                     Context context = getContext();
-                    videosViewPager.requestDisallowInterceptTouchEvent(true);
-                    videosViewPager.setAdapter(new TikTokReelsAdapter(wavesVideoItems,context,false));
+                    videosViewPager.setAdapter(new TikTokReelsAdapter(wavesVideoItems, getContext(), false));
 //                    if (currentPageNumber == 1) {
 //                        dialog.dismiss();
 //                    }
@@ -151,10 +168,22 @@ public class WavesFeatureOutside_login extends Fragment {
             }
         });
 
-        if (wavesVideoItems.size()>0) {
+        if (wavesVideoItems.size() > 0) {
             no_videos_available.setVisibility(View.GONE);
         } else {
             no_videos_available.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e(TAG, "onResume: "   );
+
     }
 }

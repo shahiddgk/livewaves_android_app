@@ -22,7 +22,7 @@ public class ExitDialogueSheet extends DialogFragment implements View.OnClickLis
     Context context;
 
     public ExitDialogueSheet() {
-        // Required empty public constructor
+         // Required empty public constructor
     }
 
 

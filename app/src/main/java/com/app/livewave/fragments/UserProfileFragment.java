@@ -12,6 +12,7 @@ import static com.app.livewave.utils.Constants.currentUser;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -106,6 +107,15 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
     private KProgressHUD dialog;
     final Handler handler = new Handler();
     Timer timer = new Timer();
+
+    private Context context;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity().getApplicationContext();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -767,7 +777,7 @@ public class UserProfileFragment extends Fragment implements PlayerStateListener
                                 } else {
                                     rv_user_profile.setVisibility(View.GONE);
                                     tv_account_status.setVisibility(View.VISIBLE);
-                                    tv_account_status.setText(getString(R.string.posts_found));
+                                    tv_account_status.setText(context.getString(R.string.posts_found));
                                 }
                             }
                         }

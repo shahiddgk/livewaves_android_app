@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Context;
@@ -63,6 +64,7 @@ public class LoginActivityWithWavesFeature extends AppCompatActivity {
     private static final String TAG = "LoginActivityWithWavesF";
 
     ViewPager2 viewPager2;
+    public static boolean isPageChanged = false;
 
 
     @Override
@@ -74,8 +76,23 @@ public class LoginActivityWithWavesFeature extends AppCompatActivity {
         setContentView(R.layout.activity_login_with_waves_feature);
         viewPager2 = (ViewPager2)findViewById(R.id.slider_view_pager_for_login_and_waves_feature);
 
-        FragmentPageAdapter fragmentPageAdapter = new FragmentPageAdapter(this);
+        FragmentPageAdapter fragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager(),getLifecycle());
+//        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//                super.onPageScrollStateChanged(state);
+//                Log.e(TAG, "onPageScrollStateChanged: " + state );
+//                if ( state == viewPager2.SCROLL_STATE_DRAGGING ){
+//                    viewPager2.setUserInputEnabled(true);
+//                } else if (state == viewPager2.SCROLL_STATE_IDLE ) {
+//                    viewPager2.setUserInputEnabled(false);
+//                }
+//            }
+//        });
+
         viewPager2.setAdapter(fragmentPageAdapter);
+
+
 
 
     }
