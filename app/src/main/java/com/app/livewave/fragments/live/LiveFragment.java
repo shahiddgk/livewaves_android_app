@@ -1,6 +1,10 @@
 package com.app.livewave.fragments.live;
 
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,12 +21,29 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.app.livewave.R;
 import com.app.livewave.activities.HomeActivity;
+import com.app.livewave.activities.PublisherActivity;
 import com.app.livewave.adapters.PagerAdapter;
+import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
+import com.app.livewave.interfaces.DialogBtnClickInterface;
+import com.app.livewave.models.ParameterModels.AttachmentParams;
+import com.app.livewave.models.ParameterModels.CreatePostModel;
+import com.app.livewave.models.ResponseModels.ApiResponse;
+import com.app.livewave.models.ResponseModels.PostModel;
+import com.app.livewave.models.ResponseModels.UserModel;
+import com.app.livewave.retrofit.ApiClient;
+import com.app.livewave.utils.ApiManager;
+import com.app.livewave.utils.BaseUtils;
+import com.app.livewave.utils.Constants;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 
 import static com.app.livewave.utils.Constants.FOLLOWING;
 import static com.app.livewave.utils.Constants.GLOBAL_STREAMS;
+
+import java.util.ArrayList;
+
+import io.paperdb.Paper;
+import retrofit2.Response;
 
 
 public class LiveFragment extends Fragment implements View.OnClickListener {
@@ -30,10 +51,18 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
+    private CreatePostModel postModel;
+    private String path;
+    private String duration;
+    private UserModel userModel;
+    private ArrayList<AttachmentParams> arrayListAttachments = new ArrayList<>();
+    PublisherActivity activity;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Paper.init(getContext());
 
     }
 
@@ -54,6 +83,13 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
+        userModel = Paper.book().read(Constants.currentUser);
+
+
+
+
+
+
 
     }
 
@@ -109,4 +145,64 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
         setHasOptionsMenu(true);
     }
 
+//    @Override
+//    public void onStreamEnded(boolean yes, String hostID, String title) {
+//        if (yes) {
+//            BaseUtils.showAlertDialog("Post Stream", "Do you want to post stream on profile", getContext(), new DialogBtnClickInterface() {
+//                @Override
+//                public void onClick(boolean positive) {
+//                    if (positive) {
+//                       // path = "https://poststream.s3.us-east-2.amazonaws.com/streams/" + hostID + ".mp4";
+//                        String extension = BaseUtils.getMimeType(getContext(), Uri.parse(path));
+//                        AsyncTask.execute(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//                                String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+//                                retriever.release();
+//
+//
+//                                getActivity().runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        duration = time;
+//                                    }
+//                                });
+//                            }
+//                        });
+//
+//
+//                        postModel = new CreatePostModel(title, userModel.getId());
+//                        postModel.setExtension(extension);
+//                        postModel.setProfile_id(userModel.getId());
+//
+//                        postModel.setThumbnail(path);
+//
+//
+//                        Log.e("path", "onSuccess: " + path);
+//                        arrayListAttachments.add(new AttachmentParams(path, extension
+//                                , duration));
+//                        postModel.setAttachments(arrayListAttachments);
+//                        createPost(postModel);
+//                    }
+//
+//                }
+//            });
+//
+//        }
+//    }
+//
+//    private void createPost(CreatePostModel postModel) {
+//        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().createPost(postModel), getContext(), new ApiResponseHandlerWithFailure<PostModel>() {
+//            @Override
+//            public void onSuccess(Response<ApiResponse<PostModel>> data) {
+//                Log.e("TAG", "onSuccess: " + data.isSuccessful());
+//            }
+//
+//            @Override
+//            public void onFailure(String failureCause) {
+//                Log.e("failure reason", "onFailure: " + failureCause);
+//            }
+//        });
+//    }
 }

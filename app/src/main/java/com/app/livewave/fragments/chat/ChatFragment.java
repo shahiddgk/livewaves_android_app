@@ -743,6 +743,8 @@ public class ChatFragment extends Fragment implements View.OnClickListener, Play
         hashMap.put("senderName", senderName);
         hashMap.put("sentAt", sentAt);
         hashMap.put("lastMessageId", lastMessageId);
+
+        Log.e("sender name ", "updateLastMessage: " + senderName );
         List<MembersInfo> membersInfo = new ArrayList<>();
         membersInfo = inboxModel.membersInfo;
         Log.e("member info", "updateLastMessage: " + membersInfo.size());

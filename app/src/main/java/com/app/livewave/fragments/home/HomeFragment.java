@@ -11,6 +11,7 @@ import static com.app.livewave.utils.Constants.POST_CREATE_DIALOG;
 import static com.app.livewave.utils.Constants.POST_EDIT_DIALOG;
 import static com.app.livewave.utils.Constants.USER_ID;
 import static com.app.livewave.utils.Constants.USER_NAME;
+import static com.app.livewave.utils.Constants.currentUser;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -44,6 +45,7 @@ import com.app.livewave.R;
 import com.app.livewave.activities.FullScreenActivity;
 import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.activities.ImagePickerActivity;
+import com.app.livewave.adapters.InboxAdapter;
 import com.app.livewave.adapters.PostAdapter;
 import com.app.livewave.fragments.chat.InboxFragment;
 import com.app.livewave.interfaces.ApiResponseHandler;
@@ -106,7 +108,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
     private ImageView img_cover, editProfile, img_edit_event_cover;
     private ProgressBar progress_bar;
     private CircleImageView img_profile, img_status;
-    private TextView txt_name, txt_followers, txt_following, txt_bio, ic_message_count,ic_message_notification_count;
+    private TextView txt_name, txt_followers, txt_following, txt_bio, ic_message_count, ic_message_notification_count;
     private UserModel userModel;
     private List<PostModel> posts = new ArrayList<>();
     private NestedScrollView nested_scroll_view;
@@ -413,13 +415,20 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
                                     }
                                     pos1 = -1;
                                 }
-                                notificationCounter++;
-                                Log.e(TAG, "onEvent: n" + notificationCounter);
-                                if (notificationCounter > 0) {
-                                    Paper.book().write("notificationCounts", notificationCounter);
-                                    ic_message_notification_count.setVisibility(View.VISIBLE);
-                                    ic_message_notification_count.setText("" + notificationCounter);
+                                Log.e(TAG, "onEvent: " + modifiedMessage + " " + userModel.getName());
+                                if (modifiedMessage.senderId == userModel.getId()) {
+                                    Log.e(TAG, "onEvent: " + "in if");
+                                    Log.e(TAG, "onEvent: " + "you send");
+                                } else if (modifiedMessage.senderId != userModel.getId()  && !InboxAdapter.chatDelete) {
+                                    Log.e(TAG, "onEvent: " + "in else");
+                                    notificationCounter++;
+                                    if (notificationCounter > 0 ) {
+                                        Paper.book().write("notificationCounts", notificationCounter);
+                                        ic_message_notification_count.setVisibility(View.VISIBLE);
+                                        ic_message_notification_count.setText("" + notificationCounter);
+                                    }
                                 }
+
 //                                InboxModel inboxModel = inboxModelList.get(InboxAdapter.clickedChatPosition);
 //                                inboxModelList.set(InboxAdapter.clickedChatPosition,inboxModelList.get(0));
 //                                inboxModelList.set(0,inboxModel);
@@ -579,8 +588,8 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         userModel = Paper.book().read(Constants.currentUser);
         if (userModel != null)
             setData(userModel);
-        notificationCounter = Paper.book().read("notificationCounts",0);
-        Log.e(TAG, "onResume: " + notificationCounter );
+        notificationCounter = Paper.book().read("notificationCounts", 0);
+        Log.e(TAG, "onResume: " + notificationCounter);
         if (notificationCounter != 0) {
             if (notificationCounter > 0) {
 

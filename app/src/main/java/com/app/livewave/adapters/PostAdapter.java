@@ -7,6 +7,7 @@ import android.content.SyncAdapterType;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -57,6 +58,7 @@ import com.github.pgreze.reactions.PopupGravity;
 import com.github.pgreze.reactions.ReactionPopup;
 import com.github.pgreze.reactions.ReactionsConfig;
 import com.github.pgreze.reactions.ReactionsConfigBuilder;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -855,7 +857,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
     private void setVideo(PostModel postModel, MyViewHolder holder, int position) {
         String uri = postModel.getAttachments().get(0).getPath();
-        SimpleExoPlayer player = new SimpleExoPlayer.Builder(context).build();
+        Log.e("path", "setVideo: " + uri.toString() );
+        ExoPlayer player = new SimpleExoPlayer.Builder(context).build();
         holder.playerView.setPlayer(player);
         MediaItem mediaItem = MediaItem.fromUri(String.valueOf(uri));
         player.setMediaItem(mediaItem);

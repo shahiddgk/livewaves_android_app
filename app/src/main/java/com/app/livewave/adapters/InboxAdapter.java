@@ -49,6 +49,7 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
     private boolean fromAlerts = false;
     private String name;
     String myJson;
+    public static boolean chatDelete = false;
 
 
 
@@ -103,28 +104,33 @@ public class InboxAdapter extends RecyclerView.Adapter<InboxAdapter.MyViewHolder
                     @Override
                     public void onClick(boolean positive) {
                         if (positive) {
+                            Log.e("path", "onClick: " +inboxList.get(position).lastMessageId );
                             rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxList.get(position).getId()).collection("Messages").document(inboxList.get(position).lastMessageId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
                                 @Override
                                 public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                    MessageModel messageModel = value.toObject(MessageModel.class);
+                                    if(value != null){
+                                        MessageModel messageModel = value.toObject(MessageModel.class);
 
-                                    if (messageModel.getDeleteMessage() != null) {
-                                        for (int i = 0; i < messageModel.getDeleteMessage().size(); i++) {
-                                            if (currentUserId == messageModel.getDeleteMessage().get(i)) {
-                                                messageModel.getDeleteMessage().set(i, 0);
-                                                List<Integer> deleteMessage = new ArrayList<>(messageModel.getDeleteMessage());
-                                                rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxList.get(position).getId()).collection("Messages").document(inboxList.get(position).lastMessageId).update("deleteMessage", deleteMessage);
-                                                List<MembersInfo> membersInfo = new ArrayList<>();
-                                                membersInfo.addAll(inboxList.get(position).getMembersInfo());
-                                                for (int j = 0; j < membersInfo.size(); j++) {
-                                                    if (currentUserId == membersInfo.get(j).getId()) {
-                                                        membersInfo.get(j).setType("delete");
+                                        if (messageModel.getDeleteMessage() != null) {
+                                            for (int i = 0; i < messageModel.getDeleteMessage().size(); i++) {
+                                                if (currentUserId == messageModel.getDeleteMessage().get(i)) {
+                                                    messageModel.getDeleteMessage().set(i, 0);
+                                                    List<Integer> deleteMessage = new ArrayList<>(messageModel.getDeleteMessage());
+                                                    rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxList.get(position).getId()).collection("Messages").document(inboxList.get(position).lastMessageId).update("deleteMessage", deleteMessage);
+                                                    List<MembersInfo> membersInfo = new ArrayList<>();
+                                                    membersInfo.addAll(inboxList.get(position).getMembersInfo());
+                                                    for (int j = 0; j < membersInfo.size(); j++) {
+                                                        if (currentUserId == membersInfo.get(j).getId()) {
+                                                            membersInfo.get(j).setType("delete");
+                                                        }
                                                     }
+                                                    chatDelete = true;
+                                                    rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxList.get(position).getId()).update("membersInfo", membersInfo);
                                                 }
-                                                rootRef.collection(Constants.firebaseDatabaseRoot).document(inboxList.get(position).getId()).update("membersInfo", membersInfo);
                                             }
                                         }
                                     }
+
                                 }
                             });
                         }

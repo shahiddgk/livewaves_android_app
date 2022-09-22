@@ -5,10 +5,13 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.MediaMetadataRetriever;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,16 +40,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.livewave.BottomDialogSheets.InviteUserDialogSheet;
+import com.app.livewave.DialogSheets.SaveStreamDialog;
+import com.app.livewave.DialogSheets.SaveStreamListener;
 import com.app.livewave.R;
 import com.app.livewave.adapters.LiveChatAdapter;
 import com.app.livewave.fragments.live.OnSwipeTouchListener;
+import com.app.livewave.fragments.live.StreamEndedListener;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
 import com.app.livewave.interfaces.DialogBtnClickInterface;
 import com.app.livewave.interfaces.Direction;
+import com.app.livewave.models.ParameterModels.AttachmentParams;
+import com.app.livewave.models.ParameterModels.CreatePostModel;
+import com.app.livewave.models.ParameterModels.OnRefreshPost;
 import com.app.livewave.models.ParameterModels.StreamChatModel;
 import com.app.livewave.models.ParameterModels.StreamInfoModel;
 import com.app.livewave.models.ResponseModels.ApiResponse;
+import com.app.livewave.models.ResponseModels.PostModel;
 import com.app.livewave.models.ResponseModels.UserModel;
 import com.app.livewave.models.StreamModel;
 import com.app.livewave.retrofit.ApiClient;
@@ -55,6 +65,7 @@ import com.app.livewave.utils.BaseUtils;
 import com.app.livewave.utils.Constants;
 import com.app.livewave.utils.InviteToStreamEvent;
 import com.app.livewave.utils.ZeroGravityAnimation;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.card.MaterialCardView;
@@ -72,6 +83,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.webrtc.SurfaceViewRenderer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +94,7 @@ import io.antmedia.webrtcandroidframework.StreamInfo;
 import io.antmedia.webrtcandroidframework.WebRTCClient;
 import io.antmedia.webrtcandroidframework.apprtc.CallActivity;
 import io.paperdb.Paper;
+import retrofit2.Call;
 import retrofit2.Response;
 
 import static com.app.livewave.utils.Constants.LIKE;
@@ -122,7 +135,16 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
     boolean isEvent;
     int width, height;
     MaterialCardView cardLive;
-    LinearLayout ll_guest,ll_chat;
+    LinearLayout ll_guest, ll_chat;
+    CreatePostModel postModel;
+    ArrayList<AttachmentParams> arrayListAttachments = new ArrayList<>();
+    String path;
+    String duration;
+    StreamEndedListener streamEndedListener;
+
+    public void setStreamEndedListener(StreamEndedListener streamEndedListener) {
+        this.streamEndedListener = streamEndedListener;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -140,6 +162,8 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
                             android.Manifest.permission.RECORD_AUDIO},
                     1);
         }
+
+
 
         findViewById(R.id.img_flip).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,8 +247,11 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
     private void getIntentData() {
         title = getIntent().getStringExtra("TITLE");
         hostPlatformId = getIntent().getStringExtra("PLATFORM_ID");
+        Log.e("platform_id", "getIntentData: " + hostPlatformId);
         id = getIntent().getIntExtra("ID", 0);
         isEvent = getIntent().getBooleanExtra("Event", false);
+        path = "https://poststream.s3.us-east-2.amazonaws.com/streams/" + hostPlatformId + ".mp4";
+
     }
 
     private void sendMessageToFirebase(String message) {
@@ -241,22 +268,22 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
         StreamChatModel streamChatModel = new StreamChatModel(userModel.getPhoto(), message, userModel.getUsername(), System.currentTimeMillis());
         db.collection(fireStoreStreamChatUrl + hostPlatformId)
                 .add(streamChatModel).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-            @Override
-            public void onSuccess(DocumentReference documentReference) {
-                et_comment.setText("");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("!@#", e.getMessage());
-                BaseUtils.showLottieDialog(PublisherActivity.this, "Message sending failed!", R.raw.invalid, new DialogBtnClickInterface() {
                     @Override
-                    public void onClick(boolean positive) {
+                    public void onSuccess(DocumentReference documentReference) {
+                        et_comment.setText("");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("!@#", e.getMessage());
+                        BaseUtils.showLottieDialog(PublisherActivity.this, "Message sending failed!", R.raw.invalid, new DialogBtnClickInterface() {
+                            @Override
+                            public void onClick(boolean positive) {
 
+                            }
+                        });
                     }
                 });
-            }
-        });
     }
 
     public static void setCameraDisplayOrientation(Activity activity,
@@ -304,7 +331,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
                 webRTCClient.enableVideo();
                 webRTCClient.enableAudio();
                 if (webRTCClientGuest != null) {
-                    if (webRTCClientGuest.isStreaming()){
+                    if (webRTCClientGuest.isStreaming()) {
                         webRTCClientGuest.enableVideo();
                         webRTCClientGuest.enableAudio();
                     }
@@ -508,6 +535,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
 
             Toast.makeText(PublisherActivity.this, "Available", Toast.LENGTH_SHORT).show();
         }
+
         @Override
         public void onLost(@NonNull Network network) {
             super.onLost(network);
@@ -756,39 +784,165 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
     @Override
     public void onBackPressed() {
         if (hostPlatformId != null) {
-            BaseUtils.showAlertDialog("Alert!", "Do you want to end this stream?", this, new DialogBtnClickInterface() {
-                @Override
-                public void onClick(boolean positive) {
-                    if (positive) {
-                        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().completeStream(hostPlatformId),
-                                PublisherActivity.this, new ApiResponseHandlerWithFailure<StreamModel>() {
-                            @Override
-                            public void onSuccess(Response<ApiResponse<StreamModel>> data) {
-                                if (webRTCClient.isStreaming()) {
-                                    webRTCClient.stopStream();
-
-                                }
-                                if (webRTCClientGuest != null) {
-                                    webRTCClient.stopStream();
-                                }
-                                isCompleted = true;
+//            BaseUtils.showAlertDialog("Alert!", "Do you want to end this stream?", this, new DialogBtnClickInterface() {
+//                @Override
+//                public void onClick(boolean positive) {
+//                    if (positive) {
+//                        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().completeStream(hostPlatformId),
+//                                PublisherActivity.this, new ApiResponseHandlerWithFailure<StreamModel>() {
+//                            @Override
+//                            public void onSuccess(Response<ApiResponse<StreamModel>> data) {
+//                                if (webRTCClient.isStreaming()) {
+//                                    webRTCClient.stopStream();
+//
+//                                }
+//                                if (webRTCClientGuest != null) {
+//                                    webRTCClient.stopStream();
+//                                }
+//                                isCompleted = true;
+//                                if (streamEndedListener != null){
+//                                    streamEndedListener.onStreamEnded(true,hostPlatformId,title);
+//                                }else {
+//                                    Log.e("listener", "onSuccess: "  );
+//                                }
+//
 //                                db.collection(fireStoreStreamInfoUrl).document(hostPlatformId).update("state", "Completed");
-                                finish();
-                            }
+//                                finish();
+//
+//                            }
+//
+//                            @Override
+//                            public void onFailure(String failureCause) {
+//                                BaseUtils.showLottieDialog(PublisherActivity.this, failureCause, R.raw.invalid, positive -> {
+//                                    //appFollowingData(data.body().getData());
+//                                    //wpAdapterOptionsListener.onPlaylistUpdateEvent(null);
+//                                });
+//                            }
+//                        });
+//                    }
+//
+//                }
+//            });
 
-                            @Override
-                            public void onFailure(String failureCause) {
-                                BaseUtils.showLottieDialog(PublisherActivity.this, failureCause, R.raw.invalid, positive -> {
-                                    //appFollowingData(data.body().getData());
-                                    //wpAdapterOptionsListener.onPlaylistUpdateEvent(null);
+            new SaveStreamDialog(new SaveStreamListener() {
+                @Override
+                public void onYesButtonClickListener(boolean yes) {
+                    if (yes) {
+
+                        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface()
+                                        .completeStream(hostPlatformId),
+                                PublisherActivity.this, new ApiResponseHandlerWithFailure<StreamModel>() {
+                                    @Override
+                                    public void onSuccess(Response<ApiResponse<StreamModel>> data) {
+                                        if (webRTCClient.isStreaming()) {
+                                            webRTCClient.stopStream();
+                                        }
+                                        if (webRTCClientGuest != null) {
+                                            webRTCClient.stopStream();
+                                        }
+                                        isCompleted = true;
+
+                                        db.collection(fireStoreStreamInfoUrl).document(hostPlatformId)
+                                                .update("state", "completed");
+
+                                        // duration =  BaseUtils.getVideoDuration(PublisherActivity.this,Uri.parse(path));
+                                        String extension = BaseUtils.getMimeType(PublisherActivity.this, Uri.parse(path));
+                                        AsyncTask.execute(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                                                String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                                                retriever.release();
+
+
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        duration = time;
+                                                    }
+                                                });
+                                            }
+                                        });
+
+
+                                        postModel = new CreatePostModel(title, userModel.getId());
+                                        postModel.setExtension(extension);
+                                        postModel.setProfile_id(userModel.getId());
+
+                                        postModel.setThumbnail(path);
+
+
+                                        Log.e("path", "onSuccess: " + path);
+                                        arrayListAttachments.add(new AttachmentParams(path, extension
+                                                , duration));
+                                        postModel.setAttachments(arrayListAttachments);
+                                        createPost(postModel);
+
+                                        finish();
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(String failureCause) {
+
+                                        Log.e("failure", "onFailure: " + failureCause);
+
+                                    }
                                 });
-                            }
-                        });
+
+
+                    }
+                }
+
+                @Override
+                public void onNoButtonClickListener(boolean no) {
+                    Log.e("no", "onYesButtonClickListener: ");
+                    if (no) {
+                        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface()
+                                        .completeStream(hostPlatformId),
+                                PublisherActivity.this, new ApiResponseHandlerWithFailure<StreamModel>() {
+                                    @Override
+                                    public void onSuccess(Response<ApiResponse<StreamModel>> data) {
+                                        if (webRTCClient.isStreaming()) {
+                                            webRTCClient.stopStream();
+                                        }
+                                        if (webRTCClientGuest != null) {
+                                            webRTCClient.stopStream();
+                                        }
+                                        isCompleted = true;
+
+                                        db.collection(fireStoreStreamInfoUrl).document(hostPlatformId)
+                                                .update("state", "completed");
+                                        finish();
+                                    }
+
+                                    @Override
+                                    public void onFailure(String failureCause) {
+
+                                        Log.e("failure", "onFailure: " + failureCause);
+
+                                    }
+                                });
                     }
 
+
                 }
-            });
+            }).show(getSupportFragmentManager(), "Hello");
         }
+    }
+
+    private void createPost(CreatePostModel postModel) {
+        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().createPost(postModel), PublisherActivity.this, new ApiResponseHandlerWithFailure<PostModel>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<PostModel>> data) {
+                Log.e("TAG", "onSuccess: " + data.isSuccessful());
+            }
+
+            @Override
+            public void onFailure(String failureCause) {
+                Log.e("failure reason", "onFailure: " + failureCause);
+            }
+        });
     }
 
     void updateGuestId(int guestId) {
@@ -809,7 +963,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
     @Override
     protected void onStop() {
         super.onStop();
-        if (isCompleted){
+        if (isCompleted) {
             db.collection(fireStoreStreamInfoUrl).document(hostPlatformId).update("state", "Completed");
         }
         Toast.makeText(PublisherActivity.this, "Stopped", Toast.LENGTH_SHORT).show();
@@ -856,7 +1010,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
                 startStream();
         }
         isStreamStarted = true;
-        if (isConnected){
+        if (isConnected) {
             db.collection(fireStoreStreamInfoUrl).document(hostPlatformId).update("state", "Connected").addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
