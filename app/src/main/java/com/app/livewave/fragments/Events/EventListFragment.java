@@ -1,6 +1,9 @@
 package com.app.livewave.fragments.Events;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -24,6 +28,7 @@ import com.app.livewave.retrofit.ApiClient;
 import com.app.livewave.utils.ApiManager;
 import com.app.livewave.utils.BaseUtils;
 import com.app.livewave.utils.Constants;
+import com.app.livewave.wavesplayer.playback.MusicService;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.util.ArrayList;
@@ -55,6 +60,7 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
 
     private SwipeRefreshLayout swipe_to_refresh;
     KProgressHUD dialog;
+    BroadcastReceiver broadcastReceiver;
 
     public EventListFragment() {
         // Required empty public constructor
@@ -84,6 +90,16 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
         initComponents(view);
         getIntentData();
         checkEventTypeAndSetData();
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    checkEventTypeAndSetData();
+                    LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter("Event-Deleted"));
         return view;
     }
 
@@ -94,6 +110,12 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
         if (mParam1.equals(CHECKED_IN)) {
             status = mParam1;
         }
+    }
+
+    @Override
+    public void onResume() {
+        checkEventTypeAndSetData();
+        super.onResume();
     }
 
     private void checkEventTypeAndSetData() {
@@ -162,6 +184,7 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
                     eventModelList = new ArrayList<>();
                     eventsAdapter.setList(eventModelList);
                     tv_no_events.setVisibility(View.VISIBLE);
+                    eventsAdapter.notifyDataSetChanged();
                     dialog.dismiss();
                 }
             }
@@ -185,6 +208,7 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
         linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         rv_events.setLayoutManager(linearLayoutManager);
         rv_events.setAdapter(eventsAdapter);
+        eventsAdapter.notifyDataSetChanged();
         swipe_to_refresh.setOnRefreshListener(this);
     }
 
@@ -201,7 +225,7 @@ public class EventListFragment extends Fragment implements SwipeRefreshLayout.On
 
     @Override
     public void onDestroy() {
-        ApiClient.getInstance().getInterface().getEvents(userId,status,dateTime).cancel();
+        ApiClient.getInstance().getInterface().getEvents(userId, status, dateTime).cancel();
         dialog.dismiss();
         super.onDestroy();
     }

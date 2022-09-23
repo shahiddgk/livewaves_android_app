@@ -1,5 +1,9 @@
 package com.app.livewave.fragments.live;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.app.livewave.R;
@@ -47,7 +52,7 @@ import retrofit2.Response;
 
 
 public class LiveFragment extends Fragment implements View.OnClickListener {
-
+    private static final String TAG = "LiveFragment";
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private Toolbar toolbar;
@@ -57,6 +62,7 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
     private UserModel userModel;
     private ArrayList<AttachmentParams> arrayListAttachments = new ArrayList<>();
     PublisherActivity activity;
+    BroadcastReceiver broadcastReceiver;
 
 
     @Override
@@ -86,11 +92,6 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
         userModel = Paper.book().read(Constants.currentUser);
 
 
-
-
-
-
-
     }
 
     private void setUpViewPager(ViewPager viewPager) {
@@ -108,7 +109,78 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
 
         initView(view);
         setClickListener();
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    Log.e(TAG, "onReceive: ");
+                    createDialog(intent.getStringExtra("title"), intent.getStringExtra("hostId"));
+                }
 
+            }
+        };
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter("Stream-Ended-Broadcast"));
+
+    }
+
+    private void createDialog(String title, String hostId) {
+        BaseUtils.showAlertDialog("Alert!", "Do you want to post your stream on profile?", getActivity(), new DialogBtnClickInterface() {
+            @Override
+            public void onClick(boolean positive) {
+                if (positive) {
+                    path = hostId;
+                    String extension = BaseUtils.getMimeType(getActivity(), Uri.parse(path));
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+                            String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+                            retriever.release();
+
+
+                            getActivity().runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    duration = time;
+                                }
+                            });
+                        }
+                    });
+
+
+                    postModel = new CreatePostModel(title, userModel.getId());
+                    postModel.setExtension(extension);
+                    postModel.setProfile_id(userModel.getId());
+
+                    postModel.setThumbnail(path);
+
+
+                    Log.e("path", "onSuccess: " + path);
+                    arrayListAttachments.add(new AttachmentParams(path, extension
+                            , duration));
+                    postModel.setAttachments(arrayListAttachments);
+                    createPost(postModel);
+                } else {
+                    Log.e(TAG, "onClick: ");
+                }
+            }
+        });
+    }
+
+    private void createPost(CreatePostModel postModel) {
+        ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().createPost(postModel), getContext(), new ApiResponseHandlerWithFailure<PostModel>() {
+            @Override
+            public void onSuccess(Response<ApiResponse<PostModel>> data) {
+                Log.e("TAG", "onSuccess: " + data.isSuccessful());
+                LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+
+            }
+
+            @Override
+            public void onFailure(String failureCause) {
+                Log.e("failure reason", "onFailure: " + failureCause);
+            }
+        });
     }
 
     private void setClickListener() {
@@ -131,6 +203,12 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
     @Override

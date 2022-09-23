@@ -315,9 +315,6 @@ public class SplashActivity extends AppCompatActivity {
                 else {
                 }
 
-                if (getIntent().getStringExtra("type").equals("chat")){
-
-                }
 
             }
 

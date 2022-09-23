@@ -162,6 +162,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
 
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
+
                         Log.e("!@#!@#", token);
 
                     }
@@ -419,7 +420,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
                                 if (modifiedMessage.senderId == userModel.getId()) {
                                     Log.e(TAG, "onEvent: " + "in if");
                                     Log.e(TAG, "onEvent: " + "you send");
-                                } else if (modifiedMessage.senderId != userModel.getId()  && !InboxAdapter.chatDelete) {
+                                } else if (modifiedMessage.senderId != userModel.getId()  && inboxModelList.size() > 0) {
                                     Log.e(TAG, "onEvent: " + "in else");
                                     notificationCounter++;
                                     if (notificationCounter > 0 ) {

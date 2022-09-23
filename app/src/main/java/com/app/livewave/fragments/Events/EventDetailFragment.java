@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.app.livewave.R;
 import com.app.livewave.activities.HomeActivity;
@@ -68,6 +69,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     private UserModel userModel;
     private EventModel event;
     private Context context;
+    public static boolean isDeleted = false;
 //    Toolbar toolbar;
 //    CollapsingToolbarLayout collapsingToolbarLayout;
 //    AppBarLayout app_bar;
@@ -518,6 +520,9 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
                 BaseUtils.showLottieDialog(getActivity(), requireContext().getString(R.string.event_deleted_successfully), R.raw.delete, new DialogBtnClickInterface() {
                     @Override
                     public void onClick(boolean positive) {
+                        isDeleted = true;
+                        Intent intent = new Intent("Event-Deleted");
+                        LocalBroadcastManager.getInstance(getContext()).sendBroadcast(intent);
                         getActivity().onBackPressed();
 //                        finish();
                     }

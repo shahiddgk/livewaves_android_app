@@ -5,7 +5,6 @@ import static com.app.livewave.utils.Constants.HAS_EXTRA;
 import static com.app.livewave.utils.Constants.HEADER_TITLE;
 import static com.app.livewave.utils.Constants.HIDE_HEADER;
 import static com.app.livewave.utils.Constants.SPECIFIC_USER_ID;
-import static com.app.livewave.utils.Constants.USER_NAME;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,12 +47,10 @@ import com.app.livewave.fragments.newsfeed.PostDetailFragment;
 import com.app.livewave.fragments.settings.AnalyticsFragment;
 import com.app.livewave.fragments.settings.EditProfileFragment;
 import com.app.livewave.fragments.settings.WalletFragment;
-import com.app.livewave.fragments.wavesplayer.ArtistSubscriptionsFragment;
 import com.app.livewave.fragments.wavesplayer.PlaylistDetailFragment;
 import com.app.livewave.fragments.wavesplayer.WavesPlayerStoreFragment;
 import com.app.livewave.fragments.wavesplayer.YourFollowingsFragment;
 import com.app.livewave.fragments.wavesplayer.YourPlaylistFragment;
-import com.app.livewave.fragments.wavesplayer.YourPurchasedSubscriptionsFragment;
 import com.app.livewave.fragments.wavesplayer.YourStoreFragment;
 import com.app.livewave.fragments.wavesplayer.YourTrendingFragment;
 import com.app.livewave.interfaces.ApiResponseHandler;
@@ -125,6 +122,10 @@ public class HomeActivity extends WavesPlayerBaseActivity {
                 }
             }
         });
+
+
+
+
 
 
 
@@ -441,6 +442,8 @@ public class HomeActivity extends WavesPlayerBaseActivity {
     protected void onResume() {
         super.onResume();
     }
+
+
 }
 
 //public class HomeActivity extends AppCompatActivity {
