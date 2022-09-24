@@ -101,6 +101,7 @@ import static com.app.livewave.utils.setDescriptionsDataUtils.isContainLink;
 //import com.denzcoskun.imageslider.models.SlideModel;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
+    private static final String TAG = "PostAdapter";
 
     List<PostModel> postList = new ArrayList<>();
     Context context;
@@ -149,6 +150,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             holder.profile.setVisibility(View.GONE);
         else
             holder.profile.setVisibility(View.VISIBLE);
+
+
 
         holder.txt_name.setText(postList.get(position).getUser().getName());
         BaseUtils.setVerifiedAccount(postList.get(position).getUser().getVerified(), holder.txt_name);

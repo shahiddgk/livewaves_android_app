@@ -233,7 +233,7 @@ public class PublisherActivity extends AppCompatActivity implements IWebRTCListe
         Log.e("platform_id", "getIntentData: " + hostPlatformId);
         id = getIntent().getIntExtra("ID", 0);
         isEvent = getIntent().getBooleanExtra("Event", false);
-        path = "https://poststream.s3.us-east-2.amazonaws.com/streams/" + hostPlatformId + ".mp4";
+        path =   hostPlatformId  ;
 
     }
 

@@ -44,6 +44,7 @@ import com.app.livewave.models.ResponseModels.UserModel;
 import com.app.livewave.models.ResponseModels.UserPublicTracks;
 import com.app.livewave.models.ResponseModels.WavesModelResponse;
 import com.app.livewave.models.ResponseModels.WithdrawalModel;
+import com.app.livewave.models.SaveStreamAsPost;
 import com.app.livewave.models.SettingsApiModel;
 import com.app.livewave.models.StreamModel;
 import com.app.livewave.models.SuggestedPeopleModel;
@@ -425,4 +426,11 @@ public interface ApiInterface {
 
     @GET("tracks")
     Call<ApiResponse<List<Track>>> getFollowingTracks();
+
+    // save stream as post
+    @POST("post/updateStreamSavedAsPost")
+    Call<ApiResponse<SaveStreamAsPost>> saveStreamAsPost(@Body SaveStreamAsPost saveStreamAsPost);
+
+    @GET("post/updateStreamSavedAsPost/{id}")
+    Call<ApiResponse<List<SaveStreamAsPost>>> getSavedStream(@Path("id") int userId);
 }

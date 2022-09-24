@@ -254,6 +254,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
         });
 
         if (commentModel.getChildren().size() > 0) {
+
             List<ReplyModel> commentReplyModelList = new ArrayList<>();
             commentReplyModelList = commentModelList.get(position).getChildren();
 
@@ -267,6 +268,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
 
             commentReplyAdapter.notifyDataSetChanged();
 
+
             holder.comment_replies_view.setHasFixedSize(false);
             holder.comment_replies_view.setAdapter(commentReplyAdapter);
             commentReplyAdapter.setInterface(new EditCommentReply() {
@@ -278,25 +280,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
                             Log.e("TAG", "editCommentReply: " + commentModelList.get(position).getChildren().get(position).getComment());
                             editCommentReply.editCommentReply(replyModel, position);
                         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-                            Log.e("index out of ", "editCommentReply: " + indexOutOfBoundsException.getMessage() );
+                            Log.e("index out of ", "editCommentReply: " + indexOutOfBoundsException.getMessage());
                         }
 
                     }
                 }
             });
 
-
-            if (replyButton != null) {
-                if (holder.comment_replies_view.getVisibility() == View.GONE) {
-                    holder.comment_replies_view.setVisibility(View.VISIBLE);
-
-
-                } else {
-                    replyButton.setReplyButton(false, position);
-                    holder.comment_replies_view.setVisibility(GONE);
-
-                }
-            }
 
 
         }
@@ -306,6 +296,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.Holder> 
             public void onClick(View view) {
                 isReplies = !isReplies;
                 replyButton.setReplyButton(true, position);
+                if (replyButton != null) {
+                    if (holder.comment_replies_view.getVisibility() == View.GONE) {
+                        holder.comment_replies_view.setVisibility(View.VISIBLE);
+
+
+                    } else {
+                        replyButton.setReplyButton(false, position);
+                        holder.comment_replies_view.setVisibility(GONE);
+
+                    }
+                }
 
             }
         });

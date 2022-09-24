@@ -144,7 +144,7 @@ import static com.app.livewave.utils.setDescriptionsDataUtils.isContainLink;
 
 public class PostDetailFragment extends Fragment implements View.OnClickListener, PlayerStateListener {
     private TextView txt_name, txt_date, txt_reaction, txt_profile_name, tv_pay_to_unlock,
-            tv_comment_text, tv_no_comments, txt_preview_title, txt_preview_des,
+            tv_comment_text, tv_no_comments, txt_preview_title, txt_preview_des, txt_share,
             txt_shared_name, txt_shared_profile_name, txt_shared_preview_title, txt_shared_preview_des, txt_shared_content, tv_shared_pay_to_unlock;
     private CircleImageView img_profile, civ_user_img, img_shared_profile;
     private ImageView img_reaction, img_share, tv_post_option, iv_play_video, img_preview_image, iv_paid, img_upload,
@@ -635,9 +635,10 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             @Override
             public void editCommentReply(ReplyModel commentModel, int position) {
                 Log.e("comment checking ", "editCommentReply: " + commentModel.getComment());
-                Log.e("position from RV", "editCommentReply: " + position );
+                Log.e("position from RV", "editCommentReply: " + position);
                 et_comment.setText(commentModel.getComment());
                 editedCommentReply = true;
+                commentReply = false;
                 System.out.println("AFTER EDITED");
                 System.out.println(tv_comment_text.getText().toString().trim());
                 commentIdReply = commentModel.getId().toString();
@@ -686,6 +687,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                     System.out.println(commentReply);
                     editedCommentReply = false;
                     commentId = "";
+                    et_comment.setText("");
                     tv_comment_text.setText(R.string.post);
                     editCommentPosition = -1;
 
@@ -828,14 +830,6 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 //            ((HomeActivity) getActivity()).loadFragment(R.string.tag_webview, bundle);
         });
 
-
-//        if (postModel.getTotalShares() > 0) {
-//            txt_share.setVisibility(View.VISIBLE);
-//
-//            txt_share.setText(postModel.getTotalShares() + " shares..");
-//        } else {
-//            txt_share.setVisibility(View.GONE);
-//        }
 
         iv_shared_play_video.setOnClickListener(v -> {
             addViewCount(postModel.getId() + "");
@@ -1201,6 +1195,13 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             getPostFromApiId(String.valueOf(postId));
         }
         getPostComments();
+        if (postModel.getTotalShares() > 0) {
+            txt_share.setVisibility(View.VISIBLE);
+
+            txt_share.setText(postModel.getTotalShares() + " shares..");
+        } else {
+            txt_share.setVisibility(View.GONE);
+        }
 
     }
 
@@ -1216,7 +1217,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
                         nextPageUrl = data.body().getData().getNextPageUrl();
                         if (currentPageNumber == 1) {
                             commentModelList = new ArrayList<>();
-                               commentReplyModelList = new ArrayList<>();
+                            commentReplyModelList = new ArrayList<>();
                             commentModelList = data.body().getData().getData();
                             for (int i = 0; i < commentModelList.size(); i++) {
                                 commentReplyModelList.addAll(commentModelList.get(i).getChildren());
@@ -1700,6 +1701,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         image_slider_tabDots = view.findViewById(R.id.image_slider_tabDots);
         image_shared_slider_tabDots = view.findViewById(R.id.image_shared_slider_tabDots);
         rl_image = view.findViewById(R.id.rl_image);
+        txt_share = view.findViewById(R.id.txt_share);
 
         imageAdapter = new ImageSliderAdapter(getActivity());
         image_slider.setAdapter(imageAdapter);
@@ -1858,10 +1860,12 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             if (editedComment && uploadAttachment == null) {
                 editComment(commentRequestModel);
             } else if (commentReply && uploadAttachment == null) {
+                Log.e("yes got u", "onClick: ");
                 addCommentReply(commentReplyRequestModel);
             } else if (commentReply && uploadAttachment != null) {
                 uploadMultipleFilesToServer();
             } else if (editedCommentReply) {
+                Log.e("on", "onClick: ");
                 editCommentReply(commentReplyRequestModel);
             } else if (editedComment && uploadAttachment != null) {
                 uploadMultipleFilesToServer();
@@ -1924,7 +1928,7 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
     private void editCommentReply(CommentReplyRequestModel commentReplyRequestModel) {
         ReplyModel mCommentModel = findCommentReplyObjectWithCommentId(commentIdReply);
-        Log.e("ids", "editCommentReply: " + mCommentModel.getId() );
+        Log.e("ids", "editCommentReply: " + mCommentModel.getId());
         ReplyModel tempForFailureCause = mCommentModel;
         mCommentModel.setComment(commentReplyRequestModel.getComment());
         mCommentModel.setIds(commentReplyRequestModel.getIds());
@@ -1939,17 +1943,14 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
         }
 
         commentReplyModelList.set(editCommentReplyPosition, mCommentModel);
-        Log.e("position", "editCommentReply: " + editCommentReplyPosition );
-        for (int i = 0; i < commentReplyModelList.size(); i++) {
-            Log.e("list", "editCommentReply: " + commentReplyModelList.get(i).getComment());
-        }
-        Log.e("edited comment", "editCommentReply: " + mCommentModel.getComment());
 
         commentReplyAdapter.notifyDataSetChanged();
 
         ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().editCommentReply(commentReplyRequestModel), getActivity(), new ApiResponseHandlerWithFailure<ReplyModel>() {
             @Override
             public void onSuccess(Response<ApiResponse<ReplyModel>> data) {
+                Log.e("response", "onSuccess: " + data.body().getStatus());
+
                 et_comment.setText("");
 
                 uploadAttachment = null;
@@ -1961,6 +1962,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onFailure(String failureCause) {
+
+                Log.e("failure response", "onFailure: " + failureCause);
 
                 et_comment.setText("");
 
@@ -1999,6 +2002,8 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
     }
 
     private void addCommentReply(CommentReplyRequestModel comment) {
+
+        Log.e("in add", "addCommentReply: ");
 
         ApiManager.apiCallWithFailure(ApiClient.getInstance().getInterface().postCommentReply(comment), getActivity(), new ApiResponseHandlerWithFailure<ReplyModel>() {
             @Override

@@ -18,50 +18,75 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/margin_10"
             android:background="@color/white"
             android:gravity="center_horizontal"
-            android:text="Do you wanr to post stream on your profile?"
+            android:padding="@dimen/margin_5"
+            android:text="Do you want to post stream on your profile?"
             android:textColor="@color/black"
-            android:textSize="@dimen/margin_20"
-            android:textStyle="bold" />
+            android:textSize="20sp" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/switchPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDescription"
+            android:layout_alignParentEnd="true"
+            android:text="Paid $"
+            android:textSize="20sp"
+            android:layout_marginEnd="@dimen/margin_10"
+            app:thumbTint="@color/pizza"
+            app:trackTint="@color/light_grey" />
+
+        <EditText
+            android:id="@+id/tvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:backgroundTint="@color/pizza"
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:lineSpacingExtra="@dimen/margin_7"
+            android:padding="@dimen/margin_7"
+            android:textSize="16sp" />
 
         <LinearLayout
-            android:layout_marginTop="@dimen/margin_70"
-            android:gravity="center_horizontal"
-            android:layout_gravity="center_horizontal"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/switchPaid"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_no"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16"
-                android:backgroundTint="@color/md_red_600"
+                android:layout_weight="1"
                 android:outlineProvider="background"
                 android:text="No"
-                android:textStyle="bold"
-                android:textSize="16sp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:cornerRadius="@dimen/radius_12"
                 app:elevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_yes"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_16"
-                android:backgroundTint="@color/md_green_600"
+                android:layout_weight="1"
                 android:outlineProvider="background"
                 android:text="Yes"
                 android:textAllCaps="false"
