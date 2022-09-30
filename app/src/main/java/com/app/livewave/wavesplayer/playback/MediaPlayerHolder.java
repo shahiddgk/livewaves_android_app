@@ -201,7 +201,7 @@ public class MediaPlayerHolder implements PlayerAdapter,
 
     private void closeMediaPlayer() {
         setStatus(PlayerState.PAUSED.ordinal());
-        mMediaPlayer.pause();
+        mMediaPlayer.stop();
         mMusicServicekt.stopForeground(false);
         //mMusicNotificationManager.notificationManager.notify(MusicNotificationManager.NOTIFICATION_ID, mMusicNotificationManager.createNotification());
         mMusicNotificationManager.notificationManager.cancel(MusicNotificationManager.NOTIFICATION_ID);
@@ -345,6 +345,8 @@ public class MediaPlayerHolder implements PlayerAdapter,
     public void closePlayer() {
         if (isPlaying()) {
             closeMediaPlayer();
+            release();
+
         }
     }
 

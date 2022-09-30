@@ -45,6 +45,20 @@ public class ApiClient {
 
         return INSTANCE;
     }
+    public static ApiClient getINSTANCEForMediaAnt(){
+        INSTANCE = new ApiClient();
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://18.189.167.57:5080/WebRTCAppEE/rest/v2/vods/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(OkHttpUtils.createHttpClient())
+                .build();
+
+        apiInterface = retrofit.create(ApiInterface.class);
+//        }
+
+        return INSTANCE;
+    }
     public static Retrofit getClient() {
         return retrofit;
     }

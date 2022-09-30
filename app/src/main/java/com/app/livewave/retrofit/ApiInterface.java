@@ -45,11 +45,13 @@ import com.app.livewave.models.ResponseModels.UserPublicTracks;
 import com.app.livewave.models.ResponseModels.WavesModelResponse;
 import com.app.livewave.models.ResponseModels.WithdrawalModel;
 import com.app.livewave.models.SaveStreamAsPost;
+import com.app.livewave.models.SaveVideoFromGallery;
 import com.app.livewave.models.SettingsApiModel;
 import com.app.livewave.models.StreamModel;
 import com.app.livewave.models.SuggestedPeopleModel;
 import com.app.livewave.utils.Constants;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -433,4 +435,9 @@ public interface ApiInterface {
 
     @GET("post/updateStreamSavedAsPost/{id}")
     Call<ApiResponse<List<SaveStreamAsPost>>> getSavedStream(@Path("id") int userId);
+
+    @POST("create?name=helloTesting.mp4")
+    Call<ApiResponse<SaveVideoFromGallery>> postVideo(@Body File file);
+    @GET("{id}")
+    Call<ApiResponse<SaveVideoFromGallery>> getUploadedVideo(@Path("id") String id);
 }

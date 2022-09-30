@@ -118,7 +118,8 @@
                             android:contentDescription="@string/todo"
                             android:focusable="true"
                             android:padding="@dimen/margin_10"
-                            android:src="@drawable/ic_baseline_delete_24" />
+                            android:src="@drawable/ic_baseline_delete_24"
+                            app:tint="@color/black" />
                     </LinearLayout>
                     <TextView
                         android:id="@+id/tv_address"

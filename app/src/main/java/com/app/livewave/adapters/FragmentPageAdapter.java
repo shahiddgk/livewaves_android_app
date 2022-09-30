@@ -13,23 +13,17 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import com.app.livewave.fragments.LoginFragment;
 import com.app.livewave.fragments.WavesFeature;
 import com.app.livewave.fragments.WavesFeatureOutside_login;
 
+import java.util.List;
+
 public class FragmentPageAdapter extends FragmentStateAdapter {
-    public int currentIndex;
-
-    public FragmentPageAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
-        super(fragmentManager, lifecycle);
-    }
 
 
-    //    public FragmentPageAdapter(@NonNull FragmentActivity fragmentActivity) {
-//        super(fragmentActivity);
-//    }
-//
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -40,13 +34,16 @@ public class FragmentPageAdapter extends FragmentStateAdapter {
         }
     }
 
+    public FragmentPageAdapter(@NonNull FragmentActivity fragmentActivity) {
+        super(fragmentActivity);
+    }
 
     @Override
     public int getItemCount() {
         return 2;
     }
 
-//    @NonNull
+    //    @NonNull
 //    @Override
 //    public Fragment getItem(int position) {
 //        if (position == 0) {

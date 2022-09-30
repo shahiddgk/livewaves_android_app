@@ -17,8 +17,11 @@ import static com.app.livewave.utils.Constants.token;
 import android.Manifest;
 import android.app.TaskStackBuilder;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -37,6 +40,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.app.livewave.R;
 import com.app.livewave.interfaces.ApiResponseHandler;
@@ -80,7 +84,7 @@ import retrofit2.Response;
 
 
 public class SplashActivity extends AppCompatActivity {
-
+    public static int realTimeNotificationCounter;
     private Handler handler;
     private Double lat, lng;
     private Bundle extras;
@@ -95,6 +99,7 @@ public class SplashActivity extends AppCompatActivity {
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     JoinStreamModel joinStreamModel;
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onStart() {
@@ -114,9 +119,23 @@ public class SplashActivity extends AppCompatActivity {
 //        getCurrentLocation();
         checkIntentData();
         getSettings();
-
         getScreenWidthAndHeight();
         UpdateApp();
+        Paper.init(this);
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    int count = intent.getExtras().getInt("notificationCount");
+                    Log.e("count", "onReceive: " + count );
+                    Paper.book().write("allNotificationCount", count);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent("writeBadge"));
+                  //  LocalBroadcastManager.getInstance(SplashActivity.this).unregisterReceiver(broadcastReceiver);
+                }
+
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("Notification-Count"));
     }
 
     private void getScreenWidthAndHeight() {
@@ -197,8 +216,8 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void checkIntentData() {
-        Paper.book().write("action","nill");
-        Paper.book().write("type","nill");
+        Paper.book().write("action", "nill");
+        Paper.book().write("type", "nill");
         int flags = getIntent().getFlags();
         if ((flags & Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY) != 0) {
 
@@ -227,9 +246,9 @@ public class SplashActivity extends AppCompatActivity {
                             cursor.moveToFirst();
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                             String picturePath = cursor.getString(columnIndex);
-                            Paper.book().write("action","android.intent.action.SEND");
-                            Paper.book().write("Picture Path",picturePath);
-                            Paper.book().write("type","image");
+                            Paper.book().write("action", "android.intent.action.SEND");
+                            Paper.book().write("Picture Path", picturePath);
+                            Paper.book().write("type", "image");
                             cursor.close();
 //                            Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
                             //TODO handle shared image
@@ -242,9 +261,9 @@ public class SplashActivity extends AppCompatActivity {
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                             String picturePath = cursor.getString(columnIndex);
 
-                            Paper.book().write("action","android.intent.action.SEND");
-                            Paper.book().write("Video Path",picturePath);
-                            Paper.book().write("type","video");
+                            Paper.book().write("action", "android.intent.action.SEND");
+                            Paper.book().write("Video Path", picturePath);
+                            Paper.book().write("type", "video");
                             cursor.close();
 //                            Uri uri = getIntent().getParcelableExtra(Intent.EXTRA_STREAM);
                             //TODO handle shared image
@@ -274,21 +293,21 @@ public class SplashActivity extends AppCompatActivity {
                     } else if (getIntent().getAction().equals("android.intent.action.SEND_MULTIPLE")) {
 
                         List<String> pathList = new ArrayList<String>();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                    for (int i = 0 ; i<getIntent().getClipData().getItemCount(); i++) {
-                        Uri uri = getIntent().getClipData().getItemAt(i).getUri();
-                        String picturePath = uri.getPath();
-                        String newPath = picturePath.substring(12);
-                        pathList.add(newPath);
-                        System.out.println("Images SElECTION CHECKING AT STRAT");
-                        System.out.println(newPath);
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        for (int i = 0; i < getIntent().getClipData().getItemCount(); i++) {
+                            Uri uri = getIntent().getClipData().getItemAt(i).getUri();
+                            String picturePath = uri.getPath();
+                            String newPath = picturePath.substring(12);
+                            pathList.add(newPath);
+                            System.out.println("Images SElECTION CHECKING AT STRAT");
+                            System.out.println(newPath);
 
 
-                    }
+                        }
 
-                    Paper.book().write("action","android.intent.action.SEND");
-                    Paper.book().write("Multiple Path",pathList);
-                    Paper.book().write("type","images");
+                        Paper.book().write("action", "android.intent.action.SEND");
+                        Paper.book().write("Multiple Path", pathList);
+                        Paper.book().write("type", "images");
                     }
                 }
 //                else if (getIntent().getAction().equals("android.intent.action.SEND_MULTIPLE")){
@@ -317,8 +336,6 @@ public class SplashActivity extends AppCompatActivity {
 
 
             }
-
-
 
 
         }
@@ -417,7 +434,7 @@ public class SplashActivity extends AppCompatActivity {
         if (Paper.book().read(Constants.isLogin, false) && mAuth.getCurrentUser() != null) {
 
 
-            Log.e("TAG", "redirectToActivity: "  +Paper.book().read(Constants.isLogin, false) + mAuth.getCurrentUser());
+            Log.e("TAG", "redirectToActivity: " + Paper.book().read(Constants.isLogin, false) + mAuth.getCurrentUser());
 
             if (extras != null) {
                 if (extras.containsKey("type")) {
@@ -448,11 +465,13 @@ public class SplashActivity extends AppCompatActivity {
                                 intent.putExtra(HAS_EXTRA, R.string.tag_post_detail);
                                 intent.putExtra(USER_ID, Integer.parseInt(extras.getString(SPECIFIC_USER_ID)));
                                 intent.putExtra(POST_ID, extras.getString(SPECIFIC_POST_ID));
+                                intent.putExtra("fromComments",true);
                             } else if (key.equalsIgnoreCase("comment-tag") || key.equalsIgnoreCase("comment")) {
                                 intent = new Intent(SplashActivity.this, HomeActivity.class);
                                 intent.putExtra(HAS_EXTRA, R.string.tag_post_detail);
                                 intent.putExtra(USER_ID, Integer.parseInt(extras.getString(SPECIFIC_USER_ID)));
                                 intent.putExtra(POST_ID, extras.getString(SPECIFIC_POST_ID));
+                                intent.putExtra("fromComments",true);
                             }
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                             stackBuilder.addNextIntentWithParentStack(intent);
@@ -462,44 +481,49 @@ public class SplashActivity extends AppCompatActivity {
                                 intent.putExtra(HAS_EXTRA, R.string.tag_post_detail);
                                 intent.putExtra(USER_ID, Integer.parseInt(extras.getString("senderID")));
                                 intent.putExtra(POST_ID, extras.getString("childID"));
+                                intent.putExtra("fromComments",true);
                             } else if (key.equalsIgnoreCase("comment-tag") || key.equalsIgnoreCase("comment")) {
                                 intent = new Intent(SplashActivity.this, HomeActivity.class);
                                 intent.putExtra(HAS_EXTRA, R.string.tag_post_detail);
                                 intent.putExtra(USER_ID, Integer.parseInt(extras.getString("senderID")));
+                                intent.putExtra("fromComments",true);
                                 intent.putExtra(POST_ID, extras.getString("contentID"));
                             }
                             TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                             stackBuilder.addNextIntentWithParentStack(intent);
                         }
                         startActivity(intent);
-                        finish();
+                        //finish();
                     } else if (key.equalsIgnoreCase("follow")) {
                         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                         intent.putExtra(HAS_EXTRA, R.string.tag_user_profile);
                         intent.putExtra(SPECIFIC_USER_ID, Integer.parseInt(extras.getString("senderID")));
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                         stackBuilder.addNextIntentWithParentStack(intent);
+                        intent.putExtra("fromComments",true);
 //                        IS_COMING_FROM_NOTIFICATION = true;
                         startActivity(intent);
-                        finish();
+                       // finish();
                     } else if (key.equalsIgnoreCase("stream")) {
                         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                         intent.putExtra(HAS_EXTRA, R.string.tag_user_profile);
                         intent.putExtra(SPECIFIC_USER_ID, extras.getString("senderID"));
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                         stackBuilder.addNextIntentWithParentStack(intent);
+                        intent.putExtra("fromComments",true);
 //                        IS_COMING_FROM_NOTIFICATION = true;
                         startActivity(intent);
-                        finish();
+                      //  finish();
                     } else if (key.equalsIgnoreCase("event")) {
                         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                         intent.putExtra(HAS_EXTRA, R.string.tag_events_detail);
                         intent.putExtra(EVENT_ID, extras.getString("contentID"));
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                         stackBuilder.addNextIntentWithParentStack(intent);
+                        intent.putExtra("fromComments",true);
 //                        IS_COMING_FROM_NOTIFICATION = true;
                         startActivity(intent);
-                        finish();
+                      //  finish();
 
 
                     } else if (key.equalsIgnoreCase("chat")) {
@@ -508,13 +532,14 @@ public class SplashActivity extends AppCompatActivity {
                         Intent intent = new Intent(SplashActivity.this, HomeActivity.class);
                         //intent.putExtra(HAS_EXTRA, R.string.tag_webview);
                         intent.putExtra("intent_type", "5");
-                        intent.putExtra("fromNotification",true);
+                        intent.putExtra("fromNotification", true);
                         intent.putExtra(URL, url);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(SplashActivity.this);
                         stackBuilder.addNextIntentWithParentStack(intent);
+                        intent.putExtra("fromComments",true);
 //                        IS_COMING_FROM_NOTIFICATION = true;
                         startActivity(intent);
-                        finish();
+                    //    finish();
 
 
                     } else if (key.equalsIgnoreCase("stream-invite") || key.equalsIgnoreCase("event-invite")) {
@@ -728,7 +753,7 @@ public class SplashActivity extends AppCompatActivity {
         }
     }
 
-    public void UpdateApp(){
+    public void UpdateApp() {
 
         System.out.println("APP UPDATE");
         AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
@@ -738,7 +763,7 @@ public class SplashActivity extends AppCompatActivity {
 
             if (result.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE && result.updatePriority() >= 4) {
 //                requestUpdate(result);
-                android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this,R.style.Theme_AppCompat);
+                android.view.ContextThemeWrapper ctw = new android.view.ContextThemeWrapper(this, R.style.Theme_AppCompat);
                 final android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(ctw);
                 alertDialogBuilder.setTitle("Update Live Waves");
                 alertDialogBuilder.setCancelable(false);
@@ -746,11 +771,10 @@ public class SplashActivity extends AppCompatActivity {
                 alertDialogBuilder.setMessage("Live Waves recommends that you update to the latest version");
                 alertDialogBuilder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        try{
-                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id="+getPackageName())));
-                        }
-                        catch (ActivityNotFoundException e){
-                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id="+getPackageName())));
+                        try {
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("market://details?id=" + getPackageName())));
+                        } catch (ActivityNotFoundException e) {
+                            startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
                         }
                     }
                 });

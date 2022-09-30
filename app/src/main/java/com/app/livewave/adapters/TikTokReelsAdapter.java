@@ -68,7 +68,7 @@ public class TikTokReelsAdapter extends RecyclerView.Adapter<TikTokReelsAdapter.
     @Override
     public myviewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.video_item_for_reels,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.video_item_for_reels,parent,false);
 
         return new myviewholder(view);
     }

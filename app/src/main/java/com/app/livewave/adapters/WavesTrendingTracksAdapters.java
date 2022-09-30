@@ -52,6 +52,7 @@ public class WavesTrendingTracksAdapters extends RecyclerView.Adapter<RecyclerVi
         this.activity = activity;
         this.viewId = viewId;
         this.isSummarized = isSummarized;
+        Log.e("list in adapter", "WavesTrendingTracksAdapters: " + songArrayList);
     }
 
     @NonNull

@@ -4,6 +4,7 @@ import static com.app.livewave.utils.Constants.HEADER_TITLE;
 import static com.app.livewave.utils.Constants.currentUser;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,7 @@ public class WavesPlayerStoreFragment extends Fragment implements PlayerStateLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_wavesplayer_store, container, false);
         // Add the following lines to create RecyclerView
-        setupViews(view);
+
 
         return view;
     }
@@ -92,7 +93,9 @@ public class WavesPlayerStoreFragment extends Fragment implements PlayerStateLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupViews(view);
         getTracks();
+
     }
 
     void setupViews(View view) {
@@ -147,6 +150,9 @@ public class WavesPlayerStoreFragment extends Fragment implements PlayerStateLis
         RecyclerView.LayoutManager likedlayoutManager = new LinearLayoutManager(getActivity());
         following_recycler.setLayoutManager(likedlayoutManager);
         following_recycler.setAdapter(wavesPlayerFollowingsAdapter);
+
+
+        Log.e("list", "setupViews: " + trendingTrackList);
 
         wavesTrendingTracksAdapters = new WavesTrendingTracksAdapters(this, trendingTrackList, getActivity(), R.layout.item_wavesplayer_followings, false);
         trending_recycler = view.findViewById(R.id.trending_recycler);
@@ -237,7 +243,7 @@ public class WavesPlayerStoreFragment extends Fragment implements PlayerStateLis
             followingList.add(data.get(i));
         }
         wavesPlayerFollowingsAdapter.notifyDataSetChanged();
-       dialog.dismiss();
+        dialog.dismiss();
     }
 
     private void appTrendingData(List<Track> data) {
@@ -245,6 +251,7 @@ public class WavesPlayerStoreFragment extends Fragment implements PlayerStateLis
         System.out.println(data);
         for (int i = 0; i < data.size(); i++) {
             trendingTrackList.add(data.get(i));
+            Log.e("trending", "appTrendingData: " + trendingTrackList.get(i).getTrackPath() );
 
         }
         wavesTrendingTracksAdapters.notifyDataSetChanged();

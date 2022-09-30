@@ -296,6 +296,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
             stream_title = getIntent().getStringExtra("TITLE");
             stream_id = getIntent().getStringExtra("ID");
             STREAM_ID_TYPE = getIntent().getStringExtra("STREAM_ID_TYPE");
+            Log.e("sub", "getIntentData: " + stream_id + "     " + STREAM_ID_TYPE );
             isGuest = false;
 //            System.out.println("STREAM STREAM STREAM IS GUEST");
 //            System.out.println(getIntent().getStringExtra("PLATFORM_ID"));
@@ -366,6 +367,7 @@ public class SubscriberActivity extends AppCompatActivity implements IWebRTCList
 
        webRTCClient.setVideoRenderers(null, renderer_1);
         webRTCClient.init(serverURL, platform_id, webRTCMode, tokenId, this.getIntent());
+        Log.e("stream url", "initStream: " + serverURL );
 
     }
 

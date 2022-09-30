@@ -263,6 +263,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.MyViewHolder
 
                     } else if (alertList.get(position).getType().equalsIgnoreCase("stream-invite") || alertList.get(position).getType().equalsIgnoreCase("event-invite")) {
                         String streamId = String.valueOf(alertList.get(position).getContentID());
+                        Log.e(TAG, "onClick: " + streamId );
                         String type;
                         if (alertList.get(position).getType().equalsIgnoreCase("stream-invite")) {
                             // api/stream/join
@@ -371,6 +372,7 @@ public class AlertAdapter extends RecyclerView.Adapter<AlertAdapter.MyViewHolder
     }
 
     private void joinStream(String streamId, String type) {
+        Log.e(TAG, "joinStream: " + type );
         ApiManager.apiCall(ApiClient.getInstance().getInterface().joinStream(streamId, type), context, new ApiResponseHandler<JoinStreamModel>() {
             @Override
             public void onSuccess(Response<ApiResponse<JoinStreamModel>> data) {

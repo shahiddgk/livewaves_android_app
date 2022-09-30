@@ -1,12 +1,13 @@
 package com.app.livewave.fragments.live;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,26 +33,28 @@ import com.app.livewave.activities.HomeActivity;
 import com.app.livewave.activities.PublisherActivity;
 import com.app.livewave.adapters.PagerAdapter;
 import com.app.livewave.interfaces.ApiResponseHandlerWithFailure;
-import com.app.livewave.interfaces.DialogBtnClickInterface;
-import com.app.livewave.interfaces.MessageInterface;
 import com.app.livewave.models.ParameterModels.AttachmentParams;
-import com.app.livewave.models.ParameterModels.CreatePostModel;
 import com.app.livewave.models.ResponseModels.ApiResponse;
-import com.app.livewave.models.ResponseModels.PostModel;
 import com.app.livewave.models.ResponseModels.UserModel;
 import com.app.livewave.models.SaveStreamAsPost;
+import com.app.livewave.models.SaveVideoFromGallery;
 import com.app.livewave.retrofit.ApiClient;
 import com.app.livewave.utils.ApiManager;
-import com.app.livewave.utils.BaseUtils;
 import com.app.livewave.utils.Constants;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import static com.app.livewave.utils.Constants.FOLLOWING;
 import static com.app.livewave.utils.Constants.GLOBAL_STREAMS;
-import static com.app.livewave.utils.Constants.currentUser;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import io.paperdb.Paper;
 import retrofit2.Response;
@@ -71,6 +75,7 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
     String amountPaid;
     String titlePost;
     boolean yesClicked;
+    Button getVideoBtn;
 
 
     @Override
@@ -98,6 +103,7 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
         setUpViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         userModel = Paper.book().read(Constants.currentUser);
+        getVideoBtn = view.findViewById(R.id.getVideoFromGallery);
 
 
     }
@@ -128,7 +134,72 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
             }
         };
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter("Stream-Ended-Broadcast"));
+        getVideoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Dexter.withContext(getContext()).withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE).withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
+                        if (multiplePermissionsReport.areAllPermissionsGranted()) {
+                            Intent intent = new Intent(Intent.ACTION_PICK);
+                            intent.setType("video/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);
+                            startActivityForResult(Intent.createChooser(intent, "select video"), 1001);
+                        } else if (multiplePermissionsReport.isAnyPermissionPermanentlyDenied()) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
+                        permissionToken.continuePermissionRequest();
+                    }
+                }).check();
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1001) {
+                Uri uri = data.getData();
+                Log.e(TAG, "onActivityResult: " +data.getClipData() );
+                File file = new File(uri.getPath());
+
+
+                ApiManager.apiCallWithFailure(ApiClient.getINSTANCEForMediaAnt().getInterface().postVideo(file), getActivity(), new ApiResponseHandlerWithFailure<SaveVideoFromGallery>() {
+                    @Override
+                    public void onSuccess(Response<ApiResponse<SaveVideoFromGallery>> data) {
+                        if (data != null) {
+                            Log.e(TAG, "onSuccess: " + data.body().getStatus());
+                            Log.e(TAG, "onSuccess: " + data.body().getData().getDataId());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String failureCause) {
+                        Log.e(TAG, "onFailure: " + failureCause );
+                    }
+                });
+//                ApiManager.apiCallWithFailure(ApiClient.getINSTANCEForMediaAnt().getInterface().getUploadedVideo("611218410182317740895659"), getActivity(), new ApiResponseHandlerWithFailure<SaveVideoFromGallery>() {
+//                    @Override
+//                    public void onSuccess(Response<ApiResponse<SaveVideoFromGallery>> data) {
+//                        Log.e(TAG, "onSuccess: " + data.body() );
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String failureCause) {
+//
+//                    }
+//                });
+            }
+        }
     }
 
     private void createDialog(String title, String hostId) {
@@ -186,7 +257,7 @@ public class LiveFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onNoButtonClickListener(boolean no) {
-              //  LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
+                //  LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
             }
 
             @Override

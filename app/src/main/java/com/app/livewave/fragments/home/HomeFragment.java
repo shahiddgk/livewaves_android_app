@@ -587,6 +587,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
     public void onResume() {
         super.onResume();
         userModel = Paper.book().read(Constants.currentUser);
+        Constants.isOnHomeFragment = true;
         if (userModel != null)
             setData(userModel);
         notificationCounter = Paper.book().read("notificationCounts", 0);
@@ -600,6 +601,13 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         } else {
             ic_message_notification_count.setVisibility(View.GONE);
         }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Constants.isOnHomeFragment = false;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -867,6 +875,7 @@ public class HomeFragment extends Fragment implements onClickInterfaceForEditPos
         }
 
     }
+
 
     @Override
     public void onClickEdit(PostModel postModel) {

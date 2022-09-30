@@ -6,8 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.util.Log;
@@ -18,9 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.app.livewave.R;
-import com.app.livewave.activities.LoginActivityWithWavesFeature;
 import com.app.livewave.adapters.TikTokReelsAdapter;
-import com.app.livewave.fragments.live.OnSwipeTouchListener;
 import com.app.livewave.interfaces.ApiResponseHandler;
 import com.app.livewave.models.ResponseModels.ApiResponse;
 import com.app.livewave.models.ResponseModels.WavesModelResponse;
@@ -84,16 +80,16 @@ public class WavesFeatureOutside_login extends Fragment {
 
 
 
-//        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//                super.onPageScrollStateChanged(state);
-//                Log.e(TAG, "onPageScrollStateChanged: " + state );
-//                if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
-//                    videosViewPager.setUserInputEnabled(true);
-//                }
-//            }
-//        });
+        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+                Log.e(TAG, "onPageScrollStateChanged: " + state );
+                if ( state == videosViewPager.SCROLL_STATE_DRAGGING ){
+                    videosViewPager.setUserInputEnabled(true);
+                }
+            }
+        });
 
 
 //        videosViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

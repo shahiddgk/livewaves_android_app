@@ -21,6 +21,8 @@ public class Constants {
     public static final String FRAGMENT_TITLE = "fragmentTitle";
     public static final String HAS_EXTRA = "has_extra";
 
+    public static final String UPLOADING_VIDEO_ANT_MEDIA = "https://test.antmedia.io:5443/Sandbox/rest/v2/vods/create?name=VIDEO_NAME";
+
 
     public static final String tokenId = "tokenId";
     public static final String serverURL = "wss://stream-prod.livewaves.app/WebRTCAppEE/websocket";//"wss://www.streaming.globalfansy.fi:5443/WebRTCAppEE/websocket";
@@ -169,6 +171,7 @@ public class Constants {
     public static final int REQUEST_GALLERY_IMAGE = 1;
     public static final int REQUEST_GALLERY_VIDEO = 2;
     public static final int REQUEST_EVENT_IMAGE = 3;
+    public static boolean isOnHomeFragment;
 
     private String baseImage = "posts/images/";//for Live
     private String baseVideo = "posts/videos/";//for Live

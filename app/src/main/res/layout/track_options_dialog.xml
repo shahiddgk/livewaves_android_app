@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/margin_10"
+            android:textSize="@dimen/sp_20"
             android:text="Tum tum - Asim Azhar | Shamoon"
             android:textStyle="bold" />
 
@@ -66,6 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:textSize="15sp"
             android:layout_marginTop="@dimen/margin_5"
             android:text="Asim Azhar" />
 
@@ -86,8 +88,8 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_40"
                 android:src="@drawable/ic_edit" />
@@ -95,6 +97,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:text="Edit" />
@@ -111,43 +115,21 @@
             android:gravity="center_vertical">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_40"
-                android:src="@drawable/ic_baseline_delete_24" />
+                android:src="@drawable/ic_baseline_delete_24"
+                app:tint="@color/black" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_15"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"
                 android:text="Delete" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/add_to_playlist_iv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5"
-            android:layout_marginBottom="@dimen/margin_5"
-            android:paddingTop="@dimen/margin_5"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_40"
-                android:src="@drawable/music" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/margin_15"
-                android:text="Add to Playlist" />
 
         </LinearLayout>
 
@@ -198,6 +180,33 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="@dimen/margin_15"
                 android:text="Go to Artist Profile" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/add_to_playlist_iv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/margin_5">
+
+            <ImageView
+                android:layout_width="@dimen/margin_25"
+                android:layout_height="@dimen/margin_25"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/margin_40"
+                android:src="@drawable/music" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold"
+                android:layout_marginLeft="@dimen/margin_15"
+                android:text="Add to Playlist" />
 
         </LinearLayout>
     </LinearLayout>

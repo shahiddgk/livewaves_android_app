@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -76,7 +77,7 @@ public class LoginActivityWithWavesFeature extends AppCompatActivity {
         setContentView(R.layout.activity_login_with_waves_feature);
         viewPager2 = (ViewPager2)findViewById(R.id.slider_view_pager_for_login_and_waves_feature);
 
-        FragmentPageAdapter fragmentPageAdapter = new FragmentPageAdapter(getSupportFragmentManager(),getLifecycle());
+        FragmentPageAdapter fragmentPageAdapter = new FragmentPageAdapter(this);
 //        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 //            @Override
 //            public void onPageScrollStateChanged(int state) {

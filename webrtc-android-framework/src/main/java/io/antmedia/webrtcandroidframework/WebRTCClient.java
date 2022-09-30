@@ -195,6 +195,8 @@ public class WebRTCClient implements IWebRTCClient, AntMediaSignallingEvents, Pe
 
         this.token = token;
 
+        Log.e(TAG, "init: " + token );
+
         if (intent != null) {
             this.intent = intent;
         }

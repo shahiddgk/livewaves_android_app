@@ -18,6 +18,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.app.livewave.BottomDialogSheets.TimeLinePostDialogueOptions;
 import com.app.livewave.R;
@@ -48,6 +49,9 @@ public class FirebaseFCMService extends FirebaseMessagingService {
 
         if (remoteMessage.getNotification() != null) {
             showNotification(remoteMessage);
+            SplashActivity.realTimeNotificationCounter++;
+            Log.e("TAG", "onMessageReceived: " + SplashActivity.realTimeNotificationCounter);
+            sendNotificationCount(this, SplashActivity.realTimeNotificationCounter);
         }
     }
 
@@ -94,7 +98,7 @@ public class FirebaseFCMService extends FirebaseMessagingService {
                 intent.putExtra(Constants.SPECIFIC_POST_ID, message.getData().getOrDefault("childID", ""));
             }
 
-        }else if (message.getData().get("type").equalsIgnoreCase("reaction")
+        } else if (message.getData().get("type").equalsIgnoreCase("reaction")
                 || message.getData().get("type").equalsIgnoreCase("comment")
                 || message.getData().get("type").equalsIgnoreCase("comment-tag")
                 || message.getData().get("type").equalsIgnoreCase("tag")) {
@@ -107,10 +111,14 @@ public class FirebaseFCMService extends FirebaseMessagingService {
                 intent.putExtra(Constants.SPECIFIC_USER_ID, message.getData().getOrDefault("contentID", ""));
                 intent.putExtra(Constants.SPECIFIC_POST_ID, message.getData().getOrDefault("childID", ""));
 
-            } else if ( message.getData().get("type").equalsIgnoreCase("reaction") || message.getData().get("type").equalsIgnoreCase("tag")) {
+            } else if (message.getData().get("type").equalsIgnoreCase("reaction") || message.getData().get("type").equalsIgnoreCase("tag")) {
                 intent.putExtra(Constants.SPECIFIC_USER_ID, message.getData().getOrDefault("contentID", ""));
                 intent.putExtra(Constants.SPECIFIC_POST_ID, message.getData().getOrDefault("childID", ""));
+
             }
+//            realTimeNotificationCounts++;
+//            sendNotificationCount(this, realTimeNotificationCounts);
+
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
             stackBuilder.addNextIntentWithParentStack(intent);
 
@@ -121,6 +129,7 @@ public class FirebaseFCMService extends FirebaseMessagingService {
             Log.e("!@#!@#!@#", message.getData().getOrDefault("senderID", ""));
             intent.putExtra(Constants.SPECIFIC_USER_ID, message.getData().getOrDefault("senderID", ""));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
             stackBuilder.addNextIntentWithParentStack(intent);
 
         } else if (message.getData().get("type").equalsIgnoreCase("event")) {
@@ -128,20 +137,23 @@ public class FirebaseFCMService extends FirebaseMessagingService {
             intent.putExtra(HAS_EXTRA, R.string.tag_events_detail);
             intent.putExtra(Constants.EVENT_ID, message.getData().get("contentID"));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
             stackBuilder.addNextIntentWithParentStack(intent);
         } else if (message.getData().get("type").equalsIgnoreCase("stream-invite") || message.getData().get("type").equalsIgnoreCase("event-invite")) {
             intent = new Intent(this, SplashActivity.class);
             intent.putExtra("type", message.getData().get("type"));
             intent.putExtra("stream_id", message.getData().get("contentID"));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
             stackBuilder.addNextIntentWithParentStack(intent);
 
         } else if (Objects.requireNonNull(message.getData().get("type")).equalsIgnoreCase("chat")) {
-            Log.e("chat", "showNotification: " + "chat" );
+            Log.e("chat", "showNotification: " + "chat");
             intent = new Intent(this, SplashActivity.class);
             intent.putExtra("type", message.getData().get("type"));
             intent.putExtra("contentID", message.getData().get("contentID"));
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
             stackBuilder.addNextIntentWithParentStack(intent);
         } else {
             intent = new Intent(this, SplashActivity.class);
@@ -149,11 +161,11 @@ public class FirebaseFCMService extends FirebaseMessagingService {
             stackBuilder.addNextIntentWithParentStack(intent);
         }
 
-        Log.e("fcm ", "showNotification: "+  message.getData().get("type"));
+        Log.e("fcm ", "showNotification: " + message.getData().get("type"));
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent.FLAG_IMMUTABLE);
 
         String channelId = "LiveWaves";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -198,5 +210,9 @@ public class FirebaseFCMService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String s) {
         super.onNewToken(s);
 
+    }
+
+    private void sendNotificationCount(Context c, int count) {
+        LocalBroadcastManager.getInstance(c).sendBroadcast(new Intent("Notification-Count").putExtra("notificationCount", count));
     }
 }

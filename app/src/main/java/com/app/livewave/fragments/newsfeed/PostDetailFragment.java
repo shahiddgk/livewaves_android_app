@@ -1195,11 +1195,16 @@ public class PostDetailFragment extends Fragment implements View.OnClickListener
             getPostFromApiId(String.valueOf(postId));
         }
         getPostComments();
-        if (postModel.getTotalShares() > 0) {
-            txt_share.setVisibility(View.VISIBLE);
+        if(postModel != null){
+            if (postModel.getTotalShares() > 0) {
+                txt_share.setVisibility(View.VISIBLE);
 
-            txt_share.setText(postModel.getTotalShares() + " shares..");
-        } else {
+                txt_share.setText(postModel.getTotalShares() + " shares..");
+            } else {
+
+            }
+
+        }else {
             txt_share.setVisibility(View.GONE);
         }
 

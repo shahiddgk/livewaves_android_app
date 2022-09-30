@@ -6,6 +6,10 @@ import static com.app.livewave.utils.Constants.HEADER_TITLE;
 import static com.app.livewave.utils.Constants.HIDE_HEADER;
 import static com.app.livewave.utils.Constants.SPECIFIC_USER_ID;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
@@ -19,6 +23,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.app.livewave.R;
 import com.app.livewave.fragments.ArtistPublicPlaylistFragment;
@@ -77,6 +82,8 @@ public class HomeActivity extends WavesPlayerBaseActivity {
     int actionBarHeight;
     CollapsingToolbarLayout collapsingToolbarLayout;
     ConstraintLayout fullscreen_audio_view;
+    BroadcastReceiver broadcastReceiver;
+    boolean fromNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,15 +125,26 @@ public class HomeActivity extends WavesPlayerBaseActivity {
                 if (f.getArguments() != null && f.getArguments().containsKey(HEADER_TITLE)) {
                     collapsingToolbarLayout.setTitle(f.getArguments().getString(HEADER_TITLE));
                 } else {
-                    collapsingToolbarLayout.setTitle( f.getArguments().getString(FRAGMENT_TITLE));
+                    collapsingToolbarLayout.setTitle(f.getArguments().getString(FRAGMENT_TITLE));
                 }
             }
         });
 
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent != null) {
+                    int count = intent.getExtras().getInt("notificationCount");
+                    Log.e("count", "onReceive: " + count);
+                    Paper.book().write("allNotificationCount", count);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(new Intent("writeBadge"));
+                    //  LocalBroadcastManager.getInstance(SplashActivity.this).unregisterReceiver(broadcastReceiver);
+                }
 
-
-
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("Notification-Count"));
 
 
 //
@@ -149,24 +167,25 @@ public class HomeActivity extends WavesPlayerBaseActivity {
 //
 //           }
 
-      // }
+        // }
         Log.e("TAG", "onCreate: " + "not from notification");
         if (getIntent().hasExtra(HAS_EXTRA)) {
             Bundle bundle = getIntent().getExtras();
+            fromNotification = getIntent().getExtras().getBoolean("fromComments", false);
             loadFragment(getIntent().getIntExtra(HAS_EXTRA, R.string.tag_dashboard), bundle);
         } else {
             //For Current Store Items Only
             Bundle bundle = new Bundle();
             bundle.putBoolean(HIDE_HEADER, false);
             try {
-                if (getIntent().getBooleanExtra("fromNotification",false)){
-                    loadFragment(R.string.tag_inbox,null);
-                }else {
+                if (getIntent().getBooleanExtra("fromNotification", false)) {
+                    loadFragment(R.string.tag_inbox, null);
+                } else {
                     loadFragment(R.string.tag_dashboard, bundle);
                 }
 
-            }catch (IllegalStateException e){
-                Log.e("TAG", "onCreate: " + e.getMessage() );
+            } catch (IllegalStateException e) {
+                Log.e("TAG", "onCreate: " + e.getMessage());
             }
 
 
@@ -231,7 +250,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         System.out.println(fTagId);
 
         final String tagString = Integer.toString(fTagId);
-        Log.e("for tag checking ", "loadFragment: " + tagString );
+        Log.e("for tag checking ", "loadFragment: " + tagString);
         performFragmentTransaction(tagString, fTagId, b);
     }
 
@@ -246,7 +265,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
             playerStateListener = (PlayerStateListener) fragment;
             if (b != null) {
                 b.putString(FRAGMENT_TITLE, fTitle);
-            }else{
+            } else {
                 b = new Bundle();
                 b.putString(FRAGMENT_TITLE, fTitle);
             }
@@ -260,19 +279,21 @@ public class HomeActivity extends WavesPlayerBaseActivity {
                 if (fTagId == R.string.tag_events_list || fTagId == R.string.tag_event_create || fTagId == R.string.tag_purchased_subscriptions || fTagId == R.string.tag_subscription_create) {
                     System.out.println("EVENTS EVENTS EVENTS");
                     fragmentTransaction.replace(R.id.fragment_container_view, fragment, tagString);
-                }else {
+                } else {
                     fragmentTransaction.add(R.id.fragment_container_view, fragment, tagString);
                 }
-                fragmentTransaction.addToBackStack(tagString);
-                fragmentTransaction.commitAllowingStateLoss();
-                fm.executePendingTransactions();
+                if (!fm.isDestroyed()) {
+                    fragmentTransaction.addToBackStack(tagString);
+                    fragmentTransaction.commitAllowingStateLoss();
+                    fm.executePendingTransactions();
+                }
+
             };
             if (mPendingRunnable != null) {
                 mHandler.post(mPendingRunnable);
             }
         } else {
-            if(b!=null)
-            {
+            if (b != null) {
                 cFragment.setArguments(b);
 
                 fm.popBackStackImmediate(tagString, 0);
@@ -285,7 +306,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         Fragment fragment = null;
         if (tag == R.string.tag_dashboard) {
             fragment = new DashboardFragment();
-        } else if(tag == R.string.tag_waves_Features) {
+        } else if (tag == R.string.tag_waves_Features) {
             fragment = new WavesFeature();
         } else if (tag == R.string.tag_my_store) {
             fragment = new YourStoreFragment();
@@ -308,7 +329,7 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         } else if (tag == R.string.tag_subscription) {
             fragment = new MySubscriptionListFragment();
         } else if (tag == R.string.tag_subscription_create) {
-          fragment = new CreateNewSubscription();
+            fragment = new CreateNewSubscription();
         } else if (tag == R.string.tag_purchased_subscriptions) {
             fragment = new SubscriptionListFragment();
         } else if (tag == R.string.tag_artist_subscriptions) {
@@ -398,7 +419,17 @@ public class HomeActivity extends WavesPlayerBaseActivity {
         } else if (fragments > 1) {
             getSupportFragmentManager().popBackStackImmediate();
         } else {
-            finish();
+            if (Constants.isOnHomeFragment) {
+                finish();
+            } else {
+                LocalBroadcastManager.getInstance(this).sendBroadcast(new Intent("set-home"));
+            }
+            if (fromNotification) {
+                startActivity(new Intent(this,HomeActivity.class));
+               // loadFragment(R.string.tag_dashboard,null);
+              //  super.onBackPressed();
+            }
+
         }
     }
 

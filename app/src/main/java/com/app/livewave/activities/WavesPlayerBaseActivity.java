@@ -71,7 +71,7 @@ public class WavesPlayerBaseActivity extends AppCompatActivity implements View.O
             }
             if (mPlayerAdapter != null && mPlayerAdapter.isPlaying()) {
 
-                restorePlayerStatus();
+               // restorePlayerStatus();
             }
         }
 
@@ -113,7 +113,7 @@ public class WavesPlayerBaseActivity extends AppCompatActivity implements View.O
 
         try {
             Glide.with(this).load(selectedSong.getAttachment()).placeholder(R.drawable.profile_place_holder).into(imageViewControl);
-            Glide.with(this).load(selectedSong.getAttachment()).placeholder(R.drawable.profile_place_holder).into(imageViewControlFullScreen);
+            //Glide.with(this).load(selectedSong.getAttachment()).placeholder(R.drawable.profile_place_holder).into(imageViewControlFullScreen);
         } catch (Exception e) {
 
         }
